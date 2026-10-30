@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .world { position:absolute; inset:0; }
+        .scrim { position:absolute; left:-320px; top:20px; width:1680px; height:1040px;
+                 background:radial-gradient(ellipse closest-side, rgba(5,7,14,.95),
+                   rgba(5,7,14,.74) 54%, rgba(5,7,14,0) 100%); }
+
+        .stage { position:absolute; left:168px; top:0; bottom:0; width:1180px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:170px; line-height:.98; letter-spacing:-.03em; color:#DCE5F2; white-space:nowrap; }
+        .w { display:inline-block; opacity:0; }
+        .co { color:#3B7BFF; }
+        .rule { height:2px; background:#3B7BFF; width:620px; margin:28px 0 34px; transform-origin:left center; }
+        .note { padding-left:34px; border-left:4px solid #3B7BFF; font-size:31px; line-height:1.5;
+                color:#DCE5F2; opacity:0; max-width:1000px; }
+        .note .ee { display:inline-block; opacity:0; }
+        .bib { margin-top:30px; font-size:24px; letter-spacing:.2em; color:#7C8AA3; text-transform:uppercase; white-space:nowrap; }
+        .bib .c { display:inline-block; opacity:0; }
+
+        /* ---- object: a rolodex of sources — the reporters went to everyone else ---- */
+        .rig { position:absolute; left:1300px; top:200px; width:560px; height:680px; perspective:1500px; }
+        .obj { position:absolute; inset:0; opacity:0; }
+        .drum { position:absolute; inset:0; transform-style:preserve-3d; transform:rotateY(-30deg) rotateX(10deg); }
+        .axle { position:absolute; left:40px; top:308px; width:480px; height:4px; background:rgba(124,138,163,.7); }
+        .ring { position:absolute; width:150px; height:150px; border-radius:50%; border:2px solid rgba(124,138,163,.5);
+                top:235px; transform:rotateY(90deg); }
+        .ring-l { left:15px; } .ring-r { left:395px; }
+        .knob { position:absolute; width:28px; height:28px; border-radius:50%; background:#0B1120;
+                border:2px solid rgba(59,123,255,.75); top:296px; }
+        .knob-l { left:20px; } .knob-r { left:512px; }
+        .post { position:absolute; width:6px; height:270px; top:310px; background:rgba(124,138,163,.35); transform:translateZ(-40px); }
+        .post-l { left:87px; } .post-r { left:467px; }
+        .base { position:absolute; left:30px; top:580px; width:500px; height:12px; background:#0B1120;
+                border-top:2px solid rgba(59,123,255,.65); transform:translateZ(-40px); }
+        .wheel { position:absolute; left:90px; top:310px; width:380px; height:0; transform-style:preserve-3d; }
+        .card { position:absolute; left:0; top:0; width:380px; height:220px; transform-origin:50% 0; transform-style:preserve-3d; }
+        .face { position:absolute; inset:0; background:#0B1120; border:2px solid rgba(59,123,255,.55); border-radius:4px;
+                backface-visibility:hidden; overflow:hidden; }
+        .face.back { transform:rotateX(180deg); }
+        .notch { position:absolute; top:-2px; width:26px; height:14px; background:#05070E;
+                 border:2px solid rgba(59,123,255,.45); border-top:none; }
+        .n1 { left:40px; } .n2 { right:40px; }
+        .tag { position:absolute; left:26px; top:30px; font-size:19px; letter-spacing:.2em; color:#7C8AA3; white-space:nowrap; }
+        .bar { position:absolute; left:26px; top:82px; height:26px; background:#3B7BFF; }
+        .ln { position:absolute; left:26px; height:8px; background:rgba(124,138,163,.28); }
+        .tab { position:absolute; right:22px; bottom:18px; width:34px; height:10px; background:rgba(59,123,255,.5); }
+      </style>
+
+      <div data-hf-id="hf-n143" id="root" data-composition-id="s2-turn" data-start="0" data-duration="6.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-swm6" class="world" id="s2-world">
+
+          <div data-hf-id="hf-yijq" class="rig" id="s2-rig">
+            <div data-hf-id="hf-zj5u" class="obj" id="s2-obj">
+              <div data-hf-id="hf-ahpu" class="drum" id="s2-drum">
+                <div data-hf-id="hf-lcaz" class="post post-l"></div><div data-hf-id="hf-76vp" class="post post-r"></div>
+                <div data-hf-id="hf-9327" class="base"></div>
+                <div data-hf-id="hf-t2mn" class="ring ring-l"></div><div data-hf-id="hf-6csx" class="ring ring-r"></div>
+                <div data-hf-id="hf-ip62" class="axle"></div>
+                <div data-hf-id="hf-t3re" class="wheel" id="s2-wheel"></div>
+                <div data-hf-id="hf-u99n" class="knob knob-l"></div><div data-hf-id="hf-g3ud" class="knob knob-r"></div>
+              </div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-edqo" class="scrim" data-layout-ignore="" aria-hidden="true"></div>
+
+          <div data-hf-id="hf-tan6" class="stage">
+            <div data-hf-id="hf-nwlw" class="disp"><span data-hf-id="hf-hnz9" class="w" id="s2-l1">They</span></div>
+            <div data-hf-id="hf-9gq4" class="disp"><span data-hf-id="hf-9i8u" class="w" id="s2-l2">Didn't</span></div>
+            <div data-hf-id="hf-89t1" class="disp"><span data-hf-id="hf-yvjo" class="w co" id="s2-l3">Ask him.</span></div>
+            <div data-hf-id="hf-xtm6" class="rule" id="s2-rule"></div>
+            <div data-hf-id="hf-f70p" class="note" id="s2-note">Two Seattle Post-Intelligencer reporters went to <span data-hf-id="hf-eo6l" class="ee" id="s2-ee">everyone else.</span></div>
+            <div data-hf-id="hf-6fbe" class="bib" id="s2-bib"></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 6.5, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+          function h(n) { var x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); }
+
+          /* ---- build the rolodex: 9 cards around the axle, each two-faced so the back never mirrors ---- */
+          var wheel = document.getElementById("s2-wheel"), ch = "";
+          for (var i = 0; i < 9; i++) {
+            var bw = Math.round(120 + h(i * 7 + 3) * 190), l1 = Math.round(160 + h(i * 7 + 4) * 150), l2 = Math.round(90 + h(i * 7 + 5) * 200);
+            var face = '<div class="notch n1"></div><div class="notch n2"></div>' +
+                       '<div class="tag" data-layout-allow-overlap>SOURCE 0' + (i + 1) + '</div>' +
+                       '<div class="bar" style="width:' + bw + 'px"></div>' +
+                       '<div class="ln" style="top:136px;width:' + l1 + 'px"></div>' +
+                       '<div class="ln" style="top:156px;width:' + l2 + 'px"></div>' +
+                       '<div class="ln" style="top:176px;width:' + (l1 - 40) + 'px"></div>' +
+                       '<div class="tab"></div>';
+            ch += '<div class="card" style="transform:rotateX(' + (-i * 40) + 'deg)">' +
+                    '<div class="face front">' + face + '</div><div class="face back">' + face + '</div></div>';
+          }
+          wheel.innerHTML = ch;
+
+          /* ---- the bibliographic line, one span per letter ---- */
+          var BIB = "HARD DRIVE · WALLACE & ERICKSON · JOHN WILEY & SONS · 1992";
+          var bib = document.getElementById("s2-bib"), letters = [];
+          for (var k = 0; k < BIB.length; k++) {
+            var sp = document.createElement("span"); sp.className = "c";
+            sp.textContent = BIB[k] === " " ? " " : BIB[k];
+            bib.appendChild(sp); letters.push(sp);
+          }
+
+          /* ---- handoff IN — a head seek: s1 lifts out on the same window ---- */
+          tl.fromTo("#s2-world", { opacity: 0, y: 140, filter: "blur(14px)" },
+                                 { opacity: 1, y: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s2-world", { filter: "none" }, IN);
+
+          /* --- blueprint: kinetic-type-beats / rule: kinetic-beat-slam — one grid, two beats 0.55s apart,
+                 DISTINCT entrances: the negation slams in, the object of the sentence snaps in from the side --- */
+          var PULSE = 0.55, BEATS = [0.55, 0.55 + PULSE];
+          tl.fromTo("#s2-l1", { opacity: 0, scale: 1.5, filter: "blur(16px)", transformOrigin: "left center" },
+                              { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power4.out" }, BEATS[0]);
+          tl.set("#s2-l1", { filter: "none" }, BEATS[0] + 0.45);
+          tl.fromTo("#s2-l2", { opacity: 0, scale: 1.35, filter: "blur(12px)", transformOrigin: "left center" },
+                              { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power4.out" }, BEATS[0] + 0.08);
+          tl.set("#s2-l2", { filter: "none" }, BEATS[0] + 0.5);
+          tl.fromTo("#s2-l3", { opacity: 0, x: -320 },
+                              { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, BEATS[1]);
+
+          tl.fromTo("#s2-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power4.out" }, 1.55);
+          tl.fromTo("#s2-note", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.75);
+          /* "everyone else" lands on its own beat — the rolodex starts turning on it */
+          var LAND = 2.2;
+          tl.set("#s2-ee", { opacity: 1, y: 34 }, LAND - 0.05);
+          tl.to("#s2-ee", { y: 0, duration: 0.18, ease: "power4.out" }, LAND - 0.05);
+
+          /* --- rule: waterfall-entry — the bibliographic line, letter by letter (binary opacity, whip up) --- */
+          var t0 = 2.35;
+          letters.forEach(function (el, k) {
+            var at = t0 + k * 0.02;
+            tl.set(el, { opacity: 1, y: 26 }, at);
+            tl.to(el, { y: 0, duration: 0.14, ease: "power4.out" }, at);
+          });
+
+          /* --- object: the rolodex slides in, idles on a sine loop --- */
+          tl.fromTo("#s2-obj", { opacity: 0, x: 160 }, { opacity: 1, x: 0, duration: 0.8, ease: "power4.out" }, 0.6);
+          var ic = 2.2, ir = Math.max(0, Math.floor((DUR - OUT - 1.5) / ic) - 1);
+          tl.fromTo("#s2-obj", { y: 0 }, { y: -10, duration: ic, ease: "sine.inOut", yoyo: true, repeat: ir, immediateRender: false }, 1.5);
+
+          /* the cards flip over the top on a 0.28s beat — nine flips, one full turn of the wheel */
+          for (var f = 0; f < 9; f++) {
+            tl.fromTo("#s2-wheel", { rotationX: f * 40 },
+                                   { rotationX: (f + 1) * 40, duration: 0.2, ease: "power3.out", immediateRender: false }, LAND + f * 0.28);
+          }
+
+          /* ---- handoff OUT: the head seeks — this scene lifts out, s3 rises in on the same window ---- */
+          tl.set("#s2-world", { filter: "blur(0px)" }, DUR - OUT);
+          tl.to("#s2-world", { opacity: 0, y: -140, filter: "blur(14px)", duration: OUT, ease: "power3.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s2-turn"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

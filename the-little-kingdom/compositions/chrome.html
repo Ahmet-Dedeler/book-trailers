@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        /* Frame chrome — runs the whole minute on track 3, transparent root.
+           Lives ONLY in the top 64px and bottom 56px bands so it never touches statement type. */
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#9A8F7C; text-transform:uppercase;
+                letter-spacing:.22em; font-size:22px; line-height:1; }
+
+        /* ---- top-left: chapter ticker ---- */
+        .ch-chap { position:absolute; left:168px; top:22px; height:24px; white-space:nowrap;
+                   font-size:22px; display:flex; align-items:center; }
+        .ch-chap .ch-dash { color:#F0761E; margin:0 14px 0 10px; }
+        .ch-chap .ch-title { color:#EFE7D6; }
+
+        /* ---- top-right: tape slate + counter ---- */
+        .ch-slate { position:absolute; right:168px; top:12px; text-align:right; white-space:nowrap;
+                    font-size:22px; }
+        .ch-counter { position:absolute; right:168px; top:36px; text-align:right; white-space:nowrap;
+                      font-size:24px; color:#F0761E; font-variant-numeric:tabular-nums;
+                      letter-spacing:.3em; margin-right:-.3em; }
+
+        /* ---- bottom: progress rule ---- */
+        .ch-track { position:absolute; left:168px; top:1051px; width:1584px; height:2px;
+                    background:rgba(239,231,214,.14); }
+        .ch-rule  { position:absolute; left:168px; top:1051px; width:1584px; height:2px;
+                    background:#F0761E; box-shadow:0 0 12px rgba(240,118,30,.45); }
+        .ch-head  { position:absolute; left:164px; top:1047px; width:10px; height:10px; border-radius:50%;
+                    background:#F0761E; box-shadow:0 0 14px rgba(240,118,30,.8); }
+        .ch-tick  { position:absolute; top:1044px; width:1px; height:16px; background:#EFE7D6; opacity:.35; }
+        .ch-tick.first { opacity:.9; }
+
+        /* ---- corners: four L-brackets, inset 40px ---- */
+        .ch-corner { position:absolute; width:18px; height:18px; opacity:.45; }
+        .ch-corner.tl { left:40px; top:40px; border-left:2px solid rgba(239,231,214,1); border-top:2px solid rgba(239,231,214,1); }
+        .ch-corner.tr { right:40px; top:40px; border-right:2px solid rgba(239,231,214,1); border-top:2px solid rgba(239,231,214,1); }
+        .ch-corner.bl { left:40px; bottom:40px; border-left:2px solid rgba(239,231,214,1); border-bottom:2px solid rgba(239,231,214,1); }
+        .ch-corner.br { right:40px; bottom:40px; border-right:2px solid rgba(239,231,214,1); border-bottom:2px solid rgba(239,231,214,1); }
+
+        /* ---- grain: a 256px seeded noise tile, full bleed ---- */
+        .ch-grain { position:absolute; inset:0; opacity:.10; mix-blend-mode:overlay;
+                    background-repeat:repeat; background-size:256px 256px; }
+        #ch-black { position:absolute; inset:0; background:#000; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="chrome" data-start="0" data-duration="60"
+           data-width="1920" data-height="1080">
+
+        <div class="ch-grain" id="ch-grain" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="ch-corner tl" id="ch-c1" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-corner tr" id="ch-c2" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-corner bl" id="ch-c3" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-corner br" id="ch-c4" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="ch-chap" id="ch-chap">
+          <span>Chapter <span id="ch-idx">01</span> / 08</span>
+          <span class="ch-dash">—</span>
+          <span class="ch-title" id="ch-title">Every story</span>
+        </div>
+
+        <div class="ch-slate" id="ch-slate">Moritz / Apple — Tape 01</div>
+        <div class="ch-counter" id="ch-counter">0000</div>
+
+        <div class="ch-track" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-rule" id="ch-rule" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick first" id="ch-t1" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick" id="ch-t2" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick" id="ch-t3" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick" id="ch-t4" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick" id="ch-t5" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick" id="ch-t6" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick" id="ch-t7" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-tick" id="ch-t8" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-head" id="ch-head" data-layout-ignore aria-hidden="true"></div>
+        <div id="ch-black" data-layout-ignore aria-hidden="true"></div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 60;
+          var CUTS = [0, 6.5, 12.5, 21, 30.5, 39, 47, 52.5];
+          var TITLES = ["Every story", "This one", "The access", "The room",
+                        "The break", "Anyway", "Thesis", "The Little Kingdom"];
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- grain tile: LCG-seeded (19840101), built once at load, never Math.random ---- */
+          var grain = document.getElementById("ch-grain");
+          (function buildGrain() {
+            var c = document.createElement("canvas");
+            c.width = 256; c.height = 256;
+            var ctx = c.getContext("2d");
+            if (!ctx) return;
+            var img = ctx.createImageData(256, 256), d = img.data;
+            var seed = 19840101;
+            for (var i = 0; i < 256 * 256; i++) {
+              seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+              var v = 88 + ((seed >>> 8) % 80);          /* 88–167, centred on mid-grey for overlay */
+              d[i * 4] = v; d[i * 4 + 1] = v; d[i * 4 + 2] = v; d[i * 4 + 3] = 255;
+            }
+            ctx.putImageData(img, 0, 0);
+            grain.style.backgroundImage = "url(" + c.toDataURL("image/png") + ")";
+          })();
+
+          /* ---- ticks at the cut fractions ---- */
+          for (var k = 0; k < CUTS.length; k++) {
+            var tick = document.getElementById("ch-t" + (k + 1));
+            tick.style.left = (168 + 1584 * (CUTS[k] / DUR)) + "px";
+          }
+
+          /* ---- one clock drives every text write: counter, chapter swap, grain jump ---- */
+          var counterEl = document.getElementById("ch-counter");
+          var idxEl = document.getElementById("ch-idx");
+          var titleEl = document.getElementById("ch-title");
+          function hash(n) { var h = Math.imul(n ^ 0x9E3779B9, 0x85EBCA6B) >>> 0; h ^= h >>> 13; h = Math.imul(h, 0xC2B2AE35) >>> 0; return (h ^ (h >>> 16)) >>> 0; }
+          var clock = { t: 0 };
+          tl.to(clock, {
+            t: DUR, duration: DUR, ease: "none",
+            onUpdate: function () {
+              var t = tl.time();
+              /* tape counter — 27 counts per second, four digits */
+              var n = Math.max(0, Math.floor(t * 27));
+              counterEl.textContent = String(Math.min(9999, n)).padStart(4, "0");
+              /* chapter ticker — the latest cut whose time has passed */
+              var ch = 0;
+              for (var i = CUTS.length - 1; i >= 0; i--) { if (t >= CUTS[i]) { ch = i; break; } }
+              idxEl.textContent = String(ch + 1).padStart(2, "0");
+              titleEl.textContent = TITLES[ch];
+              /* grain — jumps to a hashed offset every frame (24 jumps/s) */
+              var f = Math.floor(t * 24);
+              var gx = hash(f) % 256, gy = hash(f + 7919) % 256;
+              grain.style.backgroundPosition = gx + "px " + gy + "px";
+            }
+          }, 0);
+
+          /* ---- chapter swap: a 0.25s opacity dip-and-return around every cut ---- */
+          for (var c = 1; c < CUTS.length; c++) {
+            tl.fromTo("#ch-chap", { opacity: 1 }, { opacity: 0, duration: 0.125, ease: "power1.in" }, CUTS[c] - 0.125);
+            tl.to("#ch-chap", { opacity: 1, duration: 0.125, ease: "power1.out" }, CUTS[c]);
+            /* the tick under the cut brightens as the rule reaches it */
+            tl.fromTo("#ch-t" + (c + 1), { opacity: 0.35 }, { opacity: 0.9, duration: 0.3, ease: "power2.out" }, CUTS[c]);
+          }
+
+          /* ---- the film's own progress: a rule that draws for exactly 60s, and its head ---- */
+          tl.fromTo("#ch-rule", { scaleX: 0, transformOrigin: "left center" },
+                                { scaleX: 1, duration: DUR, ease: "none" }, 0);
+          tl.fromTo("#ch-head", { x: 0 }, { x: 1584, duration: DUR, ease: "none" }, 0);
+          var hc = 0.9, hr = Math.max(0, Math.floor(DUR / hc) - 1);
+          tl.fromTo("#ch-head", { scale: 1 }, { scale: 1.6, duration: hc, ease: "sine.inOut", yoyo: true, repeat: hr }, 0);
+
+          /* ---- the slate settles in on the first frame; the counter keeps time ---- */
+          tl.fromTo("#ch-slate", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.2);
+          tl.fromTo("#ch-counter", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.35);
+          tl.fromTo("#ch-chap", { x: -14 }, { x: 0, duration: 0.6, ease: "power3.out" }, 0.2);
+
+          /* ---- corners breathe .45 ↔ .8 on a 3.2s sine, phase-shifted per corner, finite ---- */
+          for (var q = 1; q <= 4; q++) {
+            var start = (q - 1) * 0.4, leg = 1.6;
+            var reps = Math.max(0, Math.floor((DUR - start) / leg) - 1);
+            tl.fromTo("#ch-c" + q, { opacity: 0.45 },
+                                   { opacity: 0.8, duration: leg, ease: "sine.inOut", yoyo: true, repeat: reps }, start);
+          }
+
+          window.__timelines = window.__timelines || {};
+          /* the film ends on black: the chrome must not hang over the final fade */
+          tl.fromTo("#ch-black", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.in" }, 59.2);
+          window.__timelines["chrome"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

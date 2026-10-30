@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6;
+                perspective:1800px; perspective-origin:70% 55%; }
+        .veil { position:absolute; inset:0; background:rgba(11,10,9,.46); }
+        .scrim { position:absolute; left:-320px; top:96px; width:1600px; height:900px;
+                 background:radial-gradient(ellipse closest-side,
+                   rgba(11,10,9,.95), rgba(11,10,9,.76) 56%, rgba(11,10,9,0) 100%); }
+        .stage { position:absolute; left:168px; top:150px; width:1100px; }
+        .kicker { font-size:26px; letter-spacing:.24em; color:#9A8F7C; text-transform:uppercase;
+                  opacity:0; }
+        .disp { font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:122px; line-height:.95; letter-spacing:-.02em; color:#EFE7D6;
+                margin-top:30px; }
+        .w { display:inline-block; opacity:0; }
+        .amber { color:#F0761E; }
+        .quote { position:relative; margin-top:64px; padding-left:48px; }
+        .qbar { position:absolute; left:0; top:4px; width:4px; height:172px; background:#F0761E;
+                transform-origin:top center; }
+        .qtext { font-family:"League Gothic",sans-serif; font-weight:400; font-size:86px;
+                 line-height:1.0; letter-spacing:-.01em; color:#EFE7D6; max-width:1020px; opacity:0; }
+        .qattr { margin-top:22px; font-size:24px; letter-spacing:.2em; color:#9A8F7C;
+                 text-transform:uppercase; opacity:0; }
+        /* --- object: the recorder that was in the room --- */
+        .deck { position:absolute; left:1268px; top:392px; width:552px; height:348px; opacity:0; }
+        .deck svg { display:block; width:552px; height:348px; }
+        .ctr { position:absolute; right:26px; bottom:16px; font-size:22px; letter-spacing:.16em;
+               color:#F0761E; font-variant-numeric:tabular-nums; }
+      </style>
+
+      <div id="root" data-composition-id="s3-access" data-start="0" data-duration="8.5"
+           data-width="1920" data-height="1080">
+        <div class="veil" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="deck" id="s3-deck">
+          <svg viewBox="0 0 460 290" fill="none">
+            <rect x="6" y="6" width="448" height="278" rx="16"
+                  fill="#16130F" stroke="rgba(239,231,214,.42)" stroke-width="3"/>
+            <rect x="28" y="26" width="404" height="84" rx="5"
+                  fill="rgba(240,118,30,.07)" stroke="rgba(240,118,30,.60)" stroke-width="2.5"/>
+            <text x="46" y="62" fill="#EFE7D6" font-family="IBM Plex Mono, monospace"
+                  font-size="21" letter-spacing="3">MORITZ / APPLE</text>
+            <text x="46" y="92" fill="#9A8F7C" font-family="IBM Plex Mono, monospace"
+                  font-size="17" letter-spacing="2.4">SIDE A — 90 MIN</text>
+            <rect x="92" y="132" width="276" height="126" rx="9"
+                  stroke="rgba(239,231,214,.28)" stroke-width="2.5"/>
+            <g id="s3-reelL">
+              <circle cx="158" cy="195" r="42" fill="rgba(239,231,214,.10)"/>
+              <circle cx="158" cy="195" r="17" fill="none" stroke="#F0761E" stroke-width="3"/>
+              <g stroke="#F0761E" stroke-width="3" stroke-linecap="round">
+                <line x1="158" y1="180" x2="158" y2="171"/><line x1="171" y1="188" x2="179" y2="183"/>
+                <line x1="171" y1="203" x2="179" y2="208"/><line x1="158" y1="211" x2="158" y2="220"/>
+                <line x1="145" y1="203" x2="137" y2="208"/><line x1="145" y1="188" x2="137" y2="183"/>
+              </g>
+            </g>
+            <g id="s3-reelR">
+              <circle cx="302" cy="195" r="42" fill="rgba(239,231,214,.10)"/>
+              <circle cx="302" cy="195" r="17" fill="none" stroke="#F0761E" stroke-width="3"/>
+              <g stroke="#F0761E" stroke-width="3" stroke-linecap="round">
+                <line x1="302" y1="180" x2="302" y2="171"/><line x1="315" y1="188" x2="323" y2="183"/>
+                <line x1="315" y1="203" x2="323" y2="208"/><line x1="302" y1="211" x2="302" y2="220"/>
+                <line x1="289" y1="203" x2="281" y2="208"/><line x1="289" y1="188" x2="281" y2="183"/>
+              </g>
+            </g>
+            <circle id="s3-packL" cx="158" cy="195" r="40" fill="none"
+                    stroke="rgba(239,231,214,.36)" stroke-width="7"/>
+            <circle id="s3-packR" cx="302" cy="195" r="40" fill="none"
+                    stroke="rgba(239,231,214,.36)" stroke-width="7"/>
+            <line x1="158" y1="237" x2="302" y2="237" stroke="rgba(239,231,214,.34)" stroke-width="3"/>
+            <circle id="s3-rec" cx="410" cy="62" r="10" fill="#E03A3E"/>
+          </svg>
+          <div class="ctr" id="s3-ctr">000</div>
+        </div>
+
+        <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="stage">
+          <div class="kicker" id="s3-kick">Early 1980s &nbsp;·&nbsp; Cupertino, California</div>
+          <div class="disp">
+            <span class="w" id="s3-a1">Jobs</span> <span class="w" id="s3-a2">hired</span>
+            <span class="w" id="s3-a3">a</span> <span class="w" id="s3-a4">Time</span>
+            <span class="w" id="s3-a5">reporter</span>
+          </div>
+          <div class="disp">
+            <span class="w" id="s3-b1">to</span> <span class="w" id="s3-b2">document</span>
+            <span class="w" id="s3-b3">the</span> <span class="w amber" id="s3-b4">Macintosh.</span>
+          </div>
+          <div class="quote">
+            <div class="qbar" id="s3-qbar"></div>
+            <div class="qtext" id="s3-qtext">"Mike's going to be our historian."</div>
+            <div class="qattr" id="s3-qattr">— Steve Jobs, as recalled by Andy Hertzfeld</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8.5;
+          var tl = gsap.timeline({ paused: true });
+
+          tl.fromTo("#s3-kick", { opacity: 0, y: 18 },
+                                { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.15);
+
+          /* --- rule: waterfall-entry --- */
+          var wave = [
+            ["#s3-a1", 0.60, 58, 0.18], ["#s3-a2", 0.75, 46, 0.15], ["#s3-a3", 0.88, 34, 0.12],
+            ["#s3-a4", 0.99, 50, 0.15], ["#s3-a5", 1.13, 60, 0.17],
+            ["#s3-b1", 1.62, 36, 0.13], ["#s3-b2", 1.74, 50, 0.15], ["#s3-b3", 1.88, 34, 0.12],
+            ["#s3-b4", 1.99, 74, 0.19]
+          ];
+          wave.forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s3-b4", { scale: 1.1 }, { scale: 1, duration: 0.34, ease: "back.out(2)" }, 1.99);
+
+          /* --- object: the deck arrives and starts rolling --- */
+          tl.fromTo("#s3-deck",
+            { opacity: 0, y: 54, z: -300, rotationY: 34, rotationX: 16 },
+            { opacity: 1, y: 0, z: 0, rotationY: -13, rotationX: 7,
+              duration: 0.9, ease: "power4.out" }, 0.45);
+          /* rule: sine-wave-loop — a slow orbit keeps proving the object has sides */
+          var dc = 3.4, dr = Math.max(0, Math.floor((DUR - 1.5) / dc) - 1);
+          tl.to("#s3-deck", { rotationY: 4, rotationX: -2, y: -16, duration: dc,
+                              ease: "sine.inOut", yoyo: true, repeat: dr }, 1.5);
+          /* svgOrigin pins rotation to the real hub centre (bbox origin would drift on the spokes) */
+          tl.fromTo("#s3-reelL", { rotation: 0, svgOrigin: "158 195" },
+                                 { rotation: 1040, duration: DUR - 0.9, ease: "none" }, 0.9);
+          tl.fromTo("#s3-reelR", { rotation: 0, svgOrigin: "302 195" },
+                                 { rotation: 1040, duration: DUR - 0.9, ease: "none" }, 0.9);
+          /* tape physically transfers: the supply pack shrinks, the take-up pack grows */
+          tl.fromTo("#s3-packL", { scale: 1, svgOrigin: "158 195" },
+                                 { scale: 0.52, duration: DUR - 0.9, ease: "none" }, 0.9);
+          tl.fromTo("#s3-packR", { scale: 0.52, svgOrigin: "302 195" },
+                                 { scale: 1, duration: DUR - 0.9, ease: "none" }, 0.9);
+          /* REC lamp on a steady one-second beat */
+          var rc = 0.85, rr = Math.max(0, Math.floor((DUR - 0.9) / rc) - 1);
+          tl.to("#s3-rec", { opacity: 0.18, duration: rc / 2,
+                             ease: "none", yoyo: true, repeat: rr * 2 + 1 }, 0.9);
+          /* mechanical tape counter, read as a pure function of timeline time */
+          var ctr = document.getElementById("s3-ctr"), cprox = { t: 0 };
+          tl.to(cprox, {
+            t: 1, duration: DUR, ease: "none",
+            onUpdate: function () {
+              var n = Math.max(0, Math.floor((tl.time() - 0.9) * 27));
+              ctr.textContent = String(Math.min(999, n)).padStart(3, "0");
+            }
+          }, 0);
+
+          /* --- the sourced quote resolves the beat --- */
+          tl.fromTo("#s3-qbar", { scaleY: 0, transformOrigin: "top center" },
+                                { scaleY: 1, duration: 0.62, ease: "power4.out" }, 3.15);
+          tl.fromTo("#s3-qtext", { opacity: 0, y: 30 },
+                                 { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 3.32);
+          tl.fromTo("#s3-qattr", { opacity: 0, y: 20 },
+                                 { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.86);
+          var qc = 1.8, qr = Math.max(0, Math.floor((DUR - 4.2) / qc) - 1);
+          tl.to("#s3-qbar", { opacity: 0.55, duration: qc, ease: "sine.inOut",
+                              yoyo: true, repeat: qr }, 4.2);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s3-access"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6;
+                perspective:1700px; perspective-origin:64% 50%; }
+        .veil { position:absolute; inset:0; background:rgba(11,10,9,.46); }
+        .scrim { position:absolute; left:-260px; top:120px; width:1560px; height:840px;
+                 background:radial-gradient(ellipse closest-side,
+                   rgba(11,10,9,.94), rgba(11,10,9,.74) 56%, rgba(11,10,9,0) 100%); }
+        .stage { position:absolute; left:168px; top:0; bottom:0; width:1120px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .kicker { font-size:27px; letter-spacing:.24em; color:#9A8F7C; text-transform:uppercase;
+                  display:block; height:34px; }
+        .caret { display:inline-block; width:15px; height:27px; background:#F0761E;
+                 vertical-align:-4px; margin-left:6px; }
+        .rule { height:2px; background:#F0761E; width:520px; margin:30px 0 46px; }
+        .disp { font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:150px; line-height:.94; letter-spacing:-.02em; color:#EFE7D6; }
+        .w { display:inline-block; opacity:0; }
+        .amber { color:#F0761E; }
+        /* --- object: a shelf of Apple books, every one written after the ending --- */
+        .shelf { position:absolute; left:1250px; top:296px; width:560px; height:520px;
+                 transform-style:preserve-3d; }
+        .spine { position:absolute; bottom:34px; width:74px; border-radius:3px 3px 0 0;
+                 background:linear-gradient(100deg,#241D15,#15110C); border:2px solid rgba(239,231,214,.42);
+                 border-bottom:none; opacity:0; }
+        .spine i { position:absolute; left:12px; right:12px; top:44px; height:3px;
+                   background:rgba(239,231,214,.34); display:block; }
+        .spine i.b { top:60px; }
+        .spine u { position:absolute; left:12px; right:12px; bottom:40px; height:3px;
+                   background:rgba(239,231,214,.22); display:block; }
+        .shelfline { position:absolute; left:0; bottom:28px; width:560px; height:3px;
+                     background:#F0761E; transform-origin:left center; }
+        .shelftag { position:absolute; left:0; bottom:-16px; font-size:20px; letter-spacing:.22em;
+                    color:#EFE7D6; background:rgba(11,10,9,.88); padding:7px 14px; text-transform:uppercase; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="s1-cold-open" data-start="0" data-duration="6.5"
+           data-width="1920" data-height="1080">
+        <div class="veil" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="shelf" id="s1-shelf">
+          <div class="spine" id="s1-sp1" style="left:0;   height:420px"><i></i><i class="b"></i><u></u></div>
+          <div class="spine" id="s1-sp2" style="left:92px; height:462px"><i></i><i class="b"></i><u></u></div>
+          <div class="spine" id="s1-sp3" style="left:184px;height:398px"><i></i><i class="b"></i><u></u></div>
+          <div class="spine" id="s1-sp4" style="left:276px;height:446px"><i></i><i class="b"></i><u></u></div>
+          <div class="spine" id="s1-sp5" style="left:368px;height:412px"><i></i><i class="b"></i><u></u></div>
+          <div class="spine" id="s1-sp6" style="left:460px;height:434px"><i></i><i class="b"></i><u></u></div>
+          <div class="shelfline" id="s1-shelfline"></div>
+          <div class="shelftag" id="s1-shelftag">The Apple shelf</div>
+        </div>
+
+        <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="stage" id="s1-stage">
+          <div class="kicker"><span id="s1-kick"></span><span class="caret" id="s1-caret"></span></div>
+          <div class="rule" id="s1-rule"></div>
+          <div class="disp">
+            <span class="w" id="s1-a1">Every</span> <span class="w" id="s1-a2">story</span>
+            <span class="w" id="s1-a3">about</span> <span class="w" id="s1-a4">Apple</span>
+          </div>
+          <div class="disp">
+            <span class="w" id="s1-b1">was</span> <span class="w" id="s1-b2">written</span>
+            <span class="w amber" id="s1-b3">after</span> <span class="w" id="s1-b4">it</span>
+            <span class="w" id="s1-b5">won.</span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 6.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* --- rule: discrete-text-sequence — the dateline types on a proxy, seek-safe --- */
+          var KICK = "Cupertino, California — 1981";
+          var kickEl = document.getElementById("s1-kick");
+          var caret = document.getElementById("s1-caret");
+          var typer = { i: 0 };
+          tl.fromTo(typer, { i: 0 }, {
+            i: KICK.length, duration: 1.45, ease: "none",
+            onUpdate: function () { kickEl.textContent = KICK.slice(0, Math.round(typer.i)); }
+          }, 0.35);
+
+          /* --- rule: context-sensitive-cursor — square-wave blink from tl.time() --- */
+          var clock = { t: 0 };
+          tl.to(clock, {
+            t: DUR, duration: DUR, ease: "none",
+            onUpdate: function () {
+              var tt = tl.time();
+              caret.style.opacity = (tt < 0.35) ? 0 : (((tt % 0.86) < 0.47) ? 1 : 0.12);
+            }
+          }, 0);
+
+          tl.fromTo("#s1-stage", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.1);
+          tl.fromTo("#s1-rule", { scaleX: 0, transformOrigin: "left center" },
+                                { scaleX: 1, duration: 0.55, ease: "power4.out" }, 1.95);
+
+          /* --- object: the shelf fills, one volume at a time --- */
+          tl.fromTo("#s1-shelfline", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power4.out" }, 0.55);
+          for (var i = 1; i <= 6; i++) {
+            var at = 0.9 + (i - 1) * 0.19;
+            /* each volume sits at its own depth and its own slight yaw — real parallax */
+            var zi = -46 + ((i * 37) % 5) * 23, ry = -13 + ((i * 53) % 5) * 5.5;
+            tl.set("#s1-sp" + i, { opacity: 1, y: 150, z: zi, rotationY: ry }, at);
+            tl.to("#s1-sp" + i, { y: 0, duration: 0.42, ease: "power4.out" }, at);
+          }
+          tl.fromTo("#s1-shelftag", { opacity: 0, y: 14 },
+                                    { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.2);
+          /* the shelf breathes so it never reads as a still */
+          var sc = 2.4, sr = Math.max(0, Math.floor((DUR - 2.3) / sc) - 1);
+          tl.to("#s1-shelf", { y: -9, rotationY: 7, duration: sc, ease: "sine.inOut", yoyo: true, repeat: sr }, 2.3);
+
+          /* --- rule: waterfall-entry — binary opacity, overlapping whip from below --- */
+          var wave = [
+            ["#s1-a1", 2.35, 62, 0.18], ["#s1-a2", 2.50, 48, 0.15], ["#s1-a3", 2.64, 44, 0.14],
+            ["#s1-a4", 2.77, 70, 0.17],
+            ["#s1-b1", 3.30, 48, 0.15], ["#s1-b2", 3.44, 48, 0.15], ["#s1-b3", 3.58, 76, 0.19],
+            ["#s1-b4", 3.75, 38, 0.12], ["#s1-b5", 3.86, 66, 0.16]
+          ];
+          wave.forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s1-b3", { scale: 1.14 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)" }, 3.58);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s1-cold-open"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

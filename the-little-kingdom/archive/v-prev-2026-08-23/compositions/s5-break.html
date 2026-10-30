@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6;
+                perspective:1700px; perspective-origin:66% 46%; }
+        .veil { position:absolute; inset:0; background:rgba(11,10,9,.46); }
+        .scrim { position:absolute; left:-200px; top:80px; width:1560px; height:920px;
+                 background:radial-gradient(ellipse closest-side,
+                   rgba(11,10,9,.95), rgba(11,10,9,.78) 56%, rgba(11,10,9,0) 100%); }
+        .redwash { position:absolute; inset:-20%;
+                   background:radial-gradient(ellipse 48% 54% at 62% 46%,
+                     rgba(224,58,62,.26), rgba(224,58,62,0) 66%); opacity:0; }
+        .kicker { position:absolute; left:168px; top:154px; font-size:27px; letter-spacing:.24em;
+                  color:#F0761E; text-transform:uppercase; opacity:0; }
+        .head { position:absolute; left:168px; top:322px; width:1080px;
+                font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:186px; line-height:.92; letter-spacing:-.025em; color:#EFE7D6; opacity:0; }
+        .card { position:absolute; left:168px; top:640px; width:1080px;
+                border-left:4px solid #F0761E; padding:22px 0 22px 44px; opacity:0; }
+        .card .l1 { font-size:36px; line-height:1.5; letter-spacing:.05em; color:#EFE7D6;
+                    text-transform:uppercase; }
+        .card .l2 { margin-top:12px; font-size:36px; line-height:1.5; letter-spacing:.05em;
+                    color:#F0761E; text-transform:uppercase; }
+        /* --- object: the issue that ran --- */
+        .mag { position:absolute; left:1318px; top:250px; width:430px; height:566px; opacity:0; }
+        .mag svg { display:block; width:430px; height:566px; }
+        /* --- object: the door --- */
+        .door { position:absolute; top:0; width:962px; height:1080px; background:#0B0A09; }
+        .door.l { left:0; border-right:3px solid rgba(240,118,30,.55); }
+        .door.r { left:958px; border-left:3px solid rgba(240,118,30,.55); }
+        .glitch { position:absolute; left:168px; top:400px; width:1584px; height:230px; opacity:0; }
+        .g { position:absolute; left:0; top:0; width:1584px;
+             font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+             font-size:206px; line-height:1.0; letter-spacing:-.025em; }
+        .g-r { color:#E03A3E; mix-blend-mode:screen; }
+        .g-c { color:#009DDC; mix-blend-mode:screen; }
+        .g-m { color:#EFE7D6; }
+        .subrule { position:absolute; left:168px; top:672px; width:560px; height:2px; background:#F0761E; }
+        .sub { position:absolute; left:168px; top:708px; font-size:32px; letter-spacing:.2em;
+               color:#9A8F7C; text-transform:uppercase; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="s5-break" data-start="0" data-duration="8.5"
+           data-width="1920" data-height="1080">
+        <div class="veil" data-layout-ignore aria-hidden="true"></div>
+        <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+        <div class="redwash" id="s5-redwash" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="mag" id="s5-mag">
+          <svg viewBox="0 0 430 566" fill="none">
+            <rect x="3" y="3" width="424" height="560" fill="#141110"
+                  stroke="#E03A3E" stroke-width="17"/>
+            <rect x="34" y="34" width="362" height="58" fill="rgba(239,231,214,.10)"/>
+            <text x="215" y="74" text-anchor="middle" fill="#EFE7D6"
+                  font-family="IBM Plex Mono, monospace" font-size="26" letter-spacing="7">NEWSWEEKLY</text>
+            <text x="215" y="120" text-anchor="middle" fill="#9A8F7C"
+                  font-family="IBM Plex Mono, monospace" font-size="16" letter-spacing="3.5">JANUARY 3, 1983</text>
+            <g stroke="#EFE7D6" stroke-width="4" stroke-linejoin="round" fill="none">
+              <path d="M138 210 L292 210 L292 318 L138 318 Z"/>
+              <path d="M158 232 L272 232 L272 296 L158 296 Z"/>
+              <path d="M150 318 L280 318 L280 348 L150 348 Z"/>
+              <path d="M118 392 L312 392 L312 424 L118 424 Z"/>
+            </g>
+            <text x="215" y="472" text-anchor="middle" fill="#EFE7D6"
+                  font-family="League Gothic, sans-serif" font-size="50" letter-spacing="1">MACHINE OF</text>
+            <text x="215" y="534" text-anchor="middle" fill="#E03A3E"
+                  font-family="League Gothic, sans-serif" font-size="50" letter-spacing="1">THE YEAR</text>
+          </svg>
+        </div>
+
+        <div class="kicker" id="s5-kick">January 3, 1983</div>
+        <div class="head" id="s5-head">Then the story ran.</div>
+        <div class="card" id="s5-card">
+          <div class="l1">Time put the computer on the cover.</div>
+          <div class="l2">Machine of the Year — not Jobs.</div>
+        </div>
+
+        <div class="glitch" id="s5-close">
+          <span class="g g-r" id="s5-gr" data-layout-ignore aria-hidden="true">And the door closed.</span>
+          <span class="g g-c" id="s5-gc" data-layout-ignore aria-hidden="true">And the door closed.</span>
+          <span class="g g-m">And the door closed.</span>
+        </div>
+        <div class="subrule" id="s5-subrule"></div>
+        <div class="sub" id="s5-sub">Jobs stopped speaking to him.</div>
+
+        <div class="door l" id="s5-doorL"></div>
+        <div class="door r" id="s5-doorR"></div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8.5, BREAK = 4.55;
+          var tl = gsap.timeline({ paused: true });
+          var gr = document.getElementById("s5-gr");
+          var gc = document.getElementById("s5-gc");
+
+          /* doors park off-frame until the slam */
+          tl.set("#s5-doorL", { x: -962 }, 0);
+          tl.set("#s5-doorR", { x: 962 }, 0);
+
+          tl.fromTo("#s5-kick", { opacity: 0, x: -26 },
+                                { opacity: 1, x: 0, duration: 0.34, ease: "power4.out" }, 0.1);
+          tl.fromTo("#s5-head",
+            { opacity: 0, scale: 1.3, filter: "blur(18px)" },
+            { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.44, ease: "power4.out" }, 0.42);
+
+          /* --- rule: reactive-displacement — the cover's arrival IS what shoves the headline --- */
+          tl.fromTo("#s5-mag",
+            { opacity: 0, x: 560, z: -420, rotationY: 52, rotationX: -14, rotation: 14 },
+            { opacity: 1, x: 0, z: 120, rotationY: -11, rotationX: 4, rotation: -4,
+              duration: 0.72, ease: "power4.out" }, 2.10);
+          tl.to("#s5-head", { y: -96, x: -26, opacity: 0.34, duration: 0.28, ease: "power2.out" }, 2.10);
+          tl.fromTo("#s5-card", { opacity: 0, x: 380 },
+                                { opacity: 1, x: 0, duration: 0.56, ease: "power4.out" }, 2.42);
+          var mc = 1.6, mr = Math.max(0, Math.floor((BREAK - 2.9) / mc) - 1);
+          tl.to("#s5-mag", { y: -14, rotationY: -3, duration: mc, ease: "sine.inOut", yoyo: true, repeat: mr }, 2.90);
+
+          /* --- object: the door slams shut, then opens on the consequence --- */
+          tl.to("#s5-doorL", { x: 0, duration: 0.17, ease: "power4.in" }, BREAK - 0.19);
+          tl.to("#s5-doorR", { x: 0, duration: 0.17, ease: "power4.in" }, BREAK - 0.19);
+          tl.set(["#s5-head", "#s5-card", "#s5-kick", "#s5-mag"], { opacity: 0 }, BREAK - 0.01);
+          tl.to("#s5-doorL", { x: -962, duration: 0.30, ease: "power3.out" }, BREAK + 0.05);
+          tl.to("#s5-doorR", { x: 962, duration: 0.30, ease: "power3.out" }, BREAK + 0.05);
+          tl.fromTo("#s5-close", { opacity: 0, scale: 1.14 },
+                                 { opacity: 1, scale: 1, duration: 0.28, ease: "power4.out" }, BREAK + 0.06);
+
+          /* --- rule: chromatic-glitch — RGB split hashed off quantized timeline time --- */
+          function h(n) { var x = Math.sin(n * 12.9898) * 43758.5453; return (x - Math.floor(x)) * 2 - 1; }
+          var gclock = { t: 0 };
+          tl.to(gclock, {
+            t: 1, duration: DUR - BREAK, ease: "none",
+            onUpdate: function () {
+              var tt = tl.time() - BREAK;
+              var amp = tt < 0 ? 0 : Math.max(0, 1 - tt / 0.78) * 30;
+              var k = Math.floor(tt * 24);
+              gr.style.transform = "translate(" + (h(k) * amp).toFixed(2) + "px," + (h(k + 11) * amp * 0.18).toFixed(2) + "px)";
+              gc.style.transform = "translate(" + (h(k + 97) * amp).toFixed(2) + "px," + (h(k + 53) * amp * 0.18).toFixed(2) + "px)";
+            }
+          }, BREAK);
+
+          tl.fromTo("#s5-subrule", { scaleX: 0, transformOrigin: "left center" },
+                                   { scaleX: 1, duration: 0.5, ease: "power4.out" }, BREAK + 0.9);
+          tl.fromTo("#s5-sub", { opacity: 0, y: 24 },
+                               { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, BREAK + 1.05);
+
+          /* the red wash swells into the break, then holds low */
+          tl.fromTo("#s5-redwash", { opacity: 0.25, scale: 0.94 },
+                                   { opacity: 1, scale: 1.1, duration: BREAK, ease: "power2.in" }, 0);
+          tl.to("#s5-redwash", { opacity: 0.5, scale: 1.02, duration: DUR - BREAK, ease: "sine.inOut" }, BREAK);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s5-break"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

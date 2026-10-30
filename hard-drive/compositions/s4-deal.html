@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .world { position:absolute; inset:0; }
+        .scrim { position:absolute; left:-360px; top:0px; width:1500px; height:1000px;
+                 background:radial-gradient(ellipse closest-side, rgba(5,7,14,.95),
+                   rgba(5,7,14,.74) 54%, rgba(5,7,14,0) 100%); }
+
+        .stage { position:absolute; left:168px; top:0; bottom:0; width:1180px; }
+        .head { position:absolute; left:0; top:104px; width:1584px; display:flex;
+                align-items:baseline; justify-content:space-between; font-size:25px;
+                letter-spacing:.22em; color:#7C8AA3; text-transform:uppercase; opacity:0; white-space:nowrap; }
+        .head b { color:#3B7BFF; font-weight:400; font-size:31px; }
+        .headrule { position:absolute; left:0; top:152px; width:1584px; height:2px; background:#3B7BFF; transform-origin:left center; }
+        .rows { position:absolute; left:0; top:236px; width:700px; }
+        .row { display:flex; align-items:baseline; gap:20px; margin-bottom:40px; white-space:nowrap; }
+        .num { font-size:22px; letter-spacing:.14em; color:#3B7BFF; width:40px; flex:0 0 40px; opacity:0; }
+        .lab { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+               font-size:48px; line-height:1.02; letter-spacing:-.025em; color:#DCE5F2;
+               display:block; opacity:0; white-space:nowrap; }
+        .foot { position:absolute; left:0; top:566px; width:640px; padding-left:30px;
+                border-left:4px solid #3B7BFF; font-size:31px; line-height:1.5; color:#DCE5F2; opacity:0; }
+
+        /* ---- object: the licence-flow diagram, right, over the platter ---- */
+        .diagram { position:absolute; left:880px; top:230px; width:1000px; height:620px; }
+        .diagram svg { width:1000px; height:620px; display:block; }
+      </style>
+
+      <div data-hf-id="hf-r6mq" id="root" data-composition-id="s4-deal" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-z11c" class="world" id="s4-world">
+
+          <div data-hf-id="hf-edqo" class="scrim" data-layout-ignore="" aria-hidden="true"></div>
+
+          <div data-hf-id="hf-tan6" class="stage">
+            <div data-hf-id="hf-6j10" class="head" id="s4-head"><span data-hf-id="hf-9r4l">The deal that made the empire</span><b data-hf-id="hf-vt3j">1980</b></div>
+            <div data-hf-id="hf-rgxc" class="headrule" id="s4-headrule"></div>
+            <div data-hf-id="hf-hnc7" class="rows">
+              <div data-hf-id="hf-thy4" class="row"><div data-hf-id="hf-plrk" class="num" id="s4-n1">01</div><div data-hf-id="hf-yeow"><span data-hf-id="hf-ipd1" class="lab" id="s4-r1">IBM needed an OS</span></div></div>
+              <div data-hf-id="hf-lt04" class="row"><div data-hf-id="hf-qp7q" class="num" id="s4-n2">02</div><div data-hf-id="hf-y7yw"><span data-hf-id="hf-omdr" class="lab" id="s4-r2">Microsoft had none</span></div></div>
+              <div data-hf-id="hf-km31" class="row"><div data-hf-id="hf-54mw" class="num" id="s4-n3">03</div><div data-hf-id="hf-x11t"><span data-hf-id="hf-xcwp" class="lab" id="s4-r3">So it bought one</span></div></div>
+            </div>
+            <div data-hf-id="hf-ynzx" class="foot" id="s4-foot">It licensed DOS to IBM. It never sold it.</div>
+          </div>
+
+          <div data-hf-id="hf-z04g" class="diagram" id="s4-diagram">
+            <svg data-hf-id="hf-vst0" viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg">
+              <!-- edges (drawn) -->
+              <path data-hf-id="hf-xu35" id="s4-eAB" d="M 220 128 C 220 200, 490 186, 490 258" fill="none" stroke="#3B7BFF" stroke-opacity=".8" stroke-width="3" stroke-linecap="round" />
+              <path data-hf-id="hf-k3wl" id="s4-eBC" d="M 650 300 C 710 300, 710 198, 770 198" fill="none" stroke="#3B7BFF" stroke-opacity=".8" stroke-width="3" stroke-linecap="round" />
+              <path data-hf-id="hf-ow94" id="s4-eBD" d="M 650 340 C 685 340, 655 444, 690 444" fill="none" stroke="#3B7BFF" stroke-opacity=".8" stroke-width="3" stroke-linecap="round" />
+              <path data-hf-id="hf-e4u9" id="s4-f0" d="M 815 496 C 815 526, 665 518, 665 548" fill="none" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" />
+              <path data-hf-id="hf-tjgg" id="s4-f1" d="M 815 496 C 815 526, 723 518, 723 548" fill="none" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" />
+              <path data-hf-id="hf-5ppt" id="s4-f2" d="M 815 496 C 815 526, 781 518, 781 548" fill="none" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" />
+              <path data-hf-id="hf-n1x6" id="s4-f3" d="M 815 496 C 815 526, 839 518, 839 548" fill="none" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" />
+              <path data-hf-id="hf-m50z" id="s4-f4" d="M 815 496 C 815 526, 897 518, 897 548" fill="none" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" />
+              <path data-hf-id="hf-m21e" id="s4-f5" d="M 815 496 C 815 526, 955 518, 955 548" fill="none" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" />
+
+              <!-- the hub's glow, breathing behind MICROSOFT -->
+              <rect data-hf-id="hf-awph" id="s4-hubglow" x="316" y="244" width="348" height="148" rx="10" fill="#3B7BFF" opacity="0" />
+
+              <!-- nodes -->
+              <g data-hf-id="hf-au4o" id="s4-nA" opacity="0">
+                <rect data-hf-id="hf-diyf" x="40" y="24" width="360" height="104" rx="4" fill="#0B1120" stroke="#3B7BFF" stroke-opacity=".6" stroke-width="2" />
+                <text data-hf-id="hf-zxvo" x="220" y="68" fill="#DCE5F2" font-family="Archivo Black, sans-serif" font-size="26" text-anchor="middle" letter-spacing="-0.5">SEATTLE COMPUTER</text>
+                <text data-hf-id="hf-aovo" x="220" y="104" fill="#DCE5F2" font-family="Archivo Black, sans-serif" font-size="26" text-anchor="middle" letter-spacing="-0.5">PRODUCTS</text>
+              </g>
+              <g data-hf-id="hf-rlk7" id="s4-nB" opacity="0">
+                <rect data-hf-id="hf-886p" x="330" y="258" width="320" height="120" rx="4" fill="#3B7BFF" />
+                <text data-hf-id="hf-1i79" x="490" y="333" fill="#05070E" font-family="Archivo Black, sans-serif" font-size="40" text-anchor="middle" letter-spacing="-1">MICROSOFT</text>
+              </g>
+              <g data-hf-id="hf-xsh6" id="s4-nC" opacity="0">
+                <rect data-hf-id="hf-q7qg" x="770" y="150" width="200" height="96" rx="4" fill="#0B1120" stroke="#3B7BFF" stroke-opacity=".6" stroke-width="2" />
+                <text data-hf-id="hf-8sg2" x="870" y="215" fill="#DCE5F2" font-family="Archivo Black, sans-serif" font-size="46" text-anchor="middle" letter-spacing="-1">IBM</text>
+              </g>
+              <g data-hf-id="hf-iicx" id="s4-nD" opacity="0">
+                <rect data-hf-id="hf-xbgi" x="690" y="392" width="250" height="104" rx="4" fill="#0B1120" stroke="#3B7BFF" stroke-opacity=".6" stroke-width="2" />
+                <text data-hf-id="hf-wt0e" x="815" y="436" fill="#DCE5F2" font-family="Archivo Black, sans-serif" font-size="26" text-anchor="middle" letter-spacing="-0.5">EVERY CLONE</text>
+                <text data-hf-id="hf-uwf6" x="815" y="472" fill="#DCE5F2" font-family="Archivo Black, sans-serif" font-size="26" text-anchor="middle" letter-spacing="-0.5">MAKER AFTER</text>
+              </g>
+              <!-- the unlabelled clone makers -->
+              <g data-hf-id="hf-nubp" id="s4-fb0" opacity="0"><rect data-hf-id="hf-2v5v" x="640" y="548" width="50" height="30" rx="3" fill="#0B1120" stroke="rgba(124,138,163,.6)" stroke-width="2" /><rect data-hf-id="hf-7g5h" x="650" y="561" width="30" height="4" fill="rgba(124,138,163,.45)" /></g>
+              <g data-hf-id="hf-x3ls" id="s4-fb1" opacity="0"><rect data-hf-id="hf-ecd8" x="698" y="548" width="50" height="30" rx="3" fill="#0B1120" stroke="rgba(124,138,163,.6)" stroke-width="2" /><rect data-hf-id="hf-l2p4" x="708" y="561" width="24" height="4" fill="rgba(124,138,163,.45)" /></g>
+              <g data-hf-id="hf-vblr" id="s4-fb2" opacity="0"><rect data-hf-id="hf-u8wb" x="756" y="548" width="50" height="30" rx="3" fill="#0B1120" stroke="rgba(124,138,163,.6)" stroke-width="2" /><rect data-hf-id="hf-g14h" x="766" y="561" width="32" height="4" fill="rgba(124,138,163,.45)" /></g>
+              <g data-hf-id="hf-grqa" id="s4-fb3" opacity="0"><rect data-hf-id="hf-0dke" x="814" y="548" width="50" height="30" rx="3" fill="#0B1120" stroke="rgba(124,138,163,.6)" stroke-width="2" /><rect data-hf-id="hf-s2l1" x="824" y="561" width="20" height="4" fill="rgba(124,138,163,.45)" /></g>
+              <g data-hf-id="hf-4mg9" id="s4-fb4" opacity="0"><rect data-hf-id="hf-j2z2" x="872" y="548" width="50" height="30" rx="3" fill="#0B1120" stroke="rgba(124,138,163,.6)" stroke-width="2" /><rect data-hf-id="hf-4aah" x="882" y="561" width="28" height="4" fill="rgba(124,138,163,.45)" /></g>
+              <g data-hf-id="hf-hius" id="s4-fb5" opacity="0"><rect data-hf-id="hf-tj35" x="930" y="548" width="50" height="30" rx="3" fill="#0B1120" stroke="rgba(124,138,163,.6)" stroke-width="2" /><rect data-hf-id="hf-39q0" x="940" y="561" width="22" height="4" fill="rgba(124,138,163,.45)" /></g>
+
+              <!-- labels -->
+              <text data-hf-id="hf-1v7r" id="s4-lab1" x="60" y="216" fill="#3B7BFF" font-family="Archivo Black, sans-serif" font-size="46" letter-spacing="-1" opacity="0">$50,000</text>
+              <text data-hf-id="hf-imtj" id="s4-lab2" x="712" y="180" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="21" text-anchor="middle" letter-spacing="2" opacity="0">LICENCE</text>
+              <g data-hf-id="hf-gv3v" id="s4-lab4w" opacity="0"><rect data-hf-id="hf-f8m2" x="356" y="396" width="268" height="40" rx="4" fill="#0B1120" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" /></g>
+              <text data-hf-id="hf-7ryh" id="s4-lab4" x="490" y="424" fill="#3B7BFF" font-family="Space Mono, monospace" font-size="26" text-anchor="middle" letter-spacing="3" opacity="0">NON-EXCLUSIVE</text>
+
+              <!-- royalty pulses -->
+              <circle data-hf-id="hf-4hdj" id="s4-pAB" r="6" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-cbzn" id="s4-pBC" r="6" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-mc5k" id="s4-pBD" r="6" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-qz9q" id="s4-pf0" r="3.5" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-av5v" id="s4-pf1" r="3.5" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-wits" id="s4-pf2" r="3.5" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-h5a5" id="s4-pf3" r="3.5" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-t6eq" id="s4-pf4" r="3.5" fill="#3B7BFF" opacity="0" />
+              <circle data-hf-id="hf-8uvr" id="s4-pf5" r="3.5" fill="#3B7BFF" opacity="0" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 10, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- handoff IN — a head seek: s3 lifts out on the same window ---- */
+          tl.fromTo("#s4-world", { opacity: 0, y: 140, filter: "blur(14px)" },
+                                 { opacity: 1, y: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s4-world", { filter: "none" }, IN);
+
+          tl.fromTo("#s4-head", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.44, ease: "power3.out" }, 0.5);
+          tl.fromTo("#s4-headrule", { scaleX: 0 }, { scaleX: 1, duration: 0.65, ease: "power4.out" }, 0.6);
+
+          /* --- rule: waterfall-entry + spring-pop-entrance on the index numerals --- */
+          [1, 2, 3].forEach(function (i) {
+            var t = 0.95 + (i - 1) * 0.42;
+            tl.set("#s4-r" + i, { opacity: 1, y: 46 }, t);
+            tl.to("#s4-r" + i, { y: 0, duration: 0.17, ease: "power4.out" }, t);
+            tl.fromTo("#s4-n" + i, { opacity: 0, scale: 0.2, transformOrigin: "center center" },
+                                   { opacity: 1, scale: 1, duration: 0.32, ease: "back.out(2.6)" }, t - 0.06);
+          });
+          tl.fromTo("#s4-foot", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.4);
+
+          /* --- blueprint: constellation-hub / rule: svg-path-draw — the licence flow assembles edge by edge
+                 around the MICROSOFT hub; every drawn line lands on a node --- */
+          function draw(sel, at, dur) {
+            var p = document.querySelector(sel), L = p.getTotalLength() * 1.02;
+            p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+            tl.fromTo(p, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: dur, ease: "power2.out" }, at);
+            return { el: p, len: L };
+          }
+          function pop(sel, at, from) {
+            tl.fromTo(sel, { opacity: 0, scale: from || 0.72, transformOrigin: "center center" },
+                           { opacity: 1, scale: 1, duration: 0.44, ease: "back.out(2)" }, at);
+          }
+
+          pop("#s4-nA", 2.2);
+          var eAB = draw("#s4-eAB", 2.55, 0.6);
+          /* the $50,000 pops on the coin ping */
+          tl.fromTo("#s4-lab1", { opacity: 0, scale: 1.35, transformOrigin: "left center" },
+                                { opacity: 1, scale: 1, duration: 0.42, ease: "back.out(2.4)" }, 3.0);
+          pop("#s4-nB", 3.3, 0.6);
+          tl.fromTo("#s4-lab4w", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 3.85);
+          tl.fromTo("#s4-lab4", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 3.85);
+          var eBC = draw("#s4-eBC", 4.3, 0.45);
+          tl.fromTo("#s4-lab2", { opacity: 0 }, { opacity: 1, duration: 0.34, ease: "power1.out" }, 4.5);
+          pop("#s4-nC", 4.7);
+          var eBD = draw("#s4-eBD", 5.2, 0.5);
+          pop("#s4-nD", 5.65);
+          /* the clone node fans into six unlabelled makers on a stagger */
+          var fans = [];
+          for (var k = 0; k < 6; k++) {
+            fans.push(draw("#s4-f" + k, 6.1 + k * 0.1, 0.3));
+            pop("#s4-fb" + k, 6.3 + k * 0.1, 0.5);
+          }
+
+          /* --- rule: svg-icon-enrichment — the hub breathes once the deal is signed --- */
+          var gc = 0.75, gr = Math.max(0, Math.floor((DUR - OUT - 3.4) / gc) - 1);
+          tl.fromTo("#s4-hubglow", { opacity: 0 }, { opacity: 0.22, duration: gc, ease: "sine.inOut", yoyo: true, repeat: gr, immediateRender: false }, 3.4);
+
+          /* --- royalties keep flowing: deterministic pulses ride every drawn edge on a 1.5s cycle --- */
+          function ride(path, dot, start) {
+            var span = DUR - OUT - start, cyc = 1.5;
+            var reps = Math.max(0, Math.floor(span / cyc) - 1);
+            var prox = { u: 0 };
+            tl.fromTo(prox, { u: 0 }, {
+              u: 1, duration: cyc, ease: "none", repeat: reps, immediateRender: false,
+              onUpdate: function () {
+                var pt = path.el.getPointAtLength(Math.min(prox.u * path.len, path.len / 1.02));
+                dot.setAttribute("cx", pt.x.toFixed(1)); dot.setAttribute("cy", pt.y.toFixed(1));
+                dot.setAttribute("opacity", (Math.sin(prox.u * Math.PI) * 0.95).toFixed(3));
+              }
+            }, start);
+          }
+          ride(eAB, document.getElementById("s4-pAB"), 3.15);
+          ride(eBC, document.getElementById("s4-pBC"), 5.0);
+          ride(eBD, document.getElementById("s4-pBD"), 6.2);
+          for (k = 0; k < 6; k++) ride(fans[k], document.getElementById("s4-pf" + k), 7.0 + k * 0.12);
+
+          /* ---- handoff OUT: the SHUTTER — the turn against the subject. A 0.2s brightness dim, then a hard
+                 0.12s cut ending exactly at DUR; s5 enters underneath through its own chromatic glitch. ---- */
+          tl.fromTo("#s4-world", { filter: "brightness(1)" },
+                                 { filter: "brightness(0.25)", duration: 0.2, ease: "power2.in", immediateRender: false }, DUR - 0.32);
+          tl.to("#s4-world", { opacity: 0, duration: 0.12, ease: "power4.in" }, DUR - 0.12);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s4-deal"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

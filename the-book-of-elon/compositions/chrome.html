@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        /* The telemetry HUD — the manual's instrument panel. Transparent root; it lives only in the
+           top 64px and bottom 56px bands (x 150–1770) so it never touches a statement. */
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; font-size:22px; color:#79839B;
+                text-transform:uppercase; letter-spacing:.22em; line-height:1; }
+        .ch-txt { position:absolute; white-space:nowrap; }
+        .ch-txt b { font-weight:700; color:#FF3B1F; font-variant-numeric:tabular-nums; letter-spacing:.12em; }
+        .ch-txt em { font-style:normal; color:#F2F4F8; }
+        /* top band */
+        #ch-clockrow { left:150px; top:20px; font-size:24px; }
+        #ch-clockrow b { font-size:24px; }
+        #ch-stationrow { left:0; width:1920px; text-align:center; top:22px; }
+        #ch-alt { right:150px; top:10px; text-align:right; }
+        #ch-vel { right:150px; top:38px; text-align:right; }
+        /* bottom band */
+        #ch-foot-l { left:150px; top:1028px; font-size:20px; }
+        #ch-foot-r { right:150px; top:1028px; font-size:20px; text-align:right; }
+        #ch-track { position:absolute; left:150px; top:1060px; width:1620px; height:2px; background:rgba(121,131,155,.25); }
+        #ch-prog  { position:absolute; left:150px; top:1060px; width:1620px; height:2px; background:#FF3B1F; transform-origin:left center; }
+        .ch-tick  { position:absolute; top:1054px; width:2px; height:14px; background:rgba(121,131,155,.7); }
+        #ch-marker { position:absolute; left:145px; top:1056px; width:10px; height:10px; background:#FF3B1F; }
+        /* corner brackets */
+        .ch-brk { position:absolute; width:22px; height:22px; border:2px solid rgba(242,244,248,.5); }
+        #ch-brk-tl { left:40px; top:40px; border-right:0; border-bottom:0; }
+        #ch-brk-tr { right:40px; top:40px; border-left:0; border-bottom:0; }
+        #ch-brk-bl { left:40px; bottom:40px; border-right:0; border-top:0; }
+        #ch-brk-br { right:40px; bottom:40px; border-left:0; border-top:0; }
+        /* film grain — a seeded 256px tile, re-positioned per frame */
+        #ch-grain { position:absolute; inset:0; opacity:.09; mix-blend-mode:overlay; background-repeat:repeat; }
+        #ch-black { position:absolute; inset:0; background:#000; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="chrome" data-start="0" data-duration="60"
+           data-width="1920" data-height="1080" data-layout-ignore aria-hidden="true">
+        <div id="ch-grain" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="ch-txt" id="ch-clockrow">T+ <b id="ch-clock">00:00.00</b></div>
+        <div class="ch-txt" id="ch-stationrow">Station <em id="ch-stidx">01</em> / 08 &#160;—&#160; <em id="ch-stname">Pad</em></div>
+        <div class="ch-txt" id="ch-alt">Alt <b id="ch-altv">0</b> km</div>
+        <div class="ch-txt" id="ch-vel">Vel <b id="ch-velv">0</b> m/s</div>
+
+        <div class="ch-txt" id="ch-foot-l">The Book of Elon &#160;·&#160; Operating manual &#160;·&#160; Rev 04</div>
+        <div class="ch-txt" id="ch-foot-r">Frame <em id="ch-frame">0000</em></div>
+        <div id="ch-track" data-layout-ignore aria-hidden="true"></div>
+        <div id="ch-prog" data-layout-ignore aria-hidden="true"></div>
+        <div id="ch-ticks" data-layout-ignore aria-hidden="true"></div>
+        <div id="ch-marker" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="ch-brk" id="ch-brk-tl" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-brk" id="ch-brk-tr" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-brk" id="ch-brk-bl" data-layout-ignore aria-hidden="true"></div>
+        <div class="ch-brk" id="ch-brk-br" data-layout-ignore aria-hidden="true"></div>
+        <div id="ch-black" data-layout-ignore aria-hidden="true"></div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 60, IGN = 4.15;
+          /* the binding timing table: cut → station name, altitude (km) and velocity (m/s) at arrival */
+          var CUTS = [0, 7, 13, 20, 27.5, 39, 46.5, 53];
+          var NAMES = ["Pad", "Manual", "Purpose", "Physics", "Algorithm", "Hardcore", "Transfer", "Title"];
+          var ALT = [[0, 0], [IGN, 0], [7, 4], [13, 38], [20, 210], [27.5, 400], [39, 1200], [46.5, 54600], [53, 225000000], [60, 225000000]];
+          var VEL = [0, 410, 2140, 7660, 7810, 11190, 32740, 24070];
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- seeded grain tile (LCG, seed 20260324) — built once, deterministic ---- */
+          var grain = document.getElementById("ch-grain");
+          (function () {
+            var c = document.createElement("canvas"); c.width = c.height = 256;
+            var g = c.getContext("2d"), img = g.createImageData(256, 256), d = img.data, s = 20260324;
+            for (var i = 0; i < 256 * 256; i++) {
+              s = (Math.imul(s, 1103515245) + 12345) >>> 0;
+              var v = 64 + ((s >>> 16) & 127);
+              d[i * 4] = v; d[i * 4 + 1] = v; d[i * 4 + 2] = v; d[i * 4 + 3] = 255;
+            }
+            g.putImageData(img, 0, 0);
+            grain.style.backgroundImage = "url(" + c.toDataURL("image/png") + ")";
+          })();
+
+          /* ---- eight ticks at the cut fractions along the progress rule ---- */
+          var ticks = document.getElementById("ch-ticks"), th = "";
+          for (var i = 0; i < CUTS.length; i++) {
+            th += '<div class="ch-tick" style="left:' + (149 + 1620 * CUTS[i] / DUR).toFixed(1) + 'px"></div>';
+          }
+          ticks.innerHTML = th;
+
+          /* ---- helpers ---- */
+          function pad2(n) { return (n < 10 ? "0" : "") + n; }
+          function thousands(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+          function altAt(t) {
+            for (var i = 0; i < ALT.length - 1; i++) {
+              if (t <= ALT[i + 1][0]) {
+                var k = (t - ALT[i][0]) / (ALT[i + 1][0] - ALT[i][0]);
+                return ALT[i][1] + (ALT[i + 1][1] - ALT[i][1]) * Math.max(0, Math.min(1, k));
+              }
+            }
+            return ALT[ALT.length - 1][1];
+          }
+          function stationAt(t) { var s = 0; for (var i = 0; i < CUTS.length; i++) if (t >= CUTS[i]) s = i; return s; }
+
+          var clockEl = document.getElementById("ch-clock"), idxEl = document.getElementById("ch-stidx"),
+              nameEl = document.getElementById("ch-stname"), altEl = document.getElementById("ch-altv"),
+              velEl = document.getElementById("ch-velv"), frameEl = document.getElementById("ch-frame");
+
+          /* Every readout is written from a property SETTER, not onUpdate: a seek() suppresses
+             callbacks, but a tweened value is always written. One linear driver = one source of truth. */
+          function paint(t) {
+            var f = Math.floor(t * 30 + 1e-6), s = Math.floor(f / 30), ff = f % 30;
+            clockEl.textContent = pad2(Math.floor(s / 60)) + ":" + pad2(s % 60) + "." + pad2(ff);
+            var st = stationAt(t);
+            idxEl.textContent = pad2(st + 1);
+            nameEl.textContent = NAMES[st];
+            altEl.textContent = thousands(altAt(t));
+            var vel = st === 0 ? (t < IGN ? 0 : VEL[1] * (t - IGN) / (7 - IGN)) : VEL[st];
+            velEl.textContent = thousands(vel);
+            frameEl.textContent = (f < 1000 ? "0" : "") + (f < 100 ? "0" : "") + (f < 10 ? "0" : "") + f;
+            /* grain hops to an index-hashed offset every frame at 24fps */
+            var fr = Math.floor(t * 24), h = (Math.imul(fr + 1, 2654435761) >>> 0);
+            grain.style.backgroundPosition = (h & 255) + "px " + ((h >>> 8) & 255) + "px";
+          }
+          var hud = { _t: 0 };
+          Object.defineProperty(hud, "t", { get: function () { return this._t; }, set: function (v) { this._t = v; paint(v); } });
+          tl.fromTo(hud, { t: 0 }, { t: DUR, duration: DUR, ease: "none" }, 0);
+
+          /* station label dips 0.25s around every cut — the swap lands inside the dip */
+          for (var c = 1; c < CUTS.length; c++) {
+            tl.to("#ch-stationrow", { opacity: 0, duration: 0.12, ease: "power2.in" }, CUTS[c] - 0.12);
+            tl.to("#ch-stationrow", { opacity: 1, duration: 0.13, ease: "power2.out" }, CUTS[c] + 0.01);
+          }
+
+          /* the HUD comes up with the film (scene 1 opens from black) */
+          tl.fromTo("#ch-clockrow, #ch-stationrow, #ch-alt, #ch-vel, #ch-foot-l, #ch-foot-r, #ch-track, #ch-ticks",
+                    { opacity: 0 }, { opacity: 1, duration: 0.7, ease: "power2.out", stagger: 0.04 }, 0.2);
+
+          /* bottom: the 60s progress rule, ease none — the marker rides its tip */
+          tl.fromTo("#ch-prog", { scaleX: 0 }, { scaleX: 1, duration: DUR, ease: "none" }, 0);
+          tl.fromTo("#ch-marker", { x: 0, rotation: 45 }, { x: 1620, rotation: 45, duration: DUR, ease: "none" }, 0);
+          tl.fromTo("#ch-prog, #ch-marker", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 0.3);
+
+          /* corners breathe — finite yoyo repeats over the full minute */
+          var half = 1.2, reps = Math.max(0, Math.floor(DUR / (half * 2)) - 1);
+          tl.fromTo(".ch-brk", { opacity: 0.55 }, { opacity: 1, duration: half, ease: "sine.inOut", yoyo: true, repeat: reps * 2 + 1 }, 0);
+
+          tl.to({}, { duration: DUR }, 0);
+          window.__timelines = window.__timelines || {};
+          /* the film ends on black: the HUD must not hang over the final fade */
+          tl.fromTo("#ch-black", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.in" }, 59.2);
+          window.__timelines["chrome"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

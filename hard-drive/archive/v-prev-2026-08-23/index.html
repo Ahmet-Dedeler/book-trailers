@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body { margin:0; width:1920px; height:1080px; overflow:hidden; background:#05070E; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; background:#05070E; }
+      #hd-ground { position:absolute; inset:0; background:#05070E; }
+      #hd-gl { position:absolute; inset:0; width:1920px; height:1080px; display:block; opacity:.68; }
+      [data-composition-id="main"] > div[data-composition-src] { position:absolute; inset:0; }
+    </style>
+
+    <!-- Buffer seeks that land before the 3D module finishes evaluating. -->
+    <script>
+      window.__hdSeek = 0;
+      window.addEventListener("hf-seek", function (e) { window.__hdSeek = e.detail.time; });
+    </script>
+
+    <!--
+      The 3D lives HERE, in the host document, for a hard technical reason: a sub-composition
+      template's <script type="module"> is inlined as a CLASSIC script by the compiler, so a
+      bare `import` throws "Cannot use import statement outside a module" and takes every later
+      script on the page down with it. Three.js is also vendored under assets/ rather than pulled
+      from a CDN, because a render-time network fetch would break determinism.
+    -->
+    <script type="module">
+      import * as THREE from "./assets/three.module.js";
+
+      var DUR = 60, W = 1920, H = 1080;
+      var canvas = document.getElementById("hd-gl");
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(W, H, false);
+      renderer.setPixelRatio(2);                 /* pinned 2x supersample: deterministic, not device-derived */
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 0.72;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      var scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x05070E, 0.020);
+      var camera = new THREE.PerspectiveCamera(38, W / H, 0.1, 220);
+
+      /* Metal needs something to reflect - build the studio procedurally, no asset fetch. */
+      function envTexture() {
+        var c = document.createElement("canvas"); c.width = 512; c.height = 256;
+        var g = c.getContext("2d");
+        var grad = g.createLinearGradient(0, 0, 0, 256);
+        grad.addColorStop(0.00, "#0a1220"); grad.addColorStop(0.42, "#111d33");
+        grad.addColorStop(0.55, "#0a1122"); grad.addColorStop(1.00, "#04060c");
+        g.fillStyle = grad; g.fillRect(0, 0, 512, 256);
+        g.fillStyle = "rgba(110,150,215,.55)"; g.fillRect(0, 74, 512, 10);
+        g.fillStyle = "rgba(190,210,240,.30)"; g.fillRect(0, 112, 512, 4);
+        var t = new THREE.CanvasTexture(c);
+        t.mapping = THREE.EquirectangularReflectionMapping;
+        t.colorSpace = THREE.SRGBColorSpace;
+        return t;
+      }
+      var pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromEquirectangular(envTexture()).texture;
+
+      /* Track grooves as a roughness map so the platter reads as written-on. */
+      function trackTexture() {
+        var c = document.createElement("canvas"); c.width = 1024; c.height = 1024;
+        var g = c.getContext("2d");
+        g.fillStyle = "#7a7a7a"; g.fillRect(0, 0, 1024, 1024);
+        for (var r = 40; r < 512; r += 2.2) {
+          var v = (96 + (Math.sin(r * 1.7) * 0.5 + 0.5) * 78) | 0;
+          g.strokeStyle = "rgb(" + v + "," + v + "," + v + ")";
+          g.lineWidth = 1.1;
+          g.beginPath(); g.arc(512, 512, r, 0, Math.PI * 2); g.stroke();
+        }
+        var t = new THREE.CanvasTexture(c); t.anisotropy = 8; return t;
+      }
+      var rough = trackTexture();
+
+      var steel     = new THREE.MeshStandardMaterial({ color: 0x7a8494, metalness: 1.0, roughness: 0.34, roughnessMap: rough });
+      var darkMetal = new THREE.MeshStandardMaterial({ color: 0x2b3446, metalness: 0.9, roughness: 0.42 });
+      var armMetal  = new THREE.MeshStandardMaterial({ color: 0x50607e, metalness: 0.95, roughness: 0.30 });
+
+      var deck = new THREE.Group(); scene.add(deck);
+      var spin = new THREE.Group(); deck.add(spin);
+      [-1.35, 0, 1.35].forEach(function (y) {
+        var p = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.2, 0.07, 160), steel);
+        p.position.y = y; spin.add(p);
+        var clampR = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.10, 12, 64), darkMetal);
+        clampR.rotation.x = Math.PI / 2; clampR.position.y = y + 0.07; spin.add(clampR);
+      });
+      spin.add(new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.62, 3.6, 56), darkMetal));
+
+      var arm = new THREE.Group(); arm.position.set(7.4, 0, 5.2); deck.add(arm);
+      arm.add(new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 3.7, 40), darkMetal));
+      [-1.28, 0.07, 1.42].forEach(function (y) {
+        var beam = new THREE.Mesh(new THREE.BoxGeometry(6.6, 0.10, 0.52), armMetal);
+        beam.position.set(-3.3, y, 0); arm.add(beam);
+        var head = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.13, 0.42), armMetal);
+        head.position.set(-6.55, y, 0); arm.add(head);
+      });
+      var headGlow = new THREE.PointLight(0x3B7BFF, 11, 8, 2);
+      headGlow.position.set(-6.4, 0.6, 0); arm.add(headGlow);
+
+      var key = new THREE.DirectionalLight(0xdfe9ff, 1.35); key.position.set(-9, 13, 7); scene.add(key);
+      var rim = new THREE.DirectionalLight(0x3B7BFF, 1.55);  rim.position.set(11, 3, -10); scene.add(rim);
+      scene.add(new THREE.HemisphereLight(0x22304d, 0x04060c, 0.38));
+
+      /* ONE unbroken 60s camera move. The 2D layer cuts over it; the camera never cuts. */
+      var camPath = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(  6.0, 15.5, 21.0), new THREE.Vector3(-10.5, 9.0, 18.0),
+        new THREE.Vector3(-16.0,  3.4, 10.5), new THREE.Vector3( -7.5, 6.2, 16.5),
+        new THREE.Vector3(  2.5, 11.5, 21.5)
+      ]);
+      var aimPath = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 2.5, 0), new THREE.Vector3(0, 3.0, 0), new THREE.Vector3(0, 3.3, 0),
+        new THREE.Vector3(0, 2.8, 0), new THREE.Vector3(0, 2.5, 0)
+      ]);
+
+      /* The head seeks on the same beat table the 2D cuts land on. */
+      var SEEKS = [[0,-0.22],[6.5,0.06],[12.5,-0.15],[21,0.18],[30.5,-0.28],[39,0.10],[47,-0.07],[52.5,0.21]];
+      function armAngle(t) {
+        var a = SEEKS[0][1];
+        for (var i = 0; i < SEEKS.length; i++) {
+          if (t < SEEKS[i][0]) break;
+          var from = i === 0 ? SEEKS[0][1] : SEEKS[i - 1][1];
+          var k = Math.min(1, Math.max(0, (t - SEEKS[i][0]) / 0.42));
+          a = from + (SEEKS[i][1] - from) * (1 - Math.pow(1 - k, 4));
+        }
+        return a;
+      }
+
+      function renderAt(time) {
+        var t = Math.min(DUR, Math.max(0, time)), u = t / DUR;
+        spin.rotation.y = t * (Math.PI * 2) / 6;      /* one revolution every 6s, dead steady */
+        arm.rotation.y = armAngle(t);
+        deck.rotation.y = -0.12 + u * 0.30;
+        camera.position.copy(camPath.getPointAt(u));
+        camera.lookAt(aimPath.getPointAt(u));
+        renderer.render(scene, camera);
+      }
+
+      window.addEventListener("hf-seek", function (e) { renderAt(e.detail.time); });
+      renderAt(window.__hfThreeTime || window.__hdSeek || 0);
+    </script>
+  </head>
+  <body>
+    <!--
+      Hard Drive - 60s book trailer.
+      A real Three.js disk assembly runs under the whole film on one unbroken camera move.
+      Above it: the CSS atmosphere sub-comp, then eight scene slots that hard-cut on track 1,
+      each with a transparent root. Track 10 carries the score.
+    -->
+    <div data-hf-id="hf-lsf4" id="root" data-composition-id="main" data-start="0" data-duration="60" data-width="1920" data-height="1080" data-fps="30">
+
+      <div data-hf-id="hf-aetx" id="hd-ground" data-layout-ignore="" aria-hidden="true"></div>
+      <canvas data-hf-id="hf-f9v8" id="hd-gl" width="1920" height="1080" data-layout-ignore="" aria-hidden="true"></canvas>
+
+      <div data-hf-id="hf-8m9y" id="el-bg" data-composition-id="bg-platter" data-composition-src="compositions/bg-platter.html" data-start="0" data-duration="60" data-track-index="0" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-9lj9" id="el-s1" data-composition-id="s1-cold-open" data-composition-src="compositions/s1-cold-open.html" data-start="0" data-duration="6.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-1276" id="el-s2" data-composition-id="s2-turn" data-composition-src="compositions/s2-turn.html" data-start="6.5" data-duration="6" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-j9tt" id="el-s3" data-composition-id="s3-altair" data-composition-src="compositions/s3-altair.html" data-start="12.5" data-duration="8.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-v2tg" id="el-s4" data-composition-id="s4-deal" data-composition-src="compositions/s4-deal.html" data-start="21" data-duration="9.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-nboz" id="el-s5" data-composition-id="s5-bully" data-composition-src="compositions/s5-bully.html" data-start="30.5" data-duration="8.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-kw5v" id="el-s6" data-composition-id="s6-timeline" data-composition-src="compositions/s6-timeline.html" data-start="39" data-duration="8" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-c20f" id="el-s7" data-composition-id="s7-thesis" data-composition-src="compositions/s7-thesis.html" data-start="47" data-duration="5.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div data-hf-id="hf-coid" id="el-s8" data-composition-id="s8-title" data-composition-src="compositions/s8-title.html" data-start="52.5" data-duration="7.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <audio data-hf-id="hf-klb5" id="el-score" src="assets/score.mp3" data-start="0" data-duration="60" data-track-index="10" data-volume="0.9"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

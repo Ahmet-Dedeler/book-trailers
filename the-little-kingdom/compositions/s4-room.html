@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6; }
+        .world { position:absolute; inset:0; }
+        .veil  { position:absolute; inset:0; background:rgba(11,10,9,.52); }
+        .scrim { position:absolute; left:-200px; top:20px; width:1840px; height:1040px;
+                 background:radial-gradient(ellipse closest-side, rgba(11,10,9,.94),
+                   rgba(11,10,9,.76) 58%, rgba(11,10,9,0) 100%); }
+
+        /* ---- the ledger: header, rule, six rows, and the icon column on its right ---- */
+        .ledger { position:absolute; inset:0; }
+        .stage { position:absolute; left:168px; top:0; bottom:0; width:1218px; }
+        .head { position:absolute; left:0; top:150px; font-size:27px; letter-spacing:.24em; color:#9A8F7C;
+                text-transform:uppercase; white-space:nowrap; opacity:0; }
+        .head.r { left:auto; right:0; color:#F0761E; }
+        .headrule { position:absolute; left:0; top:203px; width:1218px; height:2px; background:#F0761E; }
+        .row { position:absolute; left:0; width:1218px; height:116px; }
+        .num { position:absolute; left:0; top:36px; font-size:27px; letter-spacing:.14em; color:#F0761E;
+               font-variant-numeric:tabular-nums; opacity:0; transform-origin:50% 50%; }
+        .lab { position:absolute; left:84px; top:18px; font-family:"League Gothic",sans-serif; font-weight:400;
+               text-transform:uppercase; font-size:76px; line-height:1; letter-spacing:-.015em; color:#EFE7D6;
+               white-space:nowrap; opacity:0; }
+        .hair { position:absolute; left:0; top:115px; width:1218px; height:1px; background:rgba(239,231,214,.20); }
+
+        /* ---- object: six line-art icons, one per row, drawing themselves ---- */
+        .rig { position:absolute; left:1290px; top:236px; width:96px; height:696px;
+               perspective:1600px; perspective-origin:50% 50%; }
+        .ic { position:absolute; left:0; width:96px; height:96px; display:block; transform-origin:50% 50%; }
+        .ic path, .ic line, .ic circle { fill:none; stroke:#F0761E; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+        .ic .fl { fill:#F0761E; stroke:none; }
+      </style>
+
+      <div id="root" data-composition-id="s4-room" data-start="0" data-duration="10"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s4-world">
+          <div class="veil" data-layout-ignore aria-hidden="true"></div>
+          <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="ledger" id="s4-ledger">
+            <div class="stage" id="s4-stage">
+              <div class="head" id="s4-h1">What he was let in to see</div>
+              <div class="head r" id="s4-h2">Cupertino, 1981–1983</div>
+              <div class="headrule" id="s4-headrule"></div>
+
+              <div class="row" style="top:236px"><div class="num" id="s4-n1">01</div><div class="lab" id="s4-r1">A garage in Los Altos</div><div class="hair" id="s4-l1"></div></div>
+              <div class="row" style="top:352px"><div class="num" id="s4-n2">02</div><div class="lab" id="s4-r2">The Apple I, soldered by hand</div><div class="hair" id="s4-l2"></div></div>
+              <div class="row" style="top:468px"><div class="num" id="s4-n3">03</div><div class="lab" id="s4-r3">The 1980 public offering</div><div class="hair" id="s4-l3"></div></div>
+              <div class="row" style="top:584px"><div class="num" id="s4-n4">04</div><div class="lab" id="s4-r4">The Lisa, and what it cost</div><div class="hair" id="s4-l4"></div></div>
+              <div class="row" style="top:700px"><div class="num" id="s4-n5">05</div><div class="lab" id="s4-r5">The Macintosh, before anyone saw it</div><div class="hair" id="s4-l5"></div></div>
+              <div class="row" style="top:816px"><div class="num" id="s4-n6">06</div><div class="lab" id="s4-r6">Every argument in between</div><div class="hair" id="s4-l6"></div></div>
+            </div>
+
+            <div class="rig" id="s4-rig">
+              <!-- 01 the garage: a roof, walls, a slatted door that rolls up a little -->
+              <svg class="ic" id="s4-ic1" style="top:10px" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 44 L48 12 L90 44"/><path d="M14 42 L14 86 L82 86 L82 42"/>
+                <path d="M26 86 L26 56 L70 56 L70 86"/>
+                <g id="s4-door"><path d="M26 66 L70 66"/><path d="M26 76 L70 76"/></g>
+              </svg>
+              <!-- 02 the Apple I: a board, a chip with pins, a trace that carries a signal -->
+              <svg class="ic" id="s4-ic2" style="top:126px" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 18 L86 18 L86 78 L10 78 Z"/><path d="M36 36 L60 36 L60 60 L36 60 Z"/>
+                <path d="M36 42 L26 42 M36 54 L26 54 M60 42 L70 42 M60 54 L70 54"/>
+                <path d="M26 42 L18 42 L18 30 M70 54 L78 54 L78 68"/>
+                <path id="s4-flow" d="M10 68 L18 68 L18 42 L26 42" stroke-dasharray="4 7" stroke-width="3.5"/>
+              </svg>
+              <!-- 03 the offering: axes and a line that only goes up, with a live dot at its end -->
+              <svg class="ic" id="s4-ic3" style="top:242px" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12 L12 84 L86 84"/>
+                <path d="M18 74 L30 62 L40 68 L52 48 L62 54 L74 30 L84 22"/>
+                <circle class="fl" id="s4-tdot" cx="84" cy="22" r="4.5"/>
+              </svg>
+              <!-- 04 the Lisa: a wide beige box, twin floppy slots, a keyboard slab, a blinking cursor -->
+              <svg class="ic" id="s4-ic4" style="top:358px" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 22 L76 22 L76 66 L10 66 Z"/><path d="M18 30 L56 30 L56 56 L18 56 Z"/>
+                <path d="M62 34 L70 34 M62 42 L70 42"/><path d="M14 74 L82 74 L82 84 L14 84 Z"/>
+                <rect class="fl" id="s4-cur" x="23" y="46" width="7" height="3"/>
+              </svg>
+              <!-- 05 the Macintosh: the upright box, a screen with a face, a floppy slot, a foot -->
+              <svg class="ic" id="s4-ic5" style="top:474px" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 8 L74 8 L74 70 L22 70 Z"/><path d="M30 16 L66 16 L66 44 L30 44 Z"/>
+                <g id="s4-eyes"><path d="M40 25 L40 31 M56 25 L56 31"/></g>
+                <path d="M40 36 Q48 43 56 36"/><path d="M36 56 L60 56"/><path d="M28 70 L26 84 L70 84 L68 70"/>
+              </svg>
+              <!-- 06 the arguments: two balloons, talking past each other -->
+              <svg class="ic" id="s4-ic6" style="top:590px" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                <path id="s4-bal1" d="M8 14 L52 14 L52 42 L24 42 L16 52 L16 42 L8 42 Z"/>
+                <path id="s4-bal2" d="M44 44 L88 44 L88 72 L80 72 L80 82 L72 72 L44 72 Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 10, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- handoff IN: scene 3 is streaking out at the same wall time ---- */
+          tl.fromTo("#s4-world", { opacity: 0, x: 160, filter: "blur(16px)" },
+                                 { opacity: 1, x: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s4-world", { filter: "none" }, IN);
+
+          /* ---- header ---- */
+          tl.fromTo("#s4-h1", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.22);
+          tl.fromTo("#s4-h2", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.34);
+          tl.fromTo("#s4-headrule", { scaleX: 0, transformOrigin: "left center" },
+                                    { scaleX: 1, duration: 0.7, ease: "power4.out" }, 0.4);
+
+          /* ---- blueprint grid-card-assemble: six rows on a 0.46s beat, each with its own object ---- */
+          var T0 = 0.78, STEP = 0.46, ROWS = 6, landed = [];
+          for (var i = 1; i <= ROWS; i++) {
+            var t = T0 + (i - 1) * STEP;
+            /* rule spring-pop-entrance — the numeral, smooth long-tail settle */
+            tl.fromTo("#s4-n" + i, { scale: 0, opacity: 0 },
+                                   { scale: 1, opacity: 1, duration: 0.42, ease: "power3.out" }, t - 0.05);
+            /* rule waterfall-entry — binary opacity, whip from below */
+            tl.set("#s4-r" + i, { opacity: 1, y: 46 }, t);
+            tl.to("#s4-r" + i, { y: 0, duration: 0.18, ease: "power4.out" }, t);
+            /* the ledger line under the row */
+            tl.fromTo("#s4-l" + i, { scaleX: 0, transformOrigin: "left center" },
+                                   { scaleX: 1, duration: 0.5, ease: "power3.out" }, t + 0.04);
+            /* rule svg-path-draw — the row's object draws itself, stroke by stroke, as the row lands */
+            var strokes = document.querySelectorAll("#s4-ic" + i + " path, #s4-ic" + i + " circle, #s4-ic" + i + " rect");
+            var end = t;
+            for (var s = 0; s < strokes.length; s++) {
+              var el = strokes[s];
+              if (el.id === "s4-flow" || el.id === "s4-tdot" || el.id === "s4-cur") continue;   /* enrichment parts come after */
+              var L = el.getTotalLength() * 1.02, at = t - 0.08 + s * 0.09;
+              tl.fromTo(el, { strokeDasharray: L, strokeDashoffset: L },
+                            { strokeDashoffset: 0, duration: 0.44, ease: "power2.out" }, at);
+              end = at + 0.44;
+            }
+            landed.push(end);
+          }
+
+          /* ---- rule svg-icon-enrichment: after each outline draws, one part of it wakes up ---- */
+          var span = DUR - OUT;
+          /* 01 the door rolls up a little and settles, on a slow loop */
+          var d1 = landed[0] + 0.1, c1 = 1.6, r1 = Math.max(0, Math.floor((span - d1) / c1) - 1);
+          tl.fromTo("#s4-door", { y: 0 }, { y: -7, duration: c1, ease: "sine.inOut", yoyo: true, repeat: r1 }, d1);
+          /* 02 a signal runs along the trace (dash flow) — appears only once the board is drawn */
+          var flow = document.getElementById("s4-flow");
+          tl.fromTo(flow, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, landed[1]);
+          var fp = { o: 0 };
+          tl.fromTo(fp, { o: 0 }, { o: -220, duration: span - landed[1], ease: "none",             /* 220 = 20 dash periods */
+                    onUpdate: function () { flow.style.strokeDashoffset = String(fp.o.toFixed(1)); } }, landed[1]);
+          /* 03 the end dot pops in then pulses (ring lags nothing — a single live point) */
+          tl.fromTo("#s4-tdot", { scale: 0, opacity: 0, transformOrigin: "50% 50%" },
+                                { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, landed[2]);
+          var c3 = 0.7, r3 = Math.max(0, Math.floor((span - landed[2] - 0.3) / c3) - 1);
+          tl.to("#s4-tdot", { scale: 1.6, duration: c3, ease: "sine.inOut", yoyo: true, repeat: r3 }, landed[2] + 0.3);
+          /* 04 the cursor blinks (square wave on the timeline clock) */
+          var cur = document.getElementById("s4-cur"), eyes = document.getElementById("s4-eyes");
+          var clock = { t: 0 };
+          tl.to(clock, {
+            t: DUR, duration: DUR, ease: "none",
+            onUpdate: function () {
+              var t = tl.time();
+              cur.style.opacity = (t < landed[3]) ? 0 : (((t % 0.9) < 0.5) ? 1 : 0);
+              /* 05 the Macintosh blinks every 2.7s once its face is drawn */
+              var blink = (t >= landed[4]) && (((t - landed[4]) % 2.7) < 0.14);
+              eyes.setAttribute("transform", blink ? "translate(0 28) scale(1 0.08) translate(0 -28)" : "");
+            }
+          }, 0);
+          /* 06 the balloons bob against each other */
+          var d6 = landed[5] + 0.1, c6 = 1.3, r6 = Math.max(0, Math.floor((span - d6) / c6) - 1);
+          tl.fromTo("#s4-bal1", { y: 0 }, { y: -4, duration: c6, ease: "sine.inOut", yoyo: true, repeat: r6 }, d6);
+          tl.fromTo("#s4-bal2", { y: 0 }, { y: 4, duration: c6, ease: "sine.inOut", yoyo: true, repeat: r6 }, d6);
+
+          /* ---- after the sixth row: the whole ledger drifts up 20px and the icons breathe ---- */
+          var SETTLE = landed[5] + 0.35;
+          tl.fromTo("#s4-ledger", { y: 0 }, { y: -20, duration: 1.1, ease: "power2.inOut" }, SETTLE);
+          for (var b = 1; b <= ROWS; b++) {
+            var bs = SETTLE + (b - 1) * 0.12, bc = 1.5, br = Math.max(0, Math.floor((span - bs) / bc) - 1);
+            tl.fromTo("#s4-ic" + b, { scale: 1 }, { scale: 1.06, duration: bc, ease: "sine.inOut", yoyo: true, repeat: br }, bs);
+          }
+
+          /* ---- handoff OUT (accent 4→5): a hard upward push — the story jumps ---- */
+          tl.set("#s4-world", { filter: "blur(0px)" }, DUR - OUT);
+          tl.to("#s4-world", { opacity: 0, y: -120, filter: "blur(12px)", duration: 0.35, ease: "power3.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s4-room"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

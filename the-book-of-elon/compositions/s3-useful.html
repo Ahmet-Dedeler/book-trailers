@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#F2F4F8; }
+        .world { position:absolute; inset:0; }
+        .scrim { position:absolute; inset:0; }
+        .scrim.left { background:radial-gradient(ellipse 68% 100% at 6% 50%,
+                        rgba(7,8,11,.97) 12%, rgba(7,8,11,.82) 46%, rgba(7,8,11,0) 82%); }
+        .stage { position:absolute; left:150px; top:0; bottom:0; width:1020px;
+                 display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
+        .part  { display:flex; align-items:center; gap:20px; font-size:26px; letter-spacing:.26em;
+                 color:#FF3B1F; text-transform:uppercase; margin-bottom:22px; opacity:0; white-space:nowrap; }
+        .part i { display:block; width:56px; height:2px; background:#FF3B1F; }
+        .rule  { height:2px; background:#FF3B1F; width:100%; margin:0 0 30px; transform-origin:left center; }
+        .disp  { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                 line-height:.96; letter-spacing:-.03em; font-size:124px; white-space:nowrap; }
+        .disp span { display:inline-block; opacity:0; }
+        .flame-t { color:#FF3B1F; }
+        /* spec card — the credit lands on a dim-bordered mono panel */
+        .card  { position:relative; margin-top:36px; width:760px; padding:22px 30px; display:flex; align-items:baseline; gap:18px;
+                 background:rgba(7,8,11,.78); border:2px solid rgba(121,131,155,.55); opacity:0; white-space:nowrap;
+                 text-transform:uppercase; letter-spacing:.16em; }
+        .card .q { font-size:28px; color:#F2F4F8; }
+        .card .a { font-size:24px; color:#79839B; }
+        .card .brk { position:absolute; left:-2px; top:-2px; width:22px; height:22px;
+                     border-top:3px solid #FF3B1F; border-left:3px solid #FF3B1F; }
+        /* the utility node sits over the 3D network in the right half */
+        .diagram { position:absolute; left:1150px; top:180px; width:720px; height:720px; }
+        .diagram svg { display:block; width:720px; height:720px; }
+      </style>
+
+      <div id="root" data-composition-id="s3-useful" data-start="0" data-duration="7.5"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s3-world">
+          <div class="scrim left" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="diagram" id="s3-dia" data-layout-ignore aria-hidden="true">
+            <svg viewBox="0 0 720 720" fill="none">
+              <g id="s3-graph">
+                <circle id="s3-orbit" cx="360" cy="360" r="212" stroke="rgba(121,131,155,.35)" stroke-width="2" stroke-dasharray="4 10"/>
+                <g id="s3-children" stroke="#79839B" stroke-width="2" stroke-linecap="round"></g>
+                <g id="s3-cheads" fill="#79839B"></g>
+                <g id="s3-arrows" stroke="#F2F4F8" stroke-width="3" stroke-linecap="round"></g>
+                <g id="s3-aheads" fill="#F2F4F8"></g>
+                <circle id="s3-hub" cx="360" cy="360" r="34" fill="rgba(255,59,31,.16)" stroke="#FF3B1F" stroke-width="3"/>
+                <circle id="s3-core" cx="360" cy="360" r="11" fill="#FF3B1F"/>
+                <circle id="s3-pulse" cx="360" cy="360" r="34" stroke="#FF3B1F" stroke-width="2"/>
+              </g>
+              <text id="s3-lab" x="360" y="700" text-anchor="middle" fill="#79839B"
+                    font-family="Space Mono, monospace" font-size="20" letter-spacing="5" opacity="0">UTILITY NETWORK · 1 → 8 → 16</text>
+            </svg>
+          </div>
+
+          <div class="stage">
+            <div class="part" id="s3-part" data-layout-allow-overlap><i></i>Part I &#160;—&#160; Pursue purpose</div>
+            <div class="rule" id="s3-rule"></div>
+            <div class="disp"><span id="s3-q1">"Don't</span></div>
+            <div class="disp"><span id="s3-q2">aspire</span></div>
+            <div class="disp"><span id="s3-q3">to glory.</span></div>
+            <div class="disp"><span id="s3-q4" class="flame-t">Aspire</span></div>
+            <div class="disp"><span id="s3-q5" class="flame-t">to work."</span></div>
+            <div class="card" id="s3-card">
+              <i class="brk" id="s3-brk"></i>
+              <span class="q">— Elon Musk</span><span class="a">·&#160; "Be Useful"</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 7.5, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- handoff IN — rides the camera whip from s2 ---- */
+          tl.fromTo("#s3-world", { opacity: 0, x: 220, skewX: 6, filter: "blur(14px)" },
+                                 { opacity: 1, x: 0, skewX: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s3-world", { filter: "none" }, IN);
+
+          /* ---- blueprint: kinetic-type-beats — the quote lands one line per beat, payoff on the last ---- */
+          tl.fromTo("#s3-part", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" }, 0.15);
+          tl.fromTo("#s3-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power4.out" }, 0.27);
+          [["#s3-q1", 0.4, 70], ["#s3-q2", 0.64, 70], ["#s3-q3", 0.88, 70], ["#s3-q4", 1.14, 76]].forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: 0.24, ease: "power4.out" }, w[1]);
+          });
+          tl.set("#s3-q5", { opacity: 1 }, 1.42);
+          tl.fromTo("#s3-q5", { scale: 1.3, filter: "blur(10px)", transformOrigin: "left center" },
+                              { scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power4.out" }, 1.42);
+          tl.set("#s3-q5", { filter: "none" }, 1.9);
+          /* spec card: slides in, then the flame corner bracket draws 0.1s after */
+          tl.fromTo("#s3-card", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 2.2);
+          tl.fromTo("#s3-brk", { scale: 0, transformOrigin: "left top" }, { scale: 1, duration: 0.35, ease: "power3.out" }, 2.3);
+
+          /* ---- the utility node: geometry laid out once at build, all index-derived ---- */
+          var C = 360, R0 = 50, R1 = 198, R2 = 214, R3 = 336, SPLIT = 0.30;
+          var arrows = document.getElementById("s3-arrows"), aheads = document.getElementById("s3-aheads"),
+              children = document.getElementById("s3-children"), cheads = document.getElementById("s3-cheads");
+          function pt(a, r) { return [C + Math.cos(a) * r, C + Math.sin(a) * r]; }
+          function head(id, a, r, size) {           /* a triangle pointing outward along angle a with its tip at radius r */
+            var t = pt(a, r), b = pt(a, r - size), nx = -Math.sin(a) * size * 0.5, ny = Math.cos(a) * size * 0.5;
+            return '<path id="' + id + '" data-o="' + t[0].toFixed(1) + ' ' + t[1].toFixed(1) + '" d="M' + t[0].toFixed(1) + ' ' + t[1].toFixed(1) +
+                   ' L' + (b[0] + nx).toFixed(1) + ' ' + (b[1] + ny).toFixed(1) + ' L' + (b[0] - nx).toFixed(1) + ' ' + (b[1] - ny).toFixed(1) + 'Z"/>';
+          }
+          var ah = "", ch = "", chh = "", al = "";
+          for (var i = 0; i < 8; i++) {
+            var a = i * Math.PI / 4 - Math.PI / 2, p0 = pt(a, R0), p1 = pt(a, R1);
+            al += '<line id="s3-a' + i + '" x1="' + p0[0].toFixed(1) + '" y1="' + p0[1].toFixed(1) + '" x2="' + p1[0].toFixed(1) + '" y2="' + p1[1].toFixed(1) + '"/>';
+            ah += head("s3-ah" + i, a, R1 + 14, 16);
+            for (var j = 0; j < 2; j++) {
+              var a2 = a + (j ? SPLIT : -SPLIT), q0 = pt(a, R2), q1 = pt(a2, R3);
+              ch += '<line id="s3-c' + (i * 2 + j) + '" x1="' + q0[0].toFixed(1) + '" y1="' + q0[1].toFixed(1) + '" x2="' + q1[0].toFixed(1) + '" y2="' + q1[1].toFixed(1) + '"/>';
+              var da = Math.atan2(q1[1] - q0[1], q1[0] - q0[0]);
+              var tip = [q1[0] + Math.cos(da) * 12, q1[1] + Math.sin(da) * 12];
+              var bx = tip[0] - Math.cos(da) * 12, by = tip[1] - Math.sin(da) * 12, nx = -Math.sin(da) * 5.5, ny = Math.cos(da) * 5.5;
+              chh += '<path id="s3-ch' + (i * 2 + j) + '" data-o="' + tip[0].toFixed(1) + ' ' + tip[1].toFixed(1) + '" d="M' + tip[0].toFixed(1) + ' ' + tip[1].toFixed(1) +
+                     ' L' + (bx + nx).toFixed(1) + ' ' + (by + ny).toFixed(1) + ' L' + (bx - nx).toFixed(1) + ' ' + (by - ny).toFixed(1) + 'Z"/>';
+            }
+          }
+          arrows.innerHTML = al; aheads.innerHTML = ah; children.innerHTML = ch; cheads.innerHTML = chh;
+
+          /* the hub lands first (world hub: global 13.4 → local 0.4) */
+          tl.fromTo("#s3-dia", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 0.3);
+          tl.fromTo("#s3-hub", { scale: 0, svgOrigin: "360 360" }, { scale: 1, duration: 0.6, ease: "back.out(2)" }, 0.42);
+          tl.fromTo("#s3-core", { scale: 0, svgOrigin: "360 360" }, { scale: 1, duration: 0.5, ease: "back.out(3)" }, 0.5);
+          tl.fromTo("#s3-orbit", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "none" }, 1.0);
+          /* the hub keeps a heartbeat: one ring per beat, finite */
+          var pc = 1.1, span = DUR - OUT - 0.9, pr = Math.max(0, Math.floor(span / pc) - 1);
+          tl.set("#s3-pulse", { opacity: 0 }, 0);
+          tl.fromTo("#s3-pulse", { scale: 1, opacity: 0.8, svgOrigin: "360 360" },
+                                 { scale: 2.6, opacity: 0, duration: 0.9, ease: "power2.out", repeat: pr, repeatDelay: pc - 0.9, immediateRender: false }, 0.9);
+
+          /* rule: svg-path-draw — eight arrows draw in a wave over 1.0s (world gen1: 14.1 → local 1.1) */
+          function prime(el) { var L = el.getTotalLength() * 1.02; el.style.strokeDasharray = L; el.style.strokeDashoffset = L; return L; }
+          for (i = 0; i < 8; i++) {
+            var A = document.getElementById("s3-a" + i), LA = prime(A), at = 1.1 + i * 0.075;
+            tl.fromTo(A, { strokeDashoffset: LA }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" }, at);
+            var H = document.getElementById("s3-ah" + i);
+            tl.fromTo(H, { scale: 0, svgOrigin: H.getAttribute("data-o") }, { scale: 1, duration: 0.3, ease: "back.out(2.5)" }, at + 0.32);
+          }
+          /* second wave: every arrow splits into two dim children (world gen2: 15.6 → local 2.6) */
+          for (i = 0; i < 16; i++) {
+            var Cc = document.getElementById("s3-c" + i), LC = prime(Cc), at2 = 2.6 + Math.floor(i / 2) * 0.09 + (i % 2) * 0.04;
+            tl.fromTo(Cc, { strokeDashoffset: LC }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, at2);
+            var Hc = document.getElementById("s3-ch" + i);
+            tl.fromTo(Hc, { scale: 0, svgOrigin: Hc.getAttribute("data-o") }, { scale: 1, duration: 0.3, ease: "back.out(2.5)" }, at2 + 0.36);
+          }
+          tl.fromTo("#s3-lab", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 3.9);
+
+          /* rule: sine-wave-loop — the whole graph rocks ±6°, finite yoyo */
+          var half = 1.7, rr = Math.max(0, Math.floor((DUR - 0.3) / (half * 2)) - 1);
+          tl.fromTo("#s3-graph", { rotation: -6, svgOrigin: "360 360" },
+                                 { rotation: 6, duration: half, ease: "sine.inOut", yoyo: true, repeat: rr * 2 + 1 }, 0.3);
+
+          /* ---- handoff OUT — the whip into s4 ---- */
+          tl.set("#s3-world", { filter: "blur(0px)" }, DUR - OUT);
+          tl.to("#s3-world", { opacity: 0, x: -220, skewX: -6, filter: "blur(14px)", duration: OUT, ease: "power3.in" }, DUR - OUT);
+
+          tl.to({}, { duration: DUR }, 0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s3-useful"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

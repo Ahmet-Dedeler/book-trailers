@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body { margin:0; width:1920px; height:1080px; overflow:hidden; background:#0B0A09; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; background:#0B0A09; }
+      [data-composition-id="main"] > div[data-composition-src] { position:absolute; inset:0; }
+    </style>
+  </head>
+  <body>
+    <!--
+      The Little Kingdom — 60s book trailer (v2).
+      Track 0: ONE continuous background that evolves for the full minute — a circuit board
+               drawing itself from sparse schematic to dense board, under a migrating bloom.
+      Track 1: eight transparent scene slots, hard cuts, each carrying its own built object.
+      Track 10: the score. All animation lives in the sub-comps.
+    -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="60"
+         data-width="1920" data-height="1080" data-fps="30">
+
+      <div id="el-bg" data-composition-id="bg-field" data-composition-src="compositions/bg-field.html"
+           data-start="0" data-duration="60" data-track-index="0" data-width="1920" data-height="1080"></div>
+
+      <div id="el-s1" data-composition-id="s1-cold-open" data-composition-src="compositions/s1-cold-open.html"
+           data-start="0"    data-duration="6.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s2" data-composition-id="s2-turn" data-composition-src="compositions/s2-turn.html"
+           data-start="6.5"  data-duration="6"   data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s3" data-composition-id="s3-access" data-composition-src="compositions/s3-access.html"
+           data-start="12.5" data-duration="8.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s4" data-composition-id="s4-room" data-composition-src="compositions/s4-room.html"
+           data-start="21"   data-duration="9.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s5" data-composition-id="s5-break" data-composition-src="compositions/s5-break.html"
+           data-start="30.5" data-duration="8.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s6" data-composition-id="s6-anyway" data-composition-src="compositions/s6-anyway.html"
+           data-start="39"   data-duration="8"   data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s7" data-composition-id="s7-thesis" data-composition-src="compositions/s7-thesis.html"
+           data-start="47"   data-duration="5.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s8" data-composition-id="s8-title" data-composition-src="compositions/s8-title.html"
+           data-start="52.5" data-duration="7.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <!-- Continuous score; the movement change is cut to land on the scene-5 break at 30.5s. -->
+      <audio id="el-score" src="assets/score.mp3"
+             data-start="0" data-duration="60" data-track-index="10" data-volume="0.9"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

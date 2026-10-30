@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#F2F4F8; }
+        /* radial scrim keeps type legible over the live 3D world without banding */
+        .scrim { position:absolute; inset:0; }
+        .scrim.left { background:radial-gradient(ellipse 68% 100% at 6% 50%,
+                        rgba(7,8,11,.97) 12%, rgba(7,8,11,.82) 46%, rgba(7,8,11,0) 82%); }
+        .scrim.mid { background:radial-gradient(ellipse 78% 68% at 50% 56%,
+                        rgba(7,8,11,.94) 18%, rgba(7,8,11,0) 80%); }
+        .stage { position:absolute; left:150px; top:0; bottom:0; width:880px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .part { display:flex; align-items:center; gap:20px; font-size:24px; letter-spacing:.26em;
+                color:#FF3B1F; text-transform:uppercase; margin-bottom:38px; opacity:0; }
+        .part i { display:block; width:56px; height:2px; background:#FF3B1F; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                line-height:1.0; letter-spacing:-.03em; }
+        .disp span { display:inline-block; opacity:0; }
+        .flame-t { color:#FF3B1F; }
+        .rule { height:2px; background:#FF3B1F; width:100%; margin:36px 0 28px; }
+        .meta { font-size:26px; letter-spacing:.16em; color:#79839B; line-height:1.7;
+                text-transform:uppercase; opacity:0; }
+        .attr { margin-top:40px; font-size:26px; letter-spacing:.22em; color:#79839B;
+                text-transform:uppercase; opacity:0; }
+        .chap { display:flex; align-items:center; gap:18px; font-size:27px; letter-spacing:.16em;
+                color:#79839B; text-transform:uppercase; padding:10px 0; opacity:0; }
+        .chap b { color:#F2F4F8; font-weight:400; width:14px; }
+        .stage { left:0; right:0; width:auto; align-items:center; text-align:center; padding:0 150px; }
+        .part { justify-content:center; }
+        .disp { font-size:90px; }
+      </style>
+      <div data-hf-id="hf-qos8" id="root" data-composition-id="s7-multiplanetary" data-start="0" data-duration="6.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-yee8" class="scrim mid"></div>
+        <div data-hf-id="hf-tan6" class="stage">
+          <div data-hf-id="hf-6esu" class="part" id="s7-part"><i data-hf-id="hf-wt6k"></i>Part IV &#160;—&#160; On Behalf of Humanity</div>
+          <div data-hf-id="hf-nwlw" class="disp"><span data-hf-id="hf-i10v" id="s7-l1">Preserve the light</span></div>
+          <div data-hf-id="hf-9gq4" class="disp"><span data-hf-id="hf-0j0a" class="flame-t" id="s7-l2">of consciousness.</span></div>
+          <div data-hf-id="hf-lxb9" class="attr" id="s7-attr">— Elon Musk &#160;·&#160; "Becoming Multiplanetary"</div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var DUR = 6.5;
+          var tl = gsap.timeline({ paused: true });
+          function wave(list) {
+            list.forEach(function (w) {
+              tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+              tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+            });
+          }
+          tl.fromTo("#s7-part", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.9);
+          [["#s7-l1", 1.15], ["#s7-l2", 1.42]].forEach(function (w) {
+            tl.fromTo(w[0], { opacity: 0, y: 48 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, w[1]);
+          });
+          tl.fromTo("#s7-attr", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.05);
+
+          tl.to({}, { duration: DUR }, 0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s7-multiplanetary"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

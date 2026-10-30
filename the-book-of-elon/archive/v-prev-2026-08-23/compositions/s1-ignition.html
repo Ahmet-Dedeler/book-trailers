@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#F2F4F8; }
+        /* radial scrim keeps type legible over the live 3D world without banding */
+        .scrim { position:absolute; inset:0; }
+        .scrim.left { background:radial-gradient(ellipse 68% 100% at 6% 50%,
+                        rgba(7,8,11,.97) 12%, rgba(7,8,11,.82) 46%, rgba(7,8,11,0) 82%); }
+        .scrim.mid { background:radial-gradient(ellipse 78% 68% at 50% 56%,
+                        rgba(7,8,11,.94) 18%, rgba(7,8,11,0) 80%); }
+        .stage { position:absolute; left:150px; top:0; bottom:0; width:880px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .part { display:flex; align-items:center; gap:20px; font-size:24px; letter-spacing:.26em;
+                color:#FF3B1F; text-transform:uppercase; margin-bottom:38px; opacity:0; }
+        .part i { display:block; width:56px; height:2px; background:#FF3B1F; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                line-height:1.0; letter-spacing:-.03em; }
+        .disp span { display:inline-block; opacity:0; }
+        .flame-t { color:#FF3B1F; }
+        .rule { height:2px; background:#FF3B1F; width:100%; margin:36px 0 28px; }
+        .meta { font-size:26px; letter-spacing:.16em; color:#79839B; line-height:1.7;
+                text-transform:uppercase; opacity:0; }
+        .attr { margin-top:40px; font-size:26px; letter-spacing:.22em; color:#79839B;
+                text-transform:uppercase; opacity:0; }
+        .chap { display:flex; align-items:center; gap:18px; font-size:27px; letter-spacing:.16em;
+                color:#79839B; text-transform:uppercase; padding:10px 0; opacity:0; }
+        .chap b { color:#F2F4F8; font-weight:400; width:14px; }
+        .tminus { display:flex; align-items:baseline; gap:22px; margin-bottom:34px; opacity:0; }
+        .tminus .lab { font-size:24px; letter-spacing:.28em; color:#79839B; text-transform:uppercase; }
+        .tminus .val { font-size:52px; font-weight:700; letter-spacing:.06em; color:#FF3B1F;
+                       font-variant-numeric:tabular-nums; }
+        .rule.short { width:420px; margin:0 0 42px; }
+        .disp { font-size:112px; }
+      </style>
+      <div data-hf-id="hf-39ik" id="root" data-composition-id="s1-ignition" data-start="0" data-duration="7" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-pdb9" class="scrim left"></div>
+        <div data-hf-id="hf-tan6" class="stage">
+          <div data-hf-id="hf-1rd2" class="tminus" id="s1-tm"><span data-hf-id="hf-m35v" class="lab">T‑minus</span><span data-hf-id="hf-pe8b" class="val" id="s1-count">10</span></div>
+          <div data-hf-id="hf-dreh" class="rule short" id="s1-rule"></div>
+          <div data-hf-id="hf-nwlw" class="disp"><span data-hf-id="hf-plfa" id="s1-l1">Most ambition</span></div>
+          <div data-hf-id="hf-9gq4" class="disp"><span data-hf-id="hf-73i7" id="s1-l2">never leaves</span></div>
+          <div data-hf-id="hf-89t1" class="disp"><span data-hf-id="hf-bcml" class="flame-t" id="s1-l3">the ground.</span></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var DUR = 7;
+          var tl = gsap.timeline({ paused: true });
+          function wave(list) {
+            list.forEach(function (w) {
+              tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+              tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+            });
+          }
+          tl.fromTo("#s1-tm", { opacity: 0, x: -22 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 0.3);
+          /* setter-driven counter: fires on every seek, unlike onUpdate */
+          var el = document.getElementById("s1-count"), c = { _v: 10 };
+          Object.defineProperty(c, "v", { get: function () { return this._v; },
+            set: function (x) { this._v = x; el.textContent = Math.max(0, Math.ceil(x)); } });
+          tl.fromTo(c, { v: 10 }, { v: 0, duration: 2.8, ease: "none" }, 1.35);
+          tl.fromTo("#s1-rule", { scaleX: 0, transformOrigin: "left center" },
+                                { scaleX: 1, duration: 0.6, ease: "power4.out" }, 0.9);
+          wave([["#s1-l1", 1.30, 58, 0.17], ["#s1-l2", 1.52, 52, 0.16], ["#s1-l3", 1.73, 74, 0.19]]);
+          tl.fromTo("#s1-l3", { scale: 1 }, { scale: 1.05, duration: 0.22, ease: "power3.out" }, 4.15);
+          tl.to("#s1-l3", { scale: 1, duration: 0.5, ease: "power2.out" }, 4.37);
+
+          /* pad the timeline to the slot length — HF derives visibility from
+             timeline.duration(), and a short timeline flashes black at the tail */
+          tl.to({}, { duration: DUR }, 0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s1-ignition"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

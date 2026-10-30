@@ -1,0 +1,15 @@
+# OS & system files
+.DS_Store
+Thumbs.db
+
+# Dependencies & build caches
+node_modules/
+.hyperframes/
+.thumbnails/
+.waveform-cache/
+
+# Files >100MB cannot be pushed directly to GitHub via standard git.
+# All 4K masters and >100MB 1080p cuts are published under GitHub Releases:
+*4k.mp4
+hard-drive/renders/hard-drive-v4-1080p.mp4
+the-book-of-elon/renders/the-book-of-elon-v4-1080p.mp4

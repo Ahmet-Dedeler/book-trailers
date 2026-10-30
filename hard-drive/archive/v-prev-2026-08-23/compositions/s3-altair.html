@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .stage { position:absolute; left:168px; right:168px; top:170px; }
+        .kicker { font-size:26px; letter-spacing:.2em; color:#7C8AA3; text-transform:uppercase; opacity:0; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:126px; line-height:1.0; letter-spacing:-.03em; color:#DCE5F2; margin-top:30px; }
+        .w { display:inline-block; opacity:0; }
+        .co { color:#3B7BFF; }
+        .note { margin-top:40px; padding-left:34px; border-left:4px solid #3B7BFF;
+                font-size:31px; line-height:1.5; color:#DCE5F2; opacity:0; }
+
+        /* --- the Altair 8800 front panel --- */
+        .panel { position:absolute; left:168px; top:742px; width:1584px; height:238px;
+                 background:rgba(11,17,32,.92); border:2px solid rgba(59,123,255,.42); opacity:0; }
+        .panel .badge { position:absolute; left:44px; top:52px; }
+        .panel .badge .mk { font-family:"Archivo Black",sans-serif; font-size:40px; color:#DCE5F2;
+                            letter-spacing:-.02em; }
+        .panel .badge .sub { margin-top:10px; font-size:20px; letter-spacing:.2em; color:#7C8AA3; }
+        .panel svg { position:absolute; left:0; top:26px; width:1584px; height:200px; }
+      </style>
+
+      <div data-hf-id="hf-bh48" id="root" data-composition-id="s3-altair" data-start="0" data-duration="8.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-tan6" class="stage">
+          <div data-hf-id="hf-lf5l" class="kicker" id="s3-kick">January 1975 &#160;·&#160; The Altair 8800</div>
+          <div data-hf-id="hf-nwlw" class="disp">
+            <span data-hf-id="hf-bvil" class="w" id="s3-a1">They</span> <span data-hf-id="hf-sqk2" class="w" id="s3-a2">sold</span>
+            <span data-hf-id="hf-ggg4" class="w" id="s3-a3">it</span> <span data-hf-id="hf-ca8o" class="w co" id="s3-a4">first.</span>
+          </div>
+          <div data-hf-id="hf-9gq4" class="disp">
+            <span data-hf-id="hf-muah" class="w" id="s3-b1">Then</span> <span data-hf-id="hf-5gxb" class="w" id="s3-b2">they</span>
+            <span data-hf-id="hf-amkc" class="w" id="s3-b3">built</span> <span data-hf-id="hf-yq4g" class="w" id="s3-b4">it.</span>
+          </div>
+          <div data-hf-id="hf-2pjl" class="note" id="s3-note">Neither of them had ever touched an Altair. Gates was 19.</div>
+        </div>
+
+        <div data-hf-id="hf-sn7v" class="panel" id="s3-panel">
+          <div data-hf-id="hf-9s2p" class="badge"><div data-hf-id="hf-c6w3" class="mk">ALTAIR 8800</div><div data-hf-id="hf-3min" class="sub">MITS &#160;·&#160; ALBUQUERQUE, N.M.</div></div>
+          <svg data-hf-id="hf-ssgl" viewBox="0 0 1584 200" xmlns="http://www.w3.org/2000/svg">
+          <circle data-hf-id="hf-greh" id="s3-led0" cx="560" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <text data-hf-id="hf-v3qn" x="560" y="30" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="17" text-anchor="middle" letter-spacing="1">A15</text>
+          <circle data-hf-id="hf-urbu" id="s3-led1" cx="632" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-42j7" id="s3-led2" cx="704" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-bb9z" id="s3-led3" cx="776" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-vpoo" id="s3-led4" cx="848" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <text data-hf-id="hf-hkcs" x="848" y="30" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="17" text-anchor="middle" letter-spacing="1">A11</text>
+          <circle data-hf-id="hf-c3d4" id="s3-led5" cx="920" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-913e" id="s3-led6" cx="992" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-m564" id="s3-led7" cx="1064" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-p2tr" id="s3-led8" cx="1136" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <text data-hf-id="hf-04f0" x="1136" y="30" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="17" text-anchor="middle" letter-spacing="1">A7</text>
+          <circle data-hf-id="hf-8ucy" id="s3-led9" cx="1208" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-0ao8" id="s3-led10" cx="1280" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-4l49" id="s3-led11" cx="1352" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-6kui" id="s3-led12" cx="1424" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <text data-hf-id="hf-n1hk" x="1424" y="30" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="17" text-anchor="middle" letter-spacing="1">A3</text>
+          <circle data-hf-id="hf-ana8" id="s3-led13" cx="1496" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-q9gh" id="s3-led14" cx="1568" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <circle data-hf-id="hf-wwuh" id="s3-led15" cx="1640" cy="66" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5" />
+          <rect data-hf-id="hf-q6ey" x="547" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-ve8z" id="s3-sw0" x="551" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-1xm8" x="619" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-cooq" id="s3-sw1" x="623" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-2b9c" x="691" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-yurm" id="s3-sw2" x="695" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-so0u" x="763" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-4hi1" id="s3-sw3" x="767" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-gx3g" x="835" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-26xw" id="s3-sw4" x="839" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-spga" x="907" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-txqi" id="s3-sw5" x="911" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-z9uh" x="979" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-wzng" id="s3-sw6" x="983" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-2fgx" x="1051" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-g2wg" id="s3-sw7" x="1055" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-q1wn" x="1123" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-7n47" id="s3-sw8" x="1127" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-un28" x="1195" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-zgbr" id="s3-sw9" x="1199" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-sc18" x="1267" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-cres" id="s3-sw10" x="1271" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-2b8w" x="1339" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-9q8h" id="s3-sw11" x="1343" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-s5ax" x="1411" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-3zpq" id="s3-sw12" x="1415" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-rfd4" x="1483" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-hog0" id="s3-sw13" x="1487" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-adfk" x="1555" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-15rt" id="s3-sw14" x="1559" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          <rect data-hf-id="hf-nhis" x="1627" y="130" width="26" height="54" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".38" stroke-width="1.5" />
+          <rect data-hf-id="hf-yxnv" id="s3-sw15" x="1631" y="136" width="18" height="20" rx="4" fill="#3B7BFF" fill-opacity=".55" />
+          </svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8.5, N = 16;
+          var tl = gsap.timeline({ paused: true });
+          var leds = [];
+          for (var i = 0; i < N; i++) leds.push(document.getElementById("s3-led" + i));
+
+          tl.fromTo("#s3-kick", { opacity: 0, y: 16 },
+                                { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, 0.12);
+
+          /* rule: waterfall-entry */
+          [["#s3-a1",0.55,56,.17],["#s3-a2",0.70,44,.15],["#s3-a3",0.83,32,.12],["#s3-a4",0.94,72,.19],
+           ["#s3-b1",1.45,44,.15],["#s3-b2",1.58,40,.14],["#s3-b3",1.70,44,.15],["#s3-b4",1.83,60,.17]
+          ].forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s3-a4", { scale: 1.12 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)" }, 0.94);
+
+          tl.fromTo("#s3-note", { opacity: 0, y: 26 },
+                                { opacity: 1, y: 0, duration: 0.52, ease: "power3.out" }, 2.35);
+
+          /* --- the machine powers up --- */
+          tl.fromTo("#s3-panel", { opacity: 0, y: 70 },
+                                 { opacity: 1, y: 0, duration: 0.6, ease: "power4.out" }, 2.9);
+
+          /* rule: svg-icon-enrichment — address LEDs run a deterministic program.
+             State is a pure function of quantized timeline time, never Math.random. */
+          function h(n) { var x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); }
+          var clock = { t: 0 };
+          tl.to(clock, { t: 1, duration: DUR - 2.9, ease: "none", onUpdate: function () {
+            var tt = tl.time() - 2.9;
+            if (tt < 0) return;
+            var step = Math.floor(tt * 7);
+            for (var i = 0; i < N; i++) {
+              var lit;
+              if (tt < 1.0) lit = (i <= tt * 18);                 /* power-on sweep */
+              else lit = h(step * 31 + i * 7) > 0.52;             /* running program */
+              leds[i].setAttribute("fill-opacity", lit ? "0.95" : "0.10");
+              leds[i].setAttribute("stroke-opacity", lit ? "1" : "0.35");
+            }
+          }}, 2.9);
+
+          /* a few toggles get thrown, on the beat */
+          [[3.6,2],[3.6,5],[4.5,9],[5.4,12],[5.4,3],[6.4,7]].forEach(function (s) {
+            tl.fromTo("#s3-sw" + s[1], { y: 0 }, { y: 28, duration: 0.14, ease: "power3.out" }, s[0]);
+          });
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s3-altair"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

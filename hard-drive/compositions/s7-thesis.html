@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .world { position:absolute; inset:0; }
+        /* mid scrim — the statement is centred over the platter at its closest */
+        .scrim { position:absolute; left:110px; top:100px; width:1700px; height:880px;
+                 background:radial-gradient(ellipse closest-side, rgba(5,7,14,.92),
+                   rgba(5,7,14,.72) 52%, rgba(5,7,14,0) 100%); }
+
+        /* ---- object: the hex field — the code itself, dim, filling the frame behind the thesis ---- */
+        .hex { position:absolute; left:62px; top:0; width:1800px; height:1080px; }
+        .hx { position:absolute; left:0; font-size:22px; line-height:1; letter-spacing:0; color:#DCE5F2;
+              white-space:nowrap; opacity:0; }
+        .hx b { font-weight:400; color:#3B7BFF; }
+
+        .stage { position:absolute; left:150px; top:0; width:1620px; height:1080px;
+                 display:flex; flex-direction:column; align-items:center; justify-content:center; }
+        .block { display:flex; flex-direction:column; align-items:center; }
+        .pair { display:flex; flex-direction:column; align-items:center; opacity:0; }
+        .line { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:150px; line-height:.98; letter-spacing:-.03em; color:#DCE5F2;
+                text-align:center; white-space:nowrap; }
+        .pair.co .line { color:#3B7BFF; }
+        .mark { width:340px; height:2px; background:#3B7BFF; margin:34px 0 30px; transform-origin:center center; }
+      </style>
+
+      <div data-hf-id="hf-hl9q" id="root" data-composition-id="s7-thesis" data-start="0" data-duration="6" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-1jin" class="world" id="s7-world">
+          <div data-hf-id="hf-87md" class="hex" id="s7-hex" data-layout-ignore="" aria-hidden="true"></div>
+          <div data-hf-id="hf-edqo" class="scrim" data-layout-ignore="" aria-hidden="true"></div>
+
+          <div data-hf-id="hf-tan6" class="stage">
+            <div data-hf-id="hf-aerj" class="block" id="s7-block">
+              <div data-hf-id="hf-hs50" class="pair" id="s7-p1">
+                <div data-hf-id="hf-6qd2" class="line" data-layout-allow-overlap="">He bought</div>
+                <div data-hf-id="hf-27pm" class="line" data-layout-allow-overlap="">the code.</div>
+              </div>
+              <div data-hf-id="hf-bxgv" class="mark" id="s7-mark"></div>
+              <div data-hf-id="hf-qt9p" class="pair co" id="s7-p2">
+                <div data-hf-id="hf-3e7x" class="line" data-layout-allow-overlap="">He negotiated</div>
+                <div data-hf-id="hf-tsrz" class="line" data-layout-allow-overlap="">the rest.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 6, IN = 0.6, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- the hex field: 14 lines of deterministic bytes (LCG, seed 19750404 — no Math.random) ---- */
+          (function () {
+            var seed = 19750404 >>> 0;
+            function next() { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed; }
+            function hex2(n) { var s = n.toString(16).toUpperCase(); return s.length < 2 ? "0" + s : s; }
+            var host = document.getElementById("s7-hex"), out = "";
+            for (var i = 0; i < 14; i++) {
+              var addr = ((0x00400000 + i * 0x2A0) >>> 0).toString(16).toUpperCase();
+              while (addr.length < 8) addr = "0" + addr;
+              var bytes = "";
+              for (var j = 0; j < 42; j++) bytes += hex2(next() >>> 24) + " ";
+              out += '<div class="hx" id="s7-hx' + i + '" style="top:' + (92 + i * 66) + 'px;"><b>' + addr + '</b>  ' + bytes + '</div>';
+            }
+            host.innerHTML = out;
+          })();
+
+          /* ---- handoff IN: accent 6→7 — a dip, opacity only ---- */
+          tl.fromTo("#s7-world", { opacity: 0 }, { opacity: 1, duration: IN, ease: "power2.out" }, 0);
+
+          /* the field arrives line by line, top → bottom, in 0.6s; it lives at 22% */
+          for (var i = 0; i < 14; i++) {
+            tl.fromTo("#s7-hx" + i, { opacity: 0, x: -28 }, { opacity: 0.22, x: 0, duration: 0.3, ease: "power2.out" }, i * 0.043);
+          }
+
+          /* --- blueprint: titlecard-reveal — exactly ONE restrained move (y 40 → 0, 1.0s), then stillness --- */
+          tl.fromTo("#s7-block", { y: 40 }, { y: 0, duration: 1.0, ease: "power2.out" }, 0.1);
+          tl.fromTo("#s7-p1", { opacity: 0 }, { opacity: 1, duration: 0.7, ease: "power2.out" }, 0.15);
+          /* --- rule: svg-path-draw (as a scaleX rule) — the single cobalt rule draws between the two lines --- */
+          tl.fromTo("#s7-mark", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.8);
+          tl.fromTo("#s7-p2", { opacity: 0 }, { opacity: 1, duration: 0.7, ease: "power2.out" }, 1.0);
+
+          /* the hold: a 0.4% breathe, finite — low motion is the payload */
+          var bc = 2.0, brp = Math.max(0, Math.floor((DUR - 1.9) / bc) - 1);
+          tl.to("#s7-block", { scale: 1.004, transformOrigin: "50% 50%", duration: bc, ease: "sine.inOut", yoyo: true, repeat: brp }, 1.9);
+
+          /* ---- handoff OUT: accent 7→8 — a dip, opacity only ---- */
+          tl.to("#s7-world", { opacity: 0, duration: OUT, ease: "power2.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s7-thesis"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

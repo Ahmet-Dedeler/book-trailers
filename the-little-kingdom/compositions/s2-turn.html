@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6; }
+        .world { position:absolute; inset:0; }
+        .veil  { position:absolute; inset:0; background:rgba(11,10,9,.40); }
+        .scrim { position:absolute; left:-300px; top:60px; width:1640px; height:960px;
+                 background:radial-gradient(ellipse closest-side, rgba(11,10,9,.95),
+                   rgba(11,10,9,.76) 54%, rgba(11,10,9,0) 100%); }
+        .ghost { position:absolute; left:120px; bottom:-150px; font-family:"League Gothic",sans-serif;
+                 font-size:640px; line-height:1; letter-spacing:-.02em; color:rgba(239,231,214,.045);
+                 white-space:nowrap; }
+
+        /* ---- type block on the left rail ---- */
+        .stage { position:absolute; left:168px; top:0; bottom:0; width:1180px; }
+        .slam { position:absolute; left:0; top:300px; font-family:"League Gothic",sans-serif; font-weight:400;
+                text-transform:uppercase; font-size:240px; line-height:.92; letter-spacing:-.02em;
+                color:#EFE7D6; white-space:nowrap; transform-origin:0% 50%; opacity:0; }
+        .slam.g { color:rgba(239,231,214,.9); }
+        .rule { position:absolute; left:0; top:552px; height:2px; width:560px; background:#F0761E; }
+
+        /* ---- the paper slip: the catalogue card for the book itself ---- */
+        .slip { position:absolute; left:0; top:600px; width:760px; padding:34px 40px 30px; background:#E9DFC8; color:#1A1611;
+                box-shadow: 0 30px 60px rgba(0,0,0,.55), 0 2px 0 rgba(255,255,255,.35) inset; opacity:0; }
+        .slip-t { font-family:"IBM Plex Mono",monospace; font-size:33px; line-height:1.42; letter-spacing:.02em; }
+        .slip-t b { font-weight:700; }
+        .slip-a { margin-top:18px; font-size:22px; letter-spacing:.2em; text-transform:uppercase; color:#6B6152; white-space:nowrap; }
+        .slip::after { content:""; position:absolute; left:0; right:0; top:0; height:6px; background:#F0761E; }
+        .slip-ln { position:absolute; left:40px; right:40px; top:96px; height:1px; background:rgba(26,22,17,.16); }
+
+        /* ---- object: the same shelf as scene 1, rebuilt at the same spot ---- */
+        .rig { position:absolute; left:1300px; top:230px; width:560px; height:640px;
+               perspective:1500px; perspective-origin:50% 18%; }
+        .shelf { position:absolute; inset:0; transform-style:preserve-3d; }
+        .vol { position:absolute; bottom:40px; width:76px; transform-style:preserve-3d; }
+        .sp { position:absolute; left:0; top:0; width:76px; height:100%;
+              background:linear-gradient(100deg,#2A2118 0%,#181310 55%,#221B14 100%);
+              border:2px solid rgba(239,231,214,.34); border-bottom:none; border-radius:3px 3px 0 0;
+              box-shadow: inset 0 0 0 1px rgba(240,118,30,.10); }
+        .sp i { position:absolute; left:12px; right:12px; top:40px; height:3px; background:#F0761E; opacity:.75; display:block; }
+        .sp u { position:absolute; left:12px; right:12px; bottom:36px; height:3px; background:rgba(239,231,214,.28); display:block; }
+        .sp span { position:absolute; left:50%; top:66px; transform:translateX(-50%);
+                   writing-mode:vertical-rl; text-orientation:mixed; font-size:18px; letter-spacing:.24em;
+                   color:rgba(239,231,214,.78); text-transform:uppercase; white-space:nowrap; }
+        .hd { position:absolute; left:0; top:0; width:76px; height:46px; transform-origin:center top;
+              transform:rotateX(90deg);
+              background:repeating-linear-gradient(to right,#CFC6B2 0 2px,#9E9683 2px 4px); }
+        .shelfline { position:absolute; left:-10px; bottom:34px; width:580px; height:5px;
+                     background:#F0761E; box-shadow:0 8px 24px rgba(240,118,30,.35); }
+        .shelfshadow { position:absolute; left:-10px; bottom:0; width:580px; height:30px;
+                       background:radial-gradient(ellipse closest-side, rgba(0,0,0,.7), rgba(0,0,0,0)); }
+        .shelftag { position:absolute; left:-10px; bottom:-18px; font-size:20px; letter-spacing:.22em;
+                    color:#EFE7D6; background:rgba(11,10,9,.88); padding:7px 14px; text-transform:uppercase;
+                    white-space:nowrap; }
+        .gap { position:absolute; left:276px; bottom:40px; width:76px; height:456px;
+               background:rgba(11,10,9,.55); box-shadow:inset 0 0 40px rgba(0,0,0,.9); }
+
+        /* ---- the volume that leaves the shelf: a real six-face box ---- */
+        .hero { position:absolute; left:164px; bottom:40px; width:300px; height:456px; transform-style:preserve-3d; }
+        .face { position:absolute; left:0; top:0; width:300px; height:456px; backface-visibility:hidden; }
+        .f-front { transform:translateZ(38px); background:linear-gradient(112deg,#1C1610 0%,#110E0A 60%,#1A1410 100%);
+                   border:2px solid rgba(239,231,214,.30); border-radius:3px 6px 6px 3px;
+                   box-shadow:0 0 70px rgba(240,118,30,.22); overflow:hidden; }
+        .f-back  { transform:rotateY(180deg) translateZ(38px); background:#120F0B; border:2px solid rgba(239,231,214,.18); }
+        .f-spine { width:76px; left:112px; transform:rotateY(-90deg) translateZ(150px); }
+        .f-edge  { width:76px; left:112px; transform:rotateY(90deg) translateZ(150px);
+                   background:repeating-linear-gradient(to bottom,#CFC6B2 0 2px,#9E9683 2px 4px); }
+        .f-top   { height:76px; top:190px; transform:rotateX(90deg) translateZ(228px);
+                   background:repeating-linear-gradient(to right,#CFC6B2 0 2px,#9E9683 2px 4px); }
+        .f-bot   { height:76px; top:190px; transform:rotateX(-90deg) translateZ(228px);
+                   background:repeating-linear-gradient(to right,#B9B09C 0 2px,#8A8270 2px 4px); }
+        /* the printed cover — a first sight of the jacket the film ends on */
+        .band { position:absolute; left:0; right:0; top:0; height:170px; background:#E9DFC8; }
+        .band .imp { position:absolute; left:22px; top:18px; font-size:18px; letter-spacing:.2em; color:#6B6152; text-transform:uppercase; white-space:nowrap; }
+        .band .ttl { position:absolute; left:20px; top:46px; width:256px; font-family:"League Gothic",sans-serif; font-size:60px;
+                     line-height:.92; letter-spacing:-.01em; color:#1A1611; text-transform:uppercase; white-space:normal; }
+        .cov-rule { position:absolute; left:0; right:0; top:170px; height:4px; background:#F0761E; }
+        .cov-mark { position:absolute; left:22px; top:206px; width:60px; height:60px; border:2px solid rgba(239,231,214,.34); border-radius:50%; }
+        .cov-mark i { position:absolute; left:16px; top:16px; width:24px; height:24px; background:#F0761E; border-radius:50%; display:block; }
+        .cov-sub { position:absolute; left:22px; right:22px; top:296px; font-size:18px; letter-spacing:.18em;
+                   color:rgba(239,231,214,.72); text-transform:uppercase; line-height:1.5; }
+        .cov-by { position:absolute; left:22px; bottom:30px; font-size:22px; letter-spacing:.22em;
+                  color:#EFE7D6; text-transform:uppercase; white-space:nowrap; }
+        .cov-by b { color:#F0761E; font-weight:400; }
+      </style>
+
+      <div id="root" data-composition-id="s2-turn" data-start="0" data-duration="6.5"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s2-world">
+          <div class="veil" data-layout-ignore aria-hidden="true"></div>
+          <div class="ghost" id="s2-ghost" data-layout-ignore aria-hidden="true">1984</div>
+
+          <div class="rig" id="s2-rig">
+            <div class="shelf" id="s2-shelf">
+              <div class="shelfshadow" data-layout-ignore aria-hidden="true"></div>
+              <div class="gap" id="s2-gap" data-layout-ignore aria-hidden="true"></div>
+              <!-- spine labels sit behind the turning volume and under the scrim's soft edge by design -->
+              <div class="vol" id="s2-v1" style="left:0;    height:430px"><div class="hd"></div><div class="sp"><i></i><span data-layout-allow-overlap data-layout-allow-occlusion>Apple</span><u></u></div></div>
+              <div class="vol" id="s2-v2" style="left:92px; height:472px"><div class="hd"></div><div class="sp"><i></i><span data-layout-allow-overlap data-layout-allow-occlusion>Jobs</span><u></u></div></div>
+              <div class="vol" id="s2-v3" style="left:184px;height:404px"><div class="hd"></div><div class="sp"><i></i><span data-layout-allow-overlap data-layout-allow-occlusion>The Mac</span><u></u></div></div>
+              <div class="vol" id="s2-v5" style="left:368px;height:418px"><div class="hd"></div><div class="sp"><i></i><span data-layout-allow-overlap data-layout-allow-occlusion>Insanely</span><u></u></div></div>
+              <div class="vol" id="s2-v6" style="left:460px;height:444px"><div class="hd"></div><div class="sp"><i></i><span data-layout-allow-overlap data-layout-allow-occlusion>The Rise</span><u></u></div></div>
+              <div class="shelfline" id="s2-shelfline"></div>
+              <!-- the same tag as scene 1's, in the same place: they coincide through the cross-dissolve -->
+              <div class="shelftag" id="s2-shelftag" data-layout-allow-overlap data-layout-allow-occlusion>The Apple shelf</div>
+
+              <!-- the fourth volume: its spine reads 1984 on the shelf; turned, it is the book -->
+              <div class="hero" id="s2-hero">
+                <div class="face f-back"></div>
+                <div class="face f-edge"></div>
+                <div class="face f-top"></div>
+                <div class="face f-bot"></div>
+                <div class="face f-spine"><div class="sp" style="height:100%"><i></i><span data-layout-allow-overlap data-layout-allow-occlusion>1984</span><u></u></div></div>
+                <div class="face f-front">
+                  <!-- printed matter on a rotating object: projected boxes overlap by design while it turns -->
+                  <div class="band">
+                    <div class="imp" data-layout-allow-overlap>William Morrow</div>
+                    <div class="ttl" data-layout-allow-overlap>The Little Kingdom</div>
+                  </div>
+                  <div class="cov-rule"></div>
+                  <div class="cov-mark" aria-hidden="true"><i></i></div>
+                  <div class="cov-sub" data-layout-allow-overlap>The private story of Apple Computer</div>
+                  <div class="cov-by" data-layout-allow-overlap>Moritz · <b>1984</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="stage" id="s2-stage">
+            <div class="slam g" id="s2-g3" data-layout-ignore aria-hidden="true">This one wasn't.</div>
+            <div class="slam g" id="s2-g2" data-layout-ignore aria-hidden="true">This one wasn't.</div>
+            <div class="slam g" id="s2-g1" data-layout-ignore aria-hidden="true">This one wasn't.</div>
+            <!-- the slam lands while scene 1 is still streaking out underneath — the handoff overlap is the cut -->
+            <div class="slam" id="s2-slam" data-layout-allow-overlap>This one wasn't.</div>
+            <div class="rule" id="s2-rule"></div>
+            <div class="slip" id="s2-slip">
+              <div class="slip-t"><b>The Little Kingdom</b> · Michael Moritz · William Morrow · 1984</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 6.5, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- handoff IN: scene 1 is streaking out at the same wall time ---- */
+          tl.fromTo("#s2-world", { opacity: 0, x: 160, filter: "blur(16px)" },
+                                 { opacity: 1, x: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s2-world", { filter: "none" }, IN);
+
+          /* ---- the shelf is exactly where scene 1 left it: same depths, same yaw, mid-breath ---- */
+          var vols = { 1: [-2, 2.5], 2: [46, -8.5], 3: [-26, 8], 5: [-50, -14], 6: [-2, 2.5] };
+          for (var k in vols) tl.set("#s2-v" + k, { z: vols[k][0], rotationY: vols[k][1] }, 0);
+          tl.fromTo("#s2-shelf", { y: -9, rotationY: 7 }, { y: 0, rotationY: 0, duration: 2.4, ease: "sine.inOut" }, 0);
+          var sc = 2.2, sr = Math.max(0, Math.floor((DUR - OUT - 2.4) / sc) - 1);
+          tl.to("#s2-shelf", { y: -8, rotationY: 6, duration: sc, ease: "sine.inOut", yoyo: true, repeat: sr }, 2.4);
+          tl.fromTo("#s2-ghost", { x: 0 }, { x: -50, duration: DUR, ease: "none" }, 0);
+
+          /* ---- blueprint kinetic-type-beats / rule kinetic-beat-slam: the reversal is an impact ---- */
+          var HIT = 0.28, SLAM = 0.5;
+          tl.fromTo("#s2-slam", { scale: 1.5, opacity: 0, filter: "blur(18px)" },
+                                { scale: 1, opacity: 1, filter: "blur(0px)", duration: SLAM, ease: "power4.out" }, HIT);
+          tl.set("#s2-slam", { filter: "none" }, HIT + SLAM);
+          /* rule motion-blur-streak, ghost path B: three echoes on the same window and ease, collapsing into the lead */
+          for (var g = 1; g <= 3; g++) {
+            tl.fromTo("#s2-g" + g, { scale: 1.5 + g * 0.17, opacity: 0.34 / g },
+                                   { scale: 1, opacity: 0, duration: SLAM, ease: "power4.out" }, HIT);
+          }
+          tl.fromTo("#s2-rule", { scaleX: 0, transformOrigin: "left center" },
+                                { scaleX: 1, duration: 0.55, ease: "power4.out" }, HIT + 0.42);
+
+          /* ---- object: one volume slides out, turns to face camera, grows toward it ---- */
+          tl.set("#s2-hero", { rotationY: 87, x: 0, y: 0, z: -128 }, 0);   /* spine-on, seated in its slot */
+          tl.fromTo("#s2-hero", { rotationY: 87, x: 0, y: 0, z: -128 },
+                                { rotationY: 87, x: -14, y: -74, z: 30, duration: 0.5, ease: "power3.out" }, 0.34);
+          tl.to("#s2-hero", { rotationY: -9, x: -78, y: -104, z: 260, duration: 0.95, ease: "power4.out" }, 0.86);
+          tl.fromTo("#s2-gap", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.5);
+          /* it hangs in the air, breathing, for the rest of the beat */
+          var hc = 2.0, hr = Math.max(0, Math.floor((DUR - OUT - 1.85) / hc) - 1);
+          tl.to("#s2-hero", { rotationY: -2, y: -116, duration: hc, ease: "sine.inOut", yoyo: true, repeat: hr }, 1.85);
+
+          /* ---- the paper slip: the catalogue card lands, a beat after the turn ---- */
+          tl.fromTo("#s2-slip", { rotation: -3, y: 60, opacity: 0 },
+                                { rotation: -1.2, y: 0, opacity: 1, duration: 0.55, ease: "power4.out" }, 1.75);
+          tl.fromTo("#s2-slip", { boxShadow: "0 30px 60px rgba(0,0,0,.55)" },
+                                { boxShadow: "0 18px 40px rgba(0,0,0,.55)", duration: 0.55, ease: "power3.out" }, 1.75);
+
+          /* ---- handoff OUT: lateral page-push (s3 streaks in at the same wall time) ---- */
+          tl.set("#s2-world", { filter: "blur(0px)" }, DUR - OUT);
+          tl.to("#s2-world", { opacity: 0, x: -160, filter: "blur(16px)", duration: OUT, ease: "power3.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s2-turn"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        /* The sector-readout HUD: transparent, lives only in the top 64px / bottom 56px bands. */
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; font-size:22px; letter-spacing:.2em;
+                text-transform:uppercase; color:#7C8AA3; font-variant-numeric:tabular-nums; }
+        .band { position:absolute; left:168px; width:1584px; white-space:nowrap; }
+        .top { top:0; height:64px; display:flex; align-items:center; justify-content:space-between; }
+        .cell { display:flex; align-items:center; white-space:nowrap; }
+        .prompt { color:#DCE5F2; font-weight:700; margin-right:22px; }
+        .co { color:#3B7BFF; }
+        .gap { display:inline-block; width:18px; }
+        /* the eight track names stack in one grid cell so the centre never shifts */
+        #ch-track { position:absolute; left:168px; width:1584px; top:0; height:64px;
+                    display:flex; align-items:center; justify-content:center; }
+        #ch-tnwrap { display:grid; }
+        .tn { grid-area:1 / 1; text-align:center; white-space:nowrap; opacity:0; }
+        .tn b { font-weight:400; color:#DCE5F2; }
+        #ch-tn0 { opacity:1; }
+        /* bottom band: the written progress rule over its dim track, ticks at the cuts */
+        #ch-ptrack { position:absolute; left:168px; top:1047px; width:1584px; height:2px; background:rgba(124,138,163,.28); }
+        #ch-prog { position:absolute; left:168px; top:1047px; width:1584px; height:2px; background:#3B7BFF; transform-origin:left center; }
+        .tick { position:absolute; top:1041px; width:2px; height:14px; background:rgba(124,138,163,.55); }
+        /* corner brackets, 22px, inset 40px */
+        .br { position:absolute; width:22px; height:22px; border:2px solid rgba(220,229,242,.5); }
+        .br-tl { left:40px; top:40px; border-right:none; border-bottom:none; }
+        .br-tr { right:40px; top:40px; border-left:none; border-bottom:none; }
+        .br-bl { left:40px; bottom:40px; border-right:none; border-top:none; }
+        .br-brc { right:40px; bottom:40px; border-left:none; border-top:none; }
+        /* grain: a seeded 256px noise tile, hashed position per frame */
+        #ch-grain { position:absolute; inset:0; opacity:.09; mix-blend-mode:overlay; background-repeat:repeat; }
+        #ch-black { position:absolute; inset:0; background:#000; opacity:0; }
+      </style>
+
+      <div data-hf-id="hf-biyb" id="root" data-composition-id="chrome" data-start="0" data-duration="60" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-jgi8" id="ch-grain" data-layout-ignore="" aria-hidden="true"></div>
+
+        <div data-hf-id="hf-g91l" class="band top" id="ch-top">
+          <div data-hf-id="hf-5h54" class="cell" id="ch-readout">
+            <span data-hf-id="hf-a83o" class="prompt">C:\&gt;</span>
+            <span data-hf-id="hf-38k3">CYL</span><span data-hf-id="hf-p0yb" class="gap"></span><span data-hf-id="hf-2m6f" class="co" id="ch-cyl">0000</span>
+            <span data-hf-id="hf-jq0j" class="gap"></span><span data-hf-id="hf-7kpp">HD</span><span data-hf-id="hf-jbpi" class="gap"></span><span data-hf-id="hf-6xt4" id="ch-hd">0</span>
+            <span data-hf-id="hf-ixeh" class="gap"></span><span data-hf-id="hf-2qpq">SEC</span><span data-hf-id="hf-ij3g" class="gap"></span><span data-hf-id="hf-vlb7" id="ch-sec">00</span>
+          </div>
+          <div data-hf-id="hf-eklx" class="cell" id="ch-written">
+            <span data-hf-id="hf-hyrw">WRITTEN</span><span data-hf-id="hf-i4sf" class="gap"></span><span data-hf-id="hf-vk2x" class="co" id="ch-pct">000%</span>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-qeiu" id="ch-track">
+          <div data-hf-id="hf-7b2r" id="ch-tnwrap">
+            <div data-hf-id="hf-d1ox" class="tn" id="ch-tn0">TRACK 01 / 08 — <b data-hf-id="hf-f8wy">THE RECEIVED STORY</b></div>
+            <div data-hf-id="hf-v4bp" class="tn" id="ch-tn1">TRACK 02 / 08 — <b data-hf-id="hf-cxw6">THE REPORTERS</b></div>
+            <div data-hf-id="hf-p2s5" class="tn" id="ch-tn2">TRACK 03 / 08 — <b data-hf-id="hf-wyp4">ALTAIR</b></div>
+            <div data-hf-id="hf-vbwp" class="tn" id="ch-tn3">TRACK 04 / 08 — <b data-hf-id="hf-4r1u">THE DEAL</b></div>
+            <div data-hf-id="hf-7x4p" class="tn" id="ch-tn4">TRACK 05 / 08 — <b data-hf-id="hf-ts4k">THE BULLY</b></div>
+            <div data-hf-id="hf-31ut" class="tn" id="ch-tn5">TRACK 06 / 08 — <b data-hf-id="hf-0kf5">THE RECORD</b></div>
+            <div data-hf-id="hf-dth1" class="tn" id="ch-tn6">TRACK 07 / 08 — <b data-hf-id="hf-ojst">THESIS</b></div>
+            <div data-hf-id="hf-8oc1" class="tn" id="ch-tn7">TRACK 08 / 08 — <b data-hf-id="hf-ebb0">HARD DRIVE</b></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-gsxy" id="ch-ptrack" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-d7ib" id="ch-prog" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-wdt7" id="ch-ticks" data-layout-ignore="" aria-hidden="true"></div>
+
+        <div data-hf-id="hf-ht6o" class="br br-tl" id="ch-br1" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-e2i5" class="br br-tr" id="ch-br2" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-n1js" class="br br-bl" id="ch-br3" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-fy96" class="br br-brc" id="ch-br4" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-pn0o" id="ch-black" data-layout-ignore="" aria-hidden="true"></div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 60;
+          /* the film's beat table — scene starts; the HUD steps on the same grid the world seeks on */
+          var CUTS = [0, 6.5, 12.5, 21, 30.5, 39, 47, 52.5];
+          var tl = gsap.timeline({ paused: true });
+
+          function h(n) { var x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); }
+          function pad(n, w) { var s = String(n); while (s.length < w) s = "0" + s; return s; }
+
+          /* ---- the grain tile: 256px seeded noise (LCG, seed 19750404), built once at load ---- */
+          var gc = document.createElement("canvas"); gc.width = 256; gc.height = 256;
+          var g = gc.getContext("2d"), img = g.createImageData(256, 256), d = img.data, seed = 19750404;
+          for (var p = 0; p < 256 * 256; p++) {
+            seed = (seed * 1103515245 + 12345) % 2147483648;
+            var v = 96 + ((seed >>> 8) % 160);
+            d[p * 4] = v; d[p * 4 + 1] = v; d[p * 4 + 2] = v; d[p * 4 + 3] = 255;
+          }
+          g.putImageData(img, 0, 0);
+          var grain = document.getElementById("ch-grain");
+          grain.style.backgroundImage = "url(" + gc.toDataURL("image/png") + ")";
+
+          /* ---- ticks at the cut fractions ---- */
+          var ticks = document.getElementById("ch-ticks"), th = "";
+          for (var i = 0; i < CUTS.length; i++) {
+            th += '<div class="tick" style="left:' + (168 + CUTS[i] / DUR * 1584 - 1).toFixed(1) + 'px"></div>';
+          }
+          ticks.innerHTML = th;
+
+          /* ---- the readout clock: counters, WRITTEN %, grain position — all from tl.time() ---- */
+          var cyl = document.getElementById("ch-cyl"), hd = document.getElementById("ch-hd"),
+              sec = document.getElementById("ch-sec"), pct = document.getElementById("ch-pct");
+          var clock = { t: 0 };
+          tl.to(clock, { t: DUR, duration: DUR, ease: "none", onUpdate: function () {
+            var tt = Math.max(0, Math.min(DUR, tl.time()));
+            var step = Math.floor(tt * 2);
+            cyl.textContent = pad(Math.floor(h(step * 3 + 1) * 1000), 4);
+            hd.textContent  = String(Math.floor(h(step * 3 + 2) * 6));
+            sec.textContent = pad(Math.floor(h(step * 3 + 3) * 64), 2);
+            pct.textContent = pad(Math.round(tt / DUR * 100), 3) + "%";
+            var f = Math.floor(tt * 30);
+            grain.style.backgroundPosition = Math.floor(h(f * 2 + 1) * 256) + "px " + Math.floor(h(f * 2 + 2) * 256) + "px";
+          } }, 0);
+
+          /* ---- track name: swapped by tl.set at each cut, under a 0.25s dip ---- */
+          for (var c = 1; c < CUTS.length; c++) {
+            var at = CUTS[c];
+            tl.fromTo("#ch-tnwrap", { opacity: 1 }, { opacity: 0, duration: 0.125, ease: "none", yoyo: true, repeat: 1, immediateRender: false }, at - 0.125);
+            tl.set("#ch-tn" + (c - 1), { opacity: 0 }, at);
+            tl.set("#ch-tn" + c, { opacity: 1 }, at);
+          }
+
+          /* ---- the written rule mirrors the ring in the world: 0 → 100% over the film ---- */
+          tl.fromTo("#ch-prog", { scaleX: 0 }, { scaleX: 1, duration: DUR, ease: "none" }, 0);
+
+          /* ---- corner brackets breathe (finite, on a 2s cycle) ---- */
+          var bc = 2;
+          ["#ch-br1", "#ch-br2", "#ch-br3", "#ch-br4"].forEach(function (sel, k) {
+            var br = Math.max(0, Math.floor((DUR - k * 0.25) / bc) - 1);
+            tl.fromTo(sel, { opacity: 1 }, { opacity: 0.45, duration: bc, ease: "sine.inOut", yoyo: true, repeat: br, immediateRender: false }, k * 0.25);
+          });
+
+          window.__timelines = window.__timelines || {};
+          /* the film ends on black: the HUD must not hang over the final fade */
+          tl.fromTo("#ch-black", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.in" }, 59.2);
+          window.__timelines["chrome"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

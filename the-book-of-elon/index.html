@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!-- three is VENDORED, not fetched from a CDN. A render-time CDN import is a race:
+         the renderer captures frames from parallel workers, and any worker that has not
+         finished downloading three yet captures a black canvas. Local = deterministic. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three.module.js",
+          "three/addons/": "./vendor/jsm/"
+        }
+      }
+    </script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body { margin:0; width:1920px; height:1080px; overflow:hidden; background:#07080B; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; background:#07080B; }
+      #world { position:absolute; inset:0; width:1920px; height:1080px; display:block; }
+      [data-composition-id="main"] > div[data-composition-src] { position:absolute; inset:0; }
+    </style>
+  </head>
+  <body>
+    <!--
+      The Book of Elon — 60s, 3D (v4).
+      The 3D world lives HERE, at the root, because the runtime re-executes cloned
+      sub-composition scripts as classic scripts and `type="module"` dies there.
+      One camera flies a single ~450-unit path for the whole minute. The eight typography
+      compositions are transparent overlays on tracks 1/2, overlapping 0.5s so every handoff
+      streaks with the camera whip. Track 3 is the telemetry HUD. Track 10 is the master mix.
+    -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="60" data-width="1920" data-height="1080" data-fps="30">
+
+      <canvas id="world" width="1920" height="1080"></canvas>
+
+      <div id="el-s1" data-composition-id="s1-ignition" data-composition-src="compositions/s1-ignition.html" data-start="0" data-duration="7.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s2" data-composition-id="s2-not-biography" data-composition-src="compositions/s2-not-biography.html" data-start="7" data-duration="6.5" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <div id="el-s3" data-composition-id="s3-useful" data-composition-src="compositions/s3-useful.html" data-start="13" data-duration="7.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s4" data-composition-id="s4-first-principles" data-composition-src="compositions/s4-first-principles.html" data-start="20" data-duration="8" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <div id="el-s5" data-composition-id="s5-algorithm" data-composition-src="compositions/s5-algorithm.html" data-start="27.5" data-duration="12" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s6" data-composition-id="s6-hardcore" data-composition-src="compositions/s6-hardcore.html" data-start="39" data-duration="8" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <div id="el-s7" data-composition-id="s7-multiplanetary" data-composition-src="compositions/s7-multiplanetary.html" data-start="46.5" data-duration="7" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="el-s8" data-composition-id="s8-title" data-composition-src="compositions/s8-title.html" data-start="53" data-duration="7" data-track-index="2" data-width="1920" data-height="1080"></div>
+
+      <div id="el-chrome" data-composition-id="chrome" data-composition-src="compositions/chrome.html" data-start="0" data-duration="60" data-track-index="3" data-width="1920" data-height="1080"></div>
+
+      <audio id="el-mix" src="assets/mix.mp3" data-start="0" data-duration="60" data-track-index="10" data-volume="1"></audio>
+    </div>
+
+    <!-- Deferred module: it blocks DOMContentLoaded, so with three vendored locally
+         the whole scene exists before the renderer seeks a single frame. -->
+    <script type="module" src="world.js"></script>
+    <script>
+      /* The world canvas repaints from a property SETTER, not onUpdate: gsap's seek()
+         suppresses callbacks, so an onUpdate repaint silently freezes on frame 0.
+         Tweened values are always written during render, suppressed or not. */
+      window.__timelines = window.__timelines || {};
+      (function () {
+        var tl = gsap.timeline({ paused: true });
+        var driver = { _t: 0 };
+        Object.defineProperty(driver, "t", {
+          get: function () { return this._t; },
+          set: function (v) {
+            this._t = v;
+            window.__worldPendingT = v;
+            if (window.__worldRenderAt) window.__worldRenderAt(v);
+          }
+        });
+        tl.to(driver, { t: 60, duration: 60, ease: "none" }, 0);
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>

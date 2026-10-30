@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .world { position:absolute; inset:0; }
+        .scrim { position:absolute; left:-320px; top:-60px; width:1680px; height:900px;
+                 background:radial-gradient(ellipse closest-side, rgba(5,7,14,.95),
+                   rgba(5,7,14,.74) 54%, rgba(5,7,14,0) 100%); }
+
+        /* the panel owns the bottom of the frame, so the type block is top-anchored */
+        .stage { position:absolute; left:168px; top:72px; width:1180px; }
+        .kicker { font-size:27px; letter-spacing:.2em; color:#7C8AA3; text-transform:uppercase; opacity:0; white-space:nowrap; }
+        .block { margin-top:16px; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:136px; line-height:.95; letter-spacing:-.03em; color:#DCE5F2; white-space:nowrap; }
+        .w { display:inline-block; opacity:0; }
+        .co { color:#3B7BFF; }
+        .note { margin-top:18px; padding-left:34px; border-left:4px solid #3B7BFF;
+                font-size:31px; line-height:1.5; color:#DCE5F2; opacity:0; max-width:1120px; white-space:nowrap; }
+
+        /* ---- object: the Altair 8800 front panel, full width, low in the frame ---- */
+        .panel { position:absolute; left:168px; top:720px; width:1584px; height:260px;
+                 background:#0B1120; border:2px solid #3B7BFF; opacity:0; }
+        .panel svg { position:absolute; left:-2px; top:-2px; width:1584px; height:260px; display:block; }
+      </style>
+
+      <div data-hf-id="hf-z436" id="root" data-composition-id="s3-altair" data-start="0" data-duration="9" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-z6vf" class="world" id="s3-world">
+
+          <div data-hf-id="hf-edqo" class="scrim" data-layout-ignore="" aria-hidden="true"></div>
+
+          <div data-hf-id="hf-tan6" class="stage">
+            <div data-hf-id="hf-lf5l" class="kicker" id="s3-kick">January 1975 &#160;·&#160; The Altair 8800</div>
+            <div data-hf-id="hf-rs4b" class="block">
+              <div data-hf-id="hf-nwlw" class="disp"><span data-hf-id="hf-bvil" class="w" id="s3-a1">They</span> <span data-hf-id="hf-sqk2" class="w" id="s3-a2">sold</span></div>
+              <div data-hf-id="hf-9gq4" class="disp"><span data-hf-id="hf-ggg4" class="w" id="s3-a3">it</span> <span data-hf-id="hf-ca8o" class="w co" id="s3-a4">first.</span></div>
+              <div data-hf-id="hf-89t1" class="disp"><span data-hf-id="hf-aubp" class="w" id="s3-b1">Then they</span></div>
+              <div data-hf-id="hf-8o42" class="disp"><span data-hf-id="hf-maqu" class="w" id="s3-b2">built it.</span></div>
+            </div>
+            <div data-hf-id="hf-2pjl" class="note" id="s3-note">Neither of them had ever touched an Altair. Gates was 19.</div>
+          </div>
+
+          <div data-hf-id="hf-sn7v" class="panel" id="s3-panel">
+            <svg data-hf-id="hf-5znb" viewBox="0 0 1584 260" xmlns="http://www.w3.org/2000/svg">
+              <!-- corner screws -->
+              <g data-hf-id="hf-12m9" stroke="rgba(124,138,163,.5)" stroke-width="1.5" fill="#05070E">
+                <circle data-hf-id="hf-ytov" cx="18" cy="18" r="5" /><circle data-hf-id="hf-bffq" cx="1566" cy="18" r="5" />
+                <circle data-hf-id="hf-dkio" cx="18" cy="242" r="5" /><circle data-hf-id="hf-z5cr" cx="1566" cy="242" r="5" />
+              </g>
+              <!-- badge -->
+              <text data-hf-id="hf-s5pf" x="44" y="116" fill="#DCE5F2" font-family="Archivo Black, sans-serif" font-size="44" letter-spacing="-1">ALTAIR 8800</text>
+              <text data-hf-id="hf-me85" x="44" y="154" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="19" letter-spacing="4">MITS · ALBUQUERQUE, N.M.</text>
+              <line data-hf-id="hf-7hth" x1="44" y1="176" x2="404" y2="176" stroke="#3B7BFF" stroke-opacity=".6" stroke-width="2" />
+              <text data-hf-id="hf-e7ru" x="44" y="206" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="14" letter-spacing="3" opacity=".7">S/N 0221 · INTEL 8080 · 256 BYTES</text>
+              <line data-hf-id="hf-g8j3" x1="448" y1="28" x2="448" y2="232" stroke="rgba(124,138,163,.3)" stroke-width="1.5" />
+              <!-- row labels -->
+              <text data-hf-id="hf-cv57" x="1004" y="51" text-anchor="end" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="13" letter-spacing="3">DATA</text>
+              <text data-hf-id="hf-524z" x="508" y="115" text-anchor="end" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="13" letter-spacing="3" opacity=".8">ADDR</text>
+              <!-- built by script: data LEDs, address LEDs, switches -->
+              <g data-hf-id="hf-9tgi" id="s3-field" />
+              <!-- switch group captions, as on the real panel -->
+              <text data-hf-id="hf-u8ic" x="530" y="244" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="12" letter-spacing="2" opacity=".75">STOP · RUN&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SINGLE STEP&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;EXAMINE · EXAMINE NEXT&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DEPOSIT · DEPOSIT NEXT&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;RESET · CLR</text>
+              <!-- power -->
+              <rect data-hf-id="hf-g2z6" x="1534" y="150" width="26" height="62" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="1.5" />
+              <rect data-hf-id="hf-up5p" id="s3-pwrknob" x="1538" y="182" width="18" height="22" rx="4" fill="#3B7BFF" fill-opacity=".6" />
+              <circle data-hf-id="hf-frpw" id="s3-pwrled" cx="1547" cy="122" r="7" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="1.5" />
+              <text data-hf-id="hf-a6qz" x="1547" y="98" text-anchor="middle" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="12" letter-spacing="2">PWR</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 9, IN = 0.5, OUT = 0.5, N = 16;
+          var tl = gsap.timeline({ paused: true });
+          function h(n) { var x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); }
+          function cx(i) { return 530 + i * 64; }
+
+          /* ---- build the panel field: 8 data LEDs, 16 address LEDs (with halos), 16 toggles ---- */
+          var field = document.getElementById("s3-field"), s = "";
+          for (var j = 0; j < 8; j++) {
+            var dx = cx(8 + j);
+            s += '<text x="' + dx + '" y="24" text-anchor="middle" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="13" letter-spacing="1">D' + (7 - j) + '</text>';
+            s += '<circle id="s3-dh' + j + '" cx="' + dx + '" cy="46" r="17" fill="#3B7BFF" opacity="0"/>';
+            s += '<circle id="s3-dl' + j + '" cx="' + dx + '" cy="46" r="8" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5"/>';
+          }
+          for (var i = 0; i < N; i++) {
+            var x = cx(i);
+            s += '<text x="' + x + '" y="82" text-anchor="middle" fill="#7C8AA3" font-family="Space Mono, monospace" font-size="13" letter-spacing="1">A' + (15 - i) + '</text>';
+            s += '<circle id="s3-hl' + i + '" cx="' + x + '" cy="110" r="22" fill="#3B7BFF" opacity="0"/>';
+            s += '<circle id="s3-led' + i + '" cx="' + x + '" cy="110" r="11" fill="#3B7BFF" fill-opacity=".12" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="1.5"/>';
+            s += '<rect x="' + (x - 13) + '" y="148" width="26" height="62" rx="6" fill="#05070E" stroke="#3B7BFF" stroke-opacity=".4" stroke-width="1.5"/>';
+            s += '<rect id="s3-sw' + i + '" x="' + (x - 9) + '" y="180" width="18" height="22" rx="4" fill="#3B7BFF" fill-opacity=".6"/>';
+          }
+          field.innerHTML = s;
+          var leds = [], halos = [], dls = [], dhs = [];
+          for (i = 0; i < N; i++) { leds.push(document.getElementById("s3-led" + i)); halos.push(document.getElementById("s3-hl" + i)); }
+          for (j = 0; j < 8; j++) { dls.push(document.getElementById("s3-dl" + j)); dhs.push(document.getElementById("s3-dh" + j)); }
+          var pwr = document.getElementById("s3-pwrled");
+
+          /* ---- handoff IN — a head seek: s2 lifts out on the same window ---- */
+          tl.fromTo("#s3-world", { opacity: 0, y: 140, filter: "blur(14px)" },
+                                 { opacity: 1, y: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s3-world", { filter: "none" }, IN);
+
+          tl.fromTo("#s3-kick", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.5);
+
+          /* --- blueprint: kinetic-type-beats — the statement builds across two beats with distinct moves:
+                 pair one is a waterfall from below with a spring-pop payoff on FIRST; pair two side-snaps in 0.9s later --- */
+          [["#s3-a1", 0.85, 60, 0.18], ["#s3-a2", 0.98, 48, 0.16], ["#s3-a3", 1.28, 40, 0.14], ["#s3-a4", 1.40, 76, 0.2]].forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s3-a4", { scale: 1.16, transformOrigin: "left center" }, { scale: 1, duration: 0.36, ease: "back.out(2.2)" }, 1.40);
+          tl.fromTo("#s3-b1", { opacity: 0, x: -260 }, { opacity: 1, x: 0, duration: 0.42, ease: "expo.out" }, 2.30);
+          tl.fromTo("#s3-b2", { opacity: 0, x: -260 }, { opacity: 1, x: 0, duration: 0.42, ease: "expo.out" }, 2.45);
+          tl.fromTo("#s3-note", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.15);
+
+          /* --- object: the machine rises into frame and powers up --- */
+          tl.fromTo("#s3-panel", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.6, ease: "power4.out" }, 3.0);
+          var PON = 3.4;
+          tl.fromTo("#s3-pwrknob", { y: 0 }, { y: -26, duration: 0.12, ease: "power3.out" }, PON - 0.1);
+
+          /* six toggles get thrown on a 0.5s beat; the address bit they set latches its LED (a deposit) */
+          var THROWN = [[4.3, 2], [4.8, 5], [5.3, 9], [5.8, 12], [6.3, 3], [6.8, 7]], thrownAt = [];
+          THROWN.forEach(function (t) {
+            thrownAt[t[1]] = t[0];
+            tl.fromTo("#s3-sw" + t[1], { y: 0 }, { y: -26, duration: 0.14, ease: "power3.out" }, t[0]);
+          });
+
+          /* --- rule: svg-icon-enrichment — the LEDs run a deterministic program.
+                 Every lamp is a pure function of quantized timeline time: power-on sweep, lamp test, then a hash of floor(t*7). --- */
+          var clock = { t: 0 };
+          function lamp(el, halo, on, dim) {
+            el.setAttribute("fill-opacity", on ? "0.95" : dim ? "0.45" : "0.10");
+            el.setAttribute("stroke-opacity", on ? "1" : "0.35");
+            halo.setAttribute("opacity", on ? "0.28" : dim ? "0.1" : "0");
+          }
+          tl.to(clock, { t: 1, duration: DUR - PON, ease: "none", onUpdate: function () {
+            var now = tl.time(), tt = now - PON;
+            var powered = tt >= 0;
+            pwr.setAttribute("fill-opacity", powered ? "0.95" : "0.12");
+            var step = Math.floor(tt * 7);
+            for (var i = 0; i < N; i++) {
+              var lit;
+              if (!powered) lit = false;
+              else if (tt < 0.9) lit = (i <= tt * 18);                    /* power-on sweep, left to right */
+              else if (tt < 1.05) lit = true;                             /* lamp test */
+              else lit = h(step * 31 + i * 7) > 0.55;                     /* the running program */
+              if (thrownAt[i] !== undefined && now >= thrownAt[i]) lit = true;
+              lamp(leds[i], halos[i], lit, false);
+            }
+            var idx = Math.floor(Math.max(0, tt - 1.05) * 10) % 8;
+            for (var j = 0; j < 8; j++) {
+              var on = powered && tt >= 1.05 && j === idx;
+              var trail = powered && tt >= 1.05 && j === (idx + 7) % 8;
+              if (powered && tt >= 0.9 && tt < 1.05) on = true;
+              lamp(dls[j], dhs[j], on, trail);
+            }
+          } }, PON);
+
+          /* ---- handoff OUT: the head seeks — this scene lifts out, s4 rises in on the same window ---- */
+          tl.set("#s3-world", { filter: "blur(0px)" }, DUR - OUT);
+          tl.to("#s3-world", { opacity: 0, y: -140, filter: "blur(14px)", duration: OUT, ease: "power3.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s3-altair"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

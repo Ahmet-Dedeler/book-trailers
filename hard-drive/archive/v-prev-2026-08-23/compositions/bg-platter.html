@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; }
+        .bloom { position:absolute; left:-10%; top:-25%; width:120%; height:150%;
+                 background:radial-gradient(ellipse 42% 46% at 50% 50%,
+                   rgba(59,123,255,.26), rgba(59,123,255,0) 68%); }
+        .matrix { position:absolute; inset:-4%;
+                  background-image:radial-gradient(rgba(220,229,242,.09) 1px, rgba(0,0,0,0) 1px);
+                  background-size:26px 26px; opacity:.42; }
+        .scan { position:absolute; inset:-2%; opacity:.5;
+                background:repeating-linear-gradient(to bottom,
+                  rgba(220,229,242,.045) 0px, rgba(220,229,242,.045) 1px,
+                  rgba(0,0,0,0) 1px, rgba(0,0,0,0) 4px); }
+        .vig { position:absolute; inset:0;
+               background:radial-gradient(ellipse 64% 64% at 50% 50%,
+                 rgba(0,0,0,0) 38%, rgba(5,7,14,.80) 100%); }
+      </style>
+
+      <div data-hf-id="hf-54oo" id="root" data-composition-id="bg-platter" data-start="0" data-duration="60" data-width="1920" data-height="1080" data-layout-ignore="">
+        <div data-hf-id="hf-fb2q" class="bloom" id="bg-bloom" data-layout-ignore="" aria-hidden="true"></div>
+
+        <div data-hf-id="hf-cy6q" class="matrix" id="bg-matrix" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-3xmq" class="scan" id="bg-scan" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-h4t4" class="vig" data-layout-ignore="" aria-hidden="true"></div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 60;
+          var tl = gsap.timeline({ paused: true });
+          tl.fromTo("#bg-bloom", { x: 420, y: 130, scale: 0.86 },
+                                 { x: -300, y: -80, scale: 1.22, duration: DUR, ease: "sine.inOut" }, 0);
+          var bc = 7.5, br = Math.max(0, Math.floor(DUR / bc) - 1);
+          tl.to("#bg-bloom", { opacity: 0.7, duration: bc, ease: "sine.inOut", yoyo: true, repeat: br }, 0);
+          tl.fromTo("#bg-matrix", { y: 0 }, { y: 26, duration: DUR, ease: "none" }, 0);
+          tl.fromTo("#bg-scan", { y: 0 }, { y: 4, duration: DUR, ease: "none" }, 0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["bg-platter"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6; }
+        .world { position:absolute; inset:0; }
+        .veil  { position:absolute; inset:0; background:rgba(11,10,9,.42); }
+        .scrim { position:absolute; left:-300px; top:40px; width:1640px; height:1000px;
+                 background:radial-gradient(ellipse closest-side, rgba(11,10,9,.95),
+                   rgba(11,10,9,.76) 54%, rgba(11,10,9,0) 100%); }
+
+        /* ---- type block on the left rail ---- */
+        .stage { position:absolute; left:168px; top:0; bottom:0; width:1180px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .kicker { font-size:27px; letter-spacing:.24em; color:#9A8F7C; text-transform:uppercase;
+                  display:block; height:34px; white-space:nowrap; }
+        .caret { display:inline-block; width:15px; height:27px; background:#F0761E;
+                 vertical-align:-4px; margin-left:6px; }
+        .rule { height:2px; background:#F0761E; width:560px; margin:26px 0 34px; }
+        .disp { font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:206px; line-height:.92; letter-spacing:-.02em; color:#EFE7D6; white-space:nowrap; }
+        .w { display:inline-block; opacity:0; }
+        .amber { color:#F0761E; }
+
+        /* ---- the paper slip (shared component) ---- */
+        .slip { position:relative; margin-top:44px; width:900px; padding:34px 40px 30px;
+                background:#E9DFC8; color:#1A1611; opacity:0;
+                box-shadow:0 30px 60px rgba(0,0,0,.55), 0 2px 0 rgba(255,255,255,.35) inset; }
+        .slip::after { content:""; position:absolute; left:0; right:0; top:0; height:6px; background:#F0761E; }
+        .slip-t { font-size:33px; line-height:1.42; letter-spacing:.02em; height:94px; }
+        .slip-a { margin-top:18px; font-size:22px; letter-spacing:.2em; text-transform:uppercase;
+                  color:#5E5548; white-space:nowrap; opacity:0; }
+
+        /* ---- object: the manuscript — eight typed pages, one at a time ---- */
+        .rig { position:absolute; left:1300px; top:200px; width:560px; height:680px;
+               perspective:1600px; perspective-origin:50% 40%; }
+        .pile { position:absolute; inset:0; transform-style:preserve-3d; }
+        .sheet { position:absolute; left:100px; top:90px; width:360px; height:470px; opacity:0;
+                 background:linear-gradient(168deg,#F1E9D8 0%,#E9DFC8 55%,#DFD3B8 100%);
+                 box-shadow:0 22px 46px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.5) inset; }
+        .sheet::before { content:""; position:absolute; left:0; top:0; right:0; height:5px;
+                         background:linear-gradient(to bottom, rgba(26,22,17,.10), rgba(26,22,17,0)); }
+        .pg { position:absolute; left:30px; right:30px; top:26px; bottom:26px; }
+        .ph { display:flex; justify-content:space-between; font-size:18px; letter-spacing:.14em;
+              color:#5E5548; text-transform:uppercase; white-space:nowrap; height:28px;
+              border-bottom:1px solid rgba(26,22,17,.18); margin-bottom:16px; }
+        .pl { height:23px; white-space:nowrap; }
+        .pl i { display:inline-block; height:9px; background:rgba(26,22,17,.46); vertical-align:middle; }
+        .pn { position:absolute; left:0; right:0; bottom:0; text-align:center; font-size:18px;
+              letter-spacing:.2em; color:#5E5548; }
+        .stamp { position:absolute; left:64px; top:186px; padding:8px 22px 6px;
+                 border:5px solid #E03A3E; border-radius:6px; color:#E03A3E;
+                 font-weight:700; font-size:56px; line-height:1; letter-spacing:.34em;
+                 text-transform:uppercase; white-space:nowrap; opacity:0;
+                 box-shadow:0 0 0 2px rgba(224,58,62,.22) inset; }
+        .stamp::after { content:""; position:absolute; inset:-5px;
+                        background:radial-gradient(ellipse at 30% 40%, rgba(233,223,200,0) 55%, rgba(233,223,200,.5) 100%); }
+      </style>
+
+      <div id="root" data-composition-id="s6-anyway" data-start="0" data-duration="8.5"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s6-world">
+          <div class="veil" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="rig" id="s6-rig">
+            <div class="pile" id="s6-pile">
+              <div class="sheet" id="s6-p1"><div class="pg" id="s6-pg1"></div></div>
+              <div class="sheet" id="s6-p2"><div class="pg" id="s6-pg2"></div></div>
+              <div class="sheet" id="s6-p3"><div class="pg" id="s6-pg3"></div></div>
+              <div class="sheet" id="s6-p4"><div class="pg" id="s6-pg4"></div></div>
+              <div class="sheet" id="s6-p5"><div class="pg" id="s6-pg5"></div></div>
+              <div class="sheet" id="s6-p6"><div class="pg" id="s6-pg6"></div></div>
+              <div class="sheet" id="s6-p7"><div class="pg" id="s6-pg7"></div></div>
+              <div class="sheet" id="s6-p8"><div class="pg" id="s6-pg8"></div>
+                <div class="stamp" id="s6-stamp">Draft</div></div>
+            </div>
+          </div>
+
+          <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="stage" id="s6-stage">
+            <div class="kicker"><span id="s6-kick"></span><span class="caret" id="s6-caret"></span></div>
+            <div class="rule" id="s6-rule"></div>
+            <div class="disp">
+              <span class="w" id="s6-a1">He</span> <span class="w" id="s6-a2">finished</span>
+            </div>
+            <div class="disp">
+              <span class="w" id="s6-a3">the</span> <span class="w" id="s6-a4">book</span>
+              <span class="w amber" id="s6-a5">anyway.</span>
+            </div>
+            <div class="slip" id="s6-slip">
+              <div class="slip-t" id="s6-slipt"></div>
+              <div class="slip-a" id="s6-slipa">— Andy Hertzfeld, Macintosh team</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8.5, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+          function h(n) { var x = Math.sin(n * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); }
+
+          /* ---- build the typescript: word-bars per line, hashed off (page, line, word) ---- */
+          (function buildPages() {
+            var W = 300;
+            for (var i = 1; i <= 8; i++) {
+              var html = '<div class="ph" data-layout-allow-overlap><span data-layout-allow-overlap>Moritz / Apple</span><span data-layout-allow-overlap>Morrow</span></div>';
+              for (var l = 0; l < 14; l++) {
+                var indent = (h(i * 31 + l * 5) < 0.24) ? 36 : 0;
+                var gap = (l > 0 && h(i * 7 + l * 3) < 0.10);
+                var words = "", x = indent, n = 0;
+                while (!gap) {
+                  var w = 16 + Math.floor(h(i * 97 + l * 13 + n * 3) * 56);
+                  if (x + w > W) break;
+                  words += '<i style="width:' + w + 'px;margin-left:' + (n ? 8 : indent) + 'px"></i>';
+                  x += w + 8; n++;
+                }
+                html += '<div class="pl">' + words + '</div>';
+              }
+              html += '<div class="pn" data-layout-allow-overlap>— ' + (188 + i * 17) + ' —</div>';
+              document.getElementById("s6-pg" + i).innerHTML = html;
+            }
+          })();
+          gsap.set("#s6-stamp", { rotation: -14, transformOrigin: "50% 50%" });
+
+          /* ---- handoff IN (5→6 accent): rises from below behind s5's closed doors ---- */
+          tl.fromTo("#s6-world", { opacity: 0, y: 90, filter: "blur(12px)" },
+                                 { opacity: 1, y: 0, filter: "blur(0px)", duration: IN, ease: "power4.out" }, 0);
+          tl.set("#s6-world", { filter: "none" }, IN);
+
+          /* --- rule: discrete-text-sequence (smooth slice) — the cold-open caret returns --- */
+          var KICK = "The Mac team kept talking. Quietly.";
+          var kickEl = document.getElementById("s6-kick");
+          var caret = document.getElementById("s6-caret");
+          var typer = { i: 0 };
+          tl.fromTo(typer, { i: 0 }, {
+            i: KICK.length, duration: 1.55, ease: "none",
+            onUpdate: function () { kickEl.textContent = KICK.slice(0, Math.round(typer.i)); }
+          }, 0.45);
+          var clock = { t: 0 };
+          tl.to(clock, {
+            t: DUR, duration: DUR, ease: "none",
+            onUpdate: function () {
+              var tt = tl.time();
+              caret.style.opacity = (tt < 0.45) ? 0 : (((tt % 0.86) < 0.47) ? 1 : 0.12);
+            }
+          }, 0);
+          tl.fromTo("#s6-rule", { scaleX: 0, transformOrigin: "left center" },
+                                { scaleX: 1, duration: 0.55, ease: "power4.out" }, 1.85);
+
+          /* --- object: pages drop in from the upper right, in front of the pile, one per beat, and settle --- */
+          for (var i = 1; i <= 8; i++) {
+            var px = (h(i) * 2 - 1) * 18, py = (h(i + 10) * 2 - 1) * 14;
+            var rot = (i === 8) ? -1.6 : (h(i + 20) * 2 - 1) * 4.5;
+            var at = 0.55 + (i - 1) * 0.24;
+            tl.fromTo("#s6-p" + i,
+              { opacity: 0, x: px + 380, y: py - 300, z: (i - 1) * 12 + 260, rotation: rot + 18, rotationX: 22, rotationY: 14 },
+              { opacity: 1, x: px, y: py, z: (i - 1) * 12, rotation: rot, rotationX: 4, rotationY: -8,
+                duration: 0.5, ease: "power4.out" }, at);
+            /* the settle: a 3px bounce as the sheet lands on the pile */
+            tl.to("#s6-p" + i, { y: py + 3, duration: 0.09, ease: "sine.inOut", yoyo: true, repeat: 1 }, at + 0.5);
+          }
+
+          /* --- rule: waterfall-entry — binary opacity, whip from below, ANYWAY is the anchor --- */
+          var wave = [["#s6-a1", 2.00, 50, 0.15], ["#s6-a2", 2.13, 66, 0.18],
+                      ["#s6-a3", 2.30, 40, 0.13], ["#s6-a4", 2.42, 50, 0.15],
+                      ["#s6-a5", 2.58, 84, 0.20]];
+          wave.forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s6-a5", { scale: 1.2, transformOrigin: "left bottom" },
+                              { scale: 1, duration: 0.38, ease: "power3.out" }, 2.58);
+          /* the stamp comes down on the word ANYWAY, and the pile takes the hit */
+          tl.fromTo("#s6-stamp", { scale: 1.6, opacity: 0 },
+                                 { scale: 1, opacity: 0.9, duration: 0.18, ease: "power3.in" }, 2.62);
+          tl.fromTo("#s6-pile", { y: 0 }, { y: 6, duration: 0.07, ease: "power2.out", yoyo: true, repeat: 1 }, 2.80);
+
+          /* the pile breathes for the rest of the scene */
+          var pc = 2.3, pr = Math.max(0, Math.floor((DUR - OUT - 3.0) / pc) - 1);
+          tl.fromTo("#s6-pile", { y: 0, rotationY: 0 },
+                                { y: -10, rotationY: 5, duration: pc, ease: "sine.inOut", yoyo: true, repeat: pr }, 3.0);
+
+          /* --- the paper slip: Hertzfeld's line types itself onto the notebook slip --- */
+          tl.fromTo("#s6-slip", { opacity: 0, y: 60, rotation: -3 },
+                                { opacity: 1, y: 0, rotation: -1.2, duration: 0.55, ease: "power4.out" }, 3.5);
+          var QUOTE = "\"One of the best books about Apple Computer ever written.\"";
+          var slipEl = document.getElementById("s6-slipt");
+          var qtyper = { i: 0 };
+          tl.fromTo(qtyper, { i: 0 }, {
+            i: QUOTE.length, duration: 1.5, ease: "none",
+            onUpdate: function () { slipEl.textContent = QUOTE.slice(0, Math.round(qtyper.i)); }
+          }, 3.75);
+          tl.fromTo("#s6-slipa", { opacity: 0, y: 12 },
+                                 { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 5.35);
+
+          /* ---- handoff OUT: lateral page-push (s7 streaks in at the same wall time) ---- */
+          tl.set("#s6-world", { filter: "blur(0px)" }, DUR - OUT);
+          tl.to("#s6-world", { opacity: 0, x: -160, filter: "blur(16px)", duration: OUT, ease: "power3.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s6-anyway"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

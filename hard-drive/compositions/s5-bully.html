@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .world { position:absolute; inset:0; }
+        .scrim { position:absolute; left:-320px; top:20px; width:1700px; height:1040px;
+                 background:radial-gradient(ellipse closest-side, rgba(5,7,14,.95),
+                   rgba(5,7,14,.74) 54%, rgba(5,7,14,0) 100%); }
+
+        .stage { position:absolute; left:168px; top:0; width:1180px; height:1080px; }
+        .topwrap { position:absolute; left:0; top:300px; }
+        .kicker { font-size:27px; letter-spacing:.22em; color:#7C8AA3; text-transform:uppercase;
+                  white-space:nowrap; opacity:0; }
+        .kicker b { font-weight:400; color:#3B7BFF; }
+        .rule { height:2px; background:#3B7BFF; width:620px; margin-top:20px; transform-origin:left center; }
+
+        /* the label — a glitch stack: ghosts behind, base on top, all in one grid cell */
+        .label { position:absolute; left:0; top:384px; }
+        .gstack { display:grid; opacity:0; }
+        .gcopy { grid-area:1 / 1; font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                 font-size:160px; line-height:.98; letter-spacing:-.03em; white-space:nowrap; }
+        .gcopy div { white-space:nowrap; }
+        .g-base { z-index:2; color:#DCE5F2; }
+        .g-co { z-index:1; color:#3B7BFF; mix-blend-mode:screen; opacity:0; }
+        .g-sc { z-index:1; color:#DCE5F2; mix-blend-mode:screen; opacity:0; }
+
+        .subwrap { position:absolute; left:0; top:730px; }
+        .sub { font-size:28px; letter-spacing:.04em; color:#7C8AA3; white-space:nowrap; opacity:0; }
+
+        /* the charge sheet — the intruder */
+        .sheet { position:absolute; left:0; top:400px; width:1150px; opacity:0;
+                 border-left:4px solid #3B7BFF; padding:26px 0 26px 42px;
+                 background:rgba(11,17,32,.82); }
+        .charge { display:block; font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                  font-size:46px; line-height:1.62; letter-spacing:-.02em; color:#DCE5F2;
+                  white-space:nowrap; opacity:0; }
+        .charge.co { color:#3B7BFF; }
+
+        .foot { position:absolute; left:0; top:800px; font-size:28px; letter-spacing:.04em; color:#7C8AA3;
+                white-space:nowrap; opacity:0; }
+        .foot i { font-style:normal; color:#DCE5F2; }
+
+        /* ---- object: the fault panel — four indicators, one per charge ---- */
+        .rig { position:absolute; left:1340px; top:210px; width:520px; height:660px; perspective:1600px; }
+        .panel { position:absolute; inset:0; opacity:0; }
+        .pjit { position:absolute; inset:0; }
+        .panel svg { display:block; width:520px; height:660px; }
+        .panel text { font-family:"Space Mono",monospace; }
+        .panel .st { font-family:"Archivo Black",sans-serif; opacity:0; }
+      </style>
+
+      <div data-hf-id="hf-cp9b" id="root" data-composition-id="s5-bully" data-start="0" data-duration="9" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-hgpx" class="world" id="s5-world">
+
+          <div data-hf-id="hf-ti81" class="rig" id="s5-rig">
+            <div data-hf-id="hf-v29t" class="panel" id="s5-panel">
+              <div data-hf-id="hf-q4il" class="pjit" id="s5-pjit">
+                <svg data-hf-id="hf-h5hu" viewBox="0 0 520 660" fill="none">
+                  <rect data-hf-id="hf-6a81" x="2" y="2" width="516" height="656" rx="10" fill="#0B1120" stroke="#3B7BFF" stroke-opacity=".9" stroke-width="2.5" />
+                  <rect data-hf-id="hf-kz4s" x="18" y="18" width="484" height="624" rx="6" stroke="rgba(124,138,163,.22)" stroke-width="1.5" />
+                  <!-- header -->
+                  <text data-hf-id="hf-uf6r" x="36" y="62" fill="#DCE5F2" font-size="22" letter-spacing="5">FAULT LOG</text>
+                  <text data-hf-id="hf-04a9" x="484" y="62" fill="#7C8AA3" font-size="18" letter-spacing="4" text-anchor="end">MS · 1990</text>
+                  <rect data-hf-id="hf-e2z8" id="s5-blink" x="318" y="46" width="12" height="12" fill="#3B7BFF" />
+                  <line data-hf-id="hf-dxvu" x1="30" y1="88" x2="490" y2="88" stroke="#3B7BFF" stroke-width="2" />
+                  <!-- rows, laid out by script -->
+                  <g data-hf-id="hf-vmtr" id="s5-rows" />
+                  <!-- footer -->
+                  <line data-hf-id="hf-cqh5" x1="30" y1="598" x2="490" y2="598" stroke="#3B7BFF" stroke-opacity=".6" stroke-width="2" />
+                  <text data-hf-id="hf-g7m4" id="s5-count" x="36" y="632" fill="#7C8AA3" font-size="18" letter-spacing="4">FAULTS LOGGED  0 / 4</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-edqo" class="scrim" data-layout-ignore="" aria-hidden="true"></div>
+
+          <div data-hf-id="hf-tan6" class="stage">
+            <div data-hf-id="hf-3xed" class="topwrap" id="s5-topwrap">
+              <div data-hf-id="hf-3a59" class="kicker" id="s5-kick" data-layout-allow-overlap="">By <b data-hf-id="hf-tpll" data-layout-allow-overlap="">1990</b></div>
+              <div data-hf-id="hf-mvwv" class="rule" id="s5-rule"></div>
+            </div>
+
+            <div data-hf-id="hf-19xt" class="label" id="s5-label">
+              <div data-hf-id="hf-z80d" class="gstack" id="s5-gstack">
+                <div data-hf-id="hf-d7xy" class="gcopy g-co" id="s5-gco" data-layout-ignore="" aria-hidden="true"><div data-hf-id="hf-ixo2">The Silicon</div><div data-hf-id="hf-6bzk">Bully</div></div>
+                <div data-hf-id="hf-593i" class="gcopy g-sc" id="s5-gsc" data-layout-ignore="" aria-hidden="true"><div data-hf-id="hf-67xy">The Silicon</div><div data-hf-id="hf-9w5k">Bully</div></div>
+                <div data-hf-id="hf-f00b" class="gcopy g-base"><div data-hf-id="hf-9m1r" data-layout-allow-overlap="">The Silicon</div><div data-hf-id="hf-bm4t" data-layout-allow-overlap="">Bully</div></div>
+              </div>
+            </div>
+
+            <div data-hf-id="hf-rfz1" class="subwrap" id="s5-subwrap">
+              <div data-hf-id="hf-ktak" class="sub" id="s5-sub">Business Month magazine's label for Gates.</div>
+            </div>
+
+            <div data-hf-id="hf-slid" class="sheet" id="s5-sheet">
+              <span data-hf-id="hf-cqpa" class="charge" id="s5-c1">OS/2 failed.</span>
+              <span data-hf-id="hf-4q1g" class="charge" id="s5-c2">Windows shipped late, and late again.</span>
+              <span data-hf-id="hf-meam" class="charge" id="s5-c3">IBM walked — and allied with Apple.</span>
+              <span data-hf-id="hf-4r6d" class="charge co" id="s5-c4">The FTC opened an investigation.</span>
+            </div>
+
+            <div data-hf-id="hf-85to" class="foot" id="s5-foot">The book charts the <i data-hf-id="hf-y37s">misses</i>, not just the wins.</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 9, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* pure hash — every per-frame value is a function of quantized tl.time() */
+          function h(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+          function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+          /* a glitch envelope: full amplitude on arrival, dying fast (power3.in decay) */
+          function env(t, at, dur) { var k = (t - at) / dur; return (k < 0 || k >= 1) ? 0 : 1 - k * k * k; }
+
+          /* ---- the fault panel rows, laid out once at build ---- */
+          var ROWS = [["OS/2", "FAIL"], ["WINDOWS", "LATE"], ["IBM", "WALKED"], ["FTC", "OPEN"]];
+          var LAND = [3.3, 3.8, 4.3, 4.8];               /* one per charge, on a 0.5s beat */
+          (function () {
+            var g = document.getElementById("s5-rows"), s = "";
+            for (var i = 0; i < 4; i++) {
+              var y = 118 + i * 120;
+              s += '<circle id="s5-glow' + i + '" cx="62" cy="' + (y + 46) + '" r="26" fill="#3B7BFF" opacity="0"/>';
+              s += '<circle cx="62" cy="' + (y + 46) + '" r="15" fill="#05070E" stroke="rgba(124,138,163,.45)" stroke-width="2"/>';
+              s += '<circle id="s5-led' + i + '" cx="62" cy="' + (y + 46) + '" r="10" fill="#3B7BFF" opacity=".16"/>';
+              s += '<text x="108" y="' + (y + 30) + '" fill="#7C8AA3" font-size="21" letter-spacing="4">' + ROWS[i][0] + '</text>';
+              s += '<text x="484" y="' + (y + 30) + '" fill="#7C8AA3" fill-opacity=".6" font-size="16" letter-spacing="3" text-anchor="end">F0' + (i + 1) + '</text>';
+              s += '<text id="s5-ph' + i + '" x="108" y="' + (y + 82) + '" fill="#7C8AA3" fill-opacity=".45" font-size="26" letter-spacing="6">- - - - -</text>';
+              s += '<text id="s5-st' + i + '" class="st" x="106" y="' + (y + 86) + '" fill="#3B7BFF" font-size="46" letter-spacing="-1">' + ROWS[i][1] + '</text>';
+              s += '<line x1="30" y1="' + (y + 106) + '" x2="490" y2="' + (y + 106) + '" stroke="rgba(124,138,163,.22)" stroke-width="1.5"/>';
+            }
+            g.innerHTML = s;
+          })();
+
+          /* ---- handoff IN: no blur, no y — s5 arrives through its own chromatic glitch ---- */
+          tl.fromTo("#s5-world", { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, 0);
+
+          /* --- rule: chromatic-glitch (glitch-stretch entrance) — stack stretches in while the split runs --- */
+          tl.fromTo("#s5-gstack", { opacity: 0, scaleX: 1.5, transformOrigin: "left center" },
+                                  { opacity: 1, scaleX: 1, duration: 0.5, ease: "power4.out" }, 0);
+          tl.fromTo("#s5-kick", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "steps(4)" }, 0.08);
+          tl.fromTo("#s5-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power4.out" }, 0.22);
+          tl.fromTo("#s5-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.95);
+
+          /* --- object: the fault panel — in with the glitch, then a slow idle --- */
+          tl.fromTo("#s5-panel", { opacity: 0, x: 90, rotationY: -16, rotationX: 4 },
+                                 { opacity: 1, x: 0, rotationY: -6, rotationX: 2, duration: 0.6, ease: "power4.out" }, 0.28);
+          var oc = 3.4, orp = Math.max(0, Math.floor((DUR - 1.0) / oc) - 1);
+          tl.to("#s5-panel", { rotationY: -2, y: -8, duration: oc, ease: "sine.inOut", yoyo: true, repeat: orp }, 1.0);
+
+          /* --- the charges are read one at a time; each status word flaps on as its charge lands --- */
+          for (var i = 0; i < 4; i++) {
+            var T = LAND[i];
+            tl.set("#s5-c" + (i + 1), { opacity: 1, y: 36 }, T);
+            tl.to("#s5-c" + (i + 1), { y: 0, duration: 0.18, ease: "power4.out" }, T);
+            tl.to("#s5-ph" + i, { scaleY: 0, opacity: 0, duration: 0.12, ease: "power2.in", transformOrigin: "50% 100%" }, T);
+            tl.fromTo("#s5-st" + i, { scaleY: 0, opacity: 1, transformOrigin: "50% 0%" },
+                                    { scaleY: 1, duration: 0.24, ease: "power3.out" }, T + 0.06);
+          }
+          tl.fromTo("#s5-c4", { scale: 1.06, transformOrigin: "left center" }, { scale: 1, duration: 0.34, ease: "back.out(2)" }, 4.8);
+          tl.fromTo("#s5-foot", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, 5.7);
+
+          /* ---- the clock: every per-frame value below is a pure function of tl.time() ----
+             chromatic-glitch offsets, the reactive-displacement shove (one driver: the sheet's spring
+             displaces the label), the LED flickers and the fault counter. Seek anywhere — same frame. */
+          var ghosts = [document.getElementById("s5-gco"), document.getElementById("s5-gsc")];
+          var jitters = ["#s5-kick", "#s5-rule", "#s5-sub", "#s5-pjit"];
+          var sheet = document.getElementById("s5-sheet"), label = document.getElementById("s5-label");
+          var leds = [], glows = [];
+          for (var j = 0; j < 4; j++) { leds.push(document.getElementById("s5-led" + j)); glows.push(document.getElementById("s5-glow" + j)); }
+          var countEl = document.getElementById("s5-count"), blink = document.getElementById("s5-blink"), lastCount = -1;
+          var backOut = gsap.parseEase("back.out(1)");
+          var MAX_SPLIT = 16, STEP = 1 / 24;
+
+          function frame() {
+            var t = tl.time();
+            /* envelopes: the arrival (0.55s), an impact spasm when the sheet hits, a spasm when the FTC lands */
+            var amp = env(t, 0, 0.55) + 0.5 * env(t, 2.74, 0.16) + 0.45 * env(t, 4.8, 0.14);
+            var step = Math.floor(t / STEP);
+            for (var L = 0; L < 2; L++) {
+              var jx = (h(step * 13 + L * 7) * 2 - 1) * MAX_SPLIT * amp;
+              var jy = (h(step * 29 + L * 11) * 2 - 1) * MAX_SPLIT * 0.35 * amp;
+              gsap.set(ghosts[L], { x: amp > 0 ? jx : 0, y: amp > 0 ? jy : 0, opacity: amp > 0 ? 0.85 : 0 });
+            }
+            /* the whole scene shudders with it — the kicker, the rule, the sub, the panel */
+            for (var q = 0; q < jitters.length; q++) {
+              gsap.set(jitters[q], { x: amp > 0 ? (h(step * 31 + q * 17 + 5) * 2 - 1) * 12 * amp : 0 });
+            }
+
+            /* reactive-displacement: ONE driver — the sheet springs in from the right; the label is shoved
+               up and shrunk, finishing at 45% of the driver; the dateline and sub clear with it */
+            var p = backOut(clamp01((t - 2.7) / 0.7));
+            gsap.set(sheet, { x: 1000 * (1 - p), rotation: -4 * (1 - p), opacity: Math.min(1, p * 5) });
+            var vp = Math.min(1, p / 0.45);
+            gsap.set(label, { y: -234 * vp, scale: 1 - 0.4 * vp, transformOrigin: "left top" });
+            gsap.set(["#s5-topwrap", "#s5-subwrap"], { opacity: 1 - vp });
+
+            /* LEDs: dark, then three frames of flicker as the charge lands, then held */
+            var count = 0;
+            for (var i = 0; i < 4; i++) {
+              var k = Math.floor((t - LAND[i]) * 30), on, glow;
+              if (k < 0) { on = 0.16; glow = 0; }
+              else if (k < 6) { on = (h(k * 7 + i * 13) > 0.45) ? 1 : 0.16; glow = on === 1 ? 0.3 : 0; }
+              else { on = 1; glow = 0.3 + (i === 3 ? 0.12 * (0.5 + 0.5 * Math.sin(t * 5)) : 0); }
+              if (t >= LAND[i]) count++;
+              leds[i].setAttribute("opacity", on.toFixed(3));
+              glows[i].setAttribute("opacity", glow.toFixed(3));
+            }
+            if (count !== lastCount) { countEl.textContent = "FAULTS LOGGED  " + count + " / 4"; lastCount = count; }
+            blink.setAttribute("opacity", ((t % 1.0) < 0.5) ? "1" : "0.18");
+          }
+          var clock = { t: 0 };
+          tl.to(clock, { t: DUR, duration: DUR, ease: "none", onUpdate: frame }, 0);
+          frame();
+
+          /* ---- handoff OUT: the head seeks — this scene lifts out, s6 rises in on the same window ---- */
+          tl.set("#s5-world", { filter: "blur(0px)" }, DUR - OUT);
+          tl.to("#s5-world", { opacity: 0, y: -140, filter: "blur(14px)", duration: OUT, ease: "power3.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s5-bully"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

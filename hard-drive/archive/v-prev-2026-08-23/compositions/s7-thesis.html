@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .scrim { position:absolute; inset:0;
+                 background:radial-gradient(ellipse 46% 40% at 50% 50%,
+                   rgba(5,7,14,.82), rgba(5,7,14,0) 72%); opacity:0; }
+        .stage { position:absolute; inset:0; display:flex; flex-direction:column;
+                 align-items:center; justify-content:center; padding:0 168px; }
+        .line { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:96px; line-height:1.02; letter-spacing:-.03em; color:#DCE5F2;
+                text-align:center; opacity:0; }
+        .line.two { color:#3B7BFF; }
+        .mark { width:240px; height:2px; background:#7C8AA3; margin:40px 0; }
+      </style>
+
+      <div data-hf-id="hf-5kge" id="root" data-composition-id="s7-thesis" data-start="0" data-duration="5.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-mc8t" class="scrim" id="s7-scrim" data-layout-ignore="" aria-hidden="true"></div>
+        <div data-hf-id="hf-kbvr" class="stage" id="s7-stage">
+          <div data-hf-id="hf-oxc6" class="line" id="s7-l1">He bought the code.</div>
+          <div data-hf-id="hf-bxgv" class="mark" id="s7-mark"></div>
+          <div data-hf-id="hf-ua57" class="line two" id="s7-l2">He negotiated the rest.</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 5.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* blueprint: titlecard-reveal — exactly ONE restrained move, then stillness */
+          tl.fromTo("#s7-scrim", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+          tl.fromTo("#s7-l1", { opacity: 0, y: 52 },
+                              { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.16);
+          tl.fromTo("#s7-mark", { scaleX: 0, transformOrigin: "center center" },
+                                { scaleX: 1, duration: 0.7, ease: "power3.out" }, 0.7);
+          tl.fromTo("#s7-l2", { opacity: 0, y: 52 },
+                              { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.96);
+
+          /* the hold breathes; low motion is the payload here */
+          tl.to("#s7-stage", { scale: 1.026, duration: DUR - 1.9, ease: "sine.inOut" }, 1.9);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s7-thesis"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

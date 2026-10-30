@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6; }
+        .world { position:absolute; inset:0; }
+        .veil  { position:absolute; inset:0; background:rgba(11,10,9,.44); }
+        .scrim { position:absolute; left:160px; top:-40px; width:1600px; height:1160px;
+                 background:radial-gradient(ellipse closest-side, rgba(11,10,9,.96),
+                   rgba(11,10,9,.80) 56%, rgba(11,10,9,0) 100%); }
+
+        /* ---- object: the ruled page ---- */
+        .field { position:absolute; left:0; top:108px; width:1920px; height:864px; opacity:0;
+                 background:repeating-linear-gradient(to bottom,
+                   rgba(239,231,214,.10) 0px, rgba(239,231,214,.10) 1px,
+                   rgba(11,10,9,0) 1px, rgba(11,10,9,0) 36px); }
+        .margin { position:absolute; left:300px; top:0; width:2px; height:1080px;
+                  background:rgba(240,118,30,.22); }
+        .hrule { position:absolute; left:260px; width:1400px; height:2px; background:#F0761E; }
+        .rig { position:absolute; left:0; top:0; width:1920px; height:1080px; perspective:1600px; }
+
+        /* ---- the thesis, centred — one of the film's two centred frames ---- */
+        .stage { position:absolute; inset:0; display:flex; flex-direction:column;
+                 justify-content:center; align-items:center; }
+        .block { display:flex; flex-direction:column; align-items:center; opacity:0; }
+        .line { position:relative; font-family:"League Gothic",sans-serif; font-weight:400;
+                text-transform:uppercase; font-size:176px; line-height:.92; letter-spacing:-.02em;
+                color:#EFE7D6; white-space:nowrap; }
+        .line.amber { color:#F0761E; }
+        .pencil { position:absolute; left:1092px; top:146px; width:310px; height:34px; overflow:visible; }
+      </style>
+
+      <div id="root" data-composition-id="s7-thesis" data-start="0" data-duration="6"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s7-world">
+          <div class="veil" data-layout-ignore aria-hidden="true"></div>
+          <div class="rig" id="s7-rig" data-layout-ignore aria-hidden="true">
+            <div class="field" id="s7-field"><div class="margin"></div></div>
+          </div>
+          <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+          <div class="hrule" id="s7-ruleA" style="top:318px"></div>
+          <div class="hrule" id="s7-ruleB" style="top:762px"></div>
+
+          <div class="stage" id="s7-stage">
+            <div class="block" id="s7-block">
+              <div class="line" id="s7-l1">Before Apple was a myth,</div>
+              <div class="line amber" id="s7-l2">Somebody was taking notes.
+                <svg class="pencil" viewBox="0 0 310 34" fill="none" aria-hidden="true">
+                  <path id="s7-pencil" d="M4 20 C 56 12, 122 26, 178 16 S 272 10, 306 18"
+                        stroke="#EFE7D6" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 6, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- handoff IN: lateral page-push (s6 is streaking out at the same wall time) ---- */
+          tl.fromTo("#s7-world", { opacity: 0, x: 160, filter: "blur(16px)" },
+                                 { opacity: 1, x: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s7-world", { filter: "none" }, IN);
+
+          /* --- blueprint: titlecard-reveal — the ruled page fades up, two rules draw
+                 outward from centre, and the statement makes exactly one move --- */
+          tl.fromTo("#s7-field", { opacity: 0 }, { opacity: 1, duration: 1.1, ease: "power2.out" }, 0.3);
+          tl.fromTo("#s7-field", { y: 8 }, { y: -10, duration: DUR, ease: "none" }, 0);
+          tl.fromTo("#s7-ruleA", { scaleX: 0, transformOrigin: "center center" },
+                                 { scaleX: 1, duration: 0.7, ease: "power3.out" }, 0.5);
+          tl.fromTo("#s7-ruleB", { scaleX: 0, transformOrigin: "center center" },
+                                 { scaleX: 1, duration: 0.7, ease: "power3.out" }, 0.62);
+
+          tl.fromTo("#s7-block", { opacity: 0, y: 40 },
+                                 { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" }, 0.35);
+          tl.fromTo("#s7-l2", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, 0.8);
+
+          /* --- rule: svg-path-draw — a pencil line under NOTES --- */
+          var pen = document.getElementById("s7-pencil");
+          var L = Math.ceil(pen.getTotalLength()) + 2;
+          gsap.set(pen, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+          tl.to(pen, { attr: { "stroke-dashoffset": 0 }, duration: 0.6, ease: "power2.inOut" }, 1.7);
+
+          /* stillness plus a 0.4% breathe; the rules hold with a slow pulse */
+          var bc = 0.75, br = Math.max(0, Math.floor((DUR - OUT - 2.4) / bc) - 1);
+          tl.fromTo("#s7-block", { scale: 1, transformOrigin: "50% 50%" },
+                                 { scale: 1.004, duration: bc, ease: "sine.inOut", yoyo: true, repeat: br }, 2.4);
+          var rc = 1.1, rr = Math.max(0, Math.floor((DUR - OUT - 1.3) / rc) - 1);
+          tl.fromTo(["#s7-ruleA", "#s7-ruleB"], { opacity: 1 },
+                    { opacity: 0.7, duration: rc, ease: "sine.inOut", yoyo: true, repeat: rr }, 1.3);
+
+          /* ---- handoff OUT (7→8 accent): a dip — opacity only, no x, no blur ---- */
+          tl.to("#s7-world", { opacity: 0, duration: OUT, ease: "power2.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s7-thesis"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6;
+                perspective:1800px; perspective-origin:68% 50%; }
+        .veil { position:absolute; inset:0; background:rgba(11,10,9,.46); }
+        .scrim { position:absolute; left:-300px; top:110px; width:1580px; height:880px;
+                 background:radial-gradient(ellipse closest-side,
+                   rgba(11,10,9,.95), rgba(11,10,9,.76) 56%, rgba(11,10,9,0) 100%); }
+        .stage { position:absolute; left:168px; top:0; bottom:0; width:1080px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .kicker { font-size:27px; letter-spacing:.24em; color:#9A8F7C; text-transform:uppercase;
+                  height:36px; }
+        .caret { display:inline-block; width:15px; height:27px; background:#F0761E;
+                 vertical-align:-4px; margin-left:6px; }
+        .disp { font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:124px; line-height:.95; letter-spacing:-.02em; color:#EFE7D6;
+                margin-top:32px; }
+        .w { display:inline-block; opacity:0; }
+        .amber { color:#F0761E; }
+        .quote { position:relative; margin-top:58px; padding-left:48px; }
+        .qbar { position:absolute; left:0; top:4px; width:4px; height:152px; background:#F0761E;
+                transform-origin:top center; }
+        .qtext { font-family:"League Gothic",sans-serif; font-weight:400; font-size:82px;
+                 line-height:1.0; letter-spacing:-.01em; color:#EFE7D6; max-width:1010px; opacity:0; }
+        .qattr { margin-top:20px; font-size:24px; letter-spacing:.2em; color:#9A8F7C;
+                 text-transform:uppercase; opacity:0; }
+        /* --- object: the manuscript, page by page --- */
+        .pile { position:absolute; left:1300px; top:270px; width:470px; height:560px;
+                 transform-style:preserve-3d; }
+        .sheet { position:absolute; left:40px; top:0; width:352px; height:466px;
+                 background:#17130E; border:2px solid rgba(239,231,214,.36); border-radius:2px;
+                 opacity:0; box-shadow:0 18px 40px rgba(0,0,0,.55); }
+        .sheet b { position:absolute; left:30px; right:30px; top:38px; height:4px;
+                   background:rgba(240,118,30,.75); display:block; }
+        .sheet s { position:absolute; left:30px; height:3px; background:rgba(239,231,214,.30);
+                   display:block; text-decoration:none; }
+      </style>
+
+      <div id="root" data-composition-id="s6-anyway" data-start="0" data-duration="8"
+           data-width="1920" data-height="1080">
+        <div class="veil" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="pile" id="s6-pile">
+          <div class="sheet" id="s6-p1"><b></b><s style="top:76px;right:44px"></s><s style="top:104px;right:96px"></s><s style="top:132px;right:60px"></s><s style="top:160px;right:130px"></s><s style="top:200px;right:52px"></s><s style="top:228px;right:88px"></s><s style="top:256px;right:150px"></s></div>
+          <div class="sheet" id="s6-p2"><b></b><s style="top:76px;right:60px"></s><s style="top:104px;right:44px"></s><s style="top:132px;right:120px"></s><s style="top:160px;right:56px"></s><s style="top:200px;right:96px"></s><s style="top:228px;right:140px"></s><s style="top:256px;right:70px"></s></div>
+          <div class="sheet" id="s6-p3"><b></b><s style="top:76px;right:48px"></s><s style="top:104px;right:112px"></s><s style="top:132px;right:64px"></s><s style="top:160px;right:92px"></s><s style="top:200px;right:136px"></s><s style="top:228px;right:56px"></s><s style="top:256px;right:104px"></s></div>
+          <div class="sheet" id="s6-p4"><b></b><s style="top:76px;right:128px"></s><s style="top:104px;right:52px"></s><s style="top:132px;right:96px"></s><s style="top:160px;right:68px"></s><s style="top:200px;right:144px"></s><s style="top:228px;right:60px"></s><s style="top:256px;right:88px"></s></div>
+          <div class="sheet" id="s6-p5"><b></b><s style="top:76px;right:56px"></s><s style="top:104px;right:100px"></s><s style="top:132px;right:44px"></s><s style="top:160px;right:124px"></s><s style="top:200px;right:72px"></s><s style="top:228px;right:108px"></s><s style="top:256px;right:48px"></s></div>
+        </div>
+
+        <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="stage">
+          <div class="kicker"><span id="s6-kick"></span><span class="caret" id="s6-caret"></span></div>
+          <div class="disp">
+            <span class="w" id="s6-a1">He</span> <span class="w" id="s6-a2">finished</span>
+            <span class="w" id="s6-a3">the</span> <span class="w" id="s6-a4">book</span>
+            <span class="w amber" id="s6-a5">anyway.</span>
+          </div>
+          <div class="quote">
+            <div class="qbar" id="s6-qbar"></div>
+            <div class="qtext" id="s6-qtext">"One of the best books about Apple Computer ever written."</div>
+            <div class="qattr" id="s6-qattr">— Andy Hertzfeld, Macintosh team</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8;
+          var tl = gsap.timeline({ paused: true });
+
+          /* --- rule: discrete-text-sequence — the cold-open caret returns --- */
+          var KICK = "The Mac team kept talking. Quietly.";
+          var kickEl = document.getElementById("s6-kick");
+          var caret = document.getElementById("s6-caret");
+          var typer = { i: 0 };
+          tl.fromTo(typer, { i: 0 }, {
+            i: KICK.length, duration: 1.55, ease: "none",
+            onUpdate: function () { kickEl.textContent = KICK.slice(0, Math.round(typer.i)); }
+          }, 0.12);
+          var clock = { t: 0 };
+          tl.to(clock, {
+            t: DUR, duration: DUR, ease: "none",
+            onUpdate: function () {
+              var tt = tl.time();
+              caret.style.opacity = ((tt % 0.86) < 0.47) ? 1 : 0.12;
+            }
+          }, 0);
+
+          /* --- object: pages land into a manuscript, one per beat --- */
+          var POSE = [[0, 0, -5.5], [16, 14, 3.2], [-12, 28, -2.0], [22, 42, 4.6], [4, 56, -1.4]];
+          for (var i = 1; i <= 5; i++) {
+            var p = POSE[i - 1], at = 0.35 + (i - 1) * 0.30;
+            tl.fromTo("#s6-p" + i,
+              { opacity: 0, x: p[0] + 300, y: p[1] + 240, z: -260,
+                rotation: p[2] + 22, rotationY: 30, rotationX: -12 },
+              { opacity: 1, x: p[0], y: p[1], z: (i - 1) * 13,
+                rotation: p[2], rotationY: -10, rotationX: 5,
+                duration: 0.62, ease: "power4.out" }, at);
+          }
+          var pc = 2.6, pr = Math.max(0, Math.floor((DUR - 2.1) / pc) - 1);
+          tl.to("#s6-pile", { y: -12, rotationY: 6, duration: pc, ease: "sine.inOut", yoyo: true, repeat: pr }, 2.1);
+
+          /* --- rule: waterfall-entry --- */
+          var wave = [["#s6-a1", 1.85, 44, 0.14], ["#s6-a2", 1.98, 52, 0.16],
+                      ["#s6-a3", 2.13, 34, 0.12], ["#s6-a4", 2.24, 48, 0.15],
+                      ["#s6-a5", 2.38, 80, 0.20]];
+          wave.forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s6-a5", { scale: 1.16 }, { scale: 1, duration: 0.36, ease: "back.out(2.4)" }, 2.38);
+
+          tl.fromTo("#s6-qbar", { scaleY: 0, transformOrigin: "top center" },
+                                { scaleY: 1, duration: 0.6, ease: "power4.out" }, 3.55);
+          tl.fromTo("#s6-qtext", { opacity: 0, y: 28 },
+                                 { opacity: 1, y: 0, duration: 0.58, ease: "power3.out" }, 3.72);
+          tl.fromTo("#s6-qattr", { opacity: 0, y: 20 },
+                                 { opacity: 1, y: 0, duration: 0.48, ease: "power3.out" }, 4.24);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s6-anyway"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .stage { position:absolute; left:168px; right:168px; top:0; bottom:0;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:198px; line-height:.98; letter-spacing:-.03em; color:#DCE5F2; }
+        .disp .co { color:#3B7BFF; }
+        .rule { height:2px; background:#3B7BFF; width:100%; margin:46px 0 30px; }
+        .sub { font-size:33px; letter-spacing:.08em; color:#DCE5F2; opacity:0; }
+        .bib { margin-top:20px; font-size:26px; letter-spacing:.19em; color:#7C8AA3;
+               text-transform:uppercase; }
+        .bib span { display:inline-block; opacity:0; }
+        .bib .lead { color:#DCE5F2; }
+      </style>
+
+      <div data-hf-id="hf-nj00" id="root" data-composition-id="s2-turn" data-start="0" data-duration="6" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-tan6" class="stage">
+          <div data-hf-id="hf-nwlw" class="disp"><span data-hf-id="hf-q49x" id="s2-l1">They didn't</span></div>
+          <div data-hf-id="hf-9gq4" class="disp"><span data-hf-id="hf-j6ey" class="co" id="s2-l2">ask him.</span></div>
+          <div data-hf-id="hf-xtm6" class="rule" id="s2-rule"></div>
+          <div data-hf-id="hf-z0ir" class="sub" id="s2-sub">Two Seattle Post-Intelligencer reporters went to everyone else.</div>
+          <div data-hf-id="hf-mr5z" class="bib">
+            <span data-hf-id="hf-ser4" class="lead" id="s2-m1">Hard Drive</span>
+            <span data-hf-id="hf-bvmz" id="s2-m2">&#160;·&#160; Wallace &amp; Erickson</span>
+            <span data-hf-id="hf-4k93" id="s2-m3">&#160;·&#160; John Wiley &amp; Sons</span>
+            <span data-hf-id="hf-df4b" id="s2-m4" style="color:#3B7BFF">&#160;·&#160; 1992</span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 6;
+          var tl = gsap.timeline({ paused: true });
+
+          /* rule: kinetic-beat-slam — two phrases on one grid, DISTINCT entrances */
+          var P = 0.42;
+          tl.fromTo("#s2-l1",
+            { opacity: 0, scale: 1.34, filter: "blur(20px)" },
+            { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.44, ease: "power4.out" }, P * 0.3);
+          tl.fromTo("#s2-l2",
+            { opacity: 0, x: -300 },
+            { opacity: 1, x: 0, duration: 0.42, ease: "expo.out" }, P * 1.7);
+
+          tl.fromTo("#s2-rule", { scaleX: 0, transformOrigin: "left center" },
+                                { scaleX: 1, duration: 0.68, ease: "power4.out" }, 1.02);
+          tl.fromTo("#s2-sub", { opacity: 0, y: 26 },
+                               { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.18);
+
+          /* rule: waterfall-entry — the bibliographic line assembles left to right */
+          [["#s2-m1", 1.52, 38, 0.16], ["#s2-m2", 1.66, 32, 0.14],
+           ["#s2-m3", 1.79, 32, 0.14], ["#s2-m4", 1.92, 42, 0.16]].forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s2-m4", { scale: 1.12 }, { scale: 1, duration: 0.3, ease: "back.out(2)" }, 1.92);
+
+          /* the hold drifts so the frame is never frozen */
+          tl.to("#s2-l1", { y: -9, duration: DUR - 1.6, ease: "sine.inOut" }, 1.6);
+          tl.to("#s2-l2", { y: -9, duration: DUR - 1.6, ease: "sine.inOut" }, 1.6);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s2-turn"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

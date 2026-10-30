@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#F2F4F8; }
+        .world { position:absolute; inset:0; }
+        .scrim { position:absolute; inset:0;
+                 background:radial-gradient(ellipse 78% 68% at 50% 56%,
+                   rgba(7,8,11,.86) 18%, rgba(7,8,11,0) 80%); }
+        .stage { position:absolute; left:150px; top:0; bottom:0; width:1620px;
+                 display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+        .byline { font-size:26px; letter-spacing:.34em; color:#79839B; text-transform:uppercase;
+                  margin-bottom:34px; opacity:0; white-space:nowrap; }
+        /* the lockup — rule: 3d-text-depth-layers (two dim back layers give the title weight) */
+        .tstack { position:relative; opacity:0; }
+        .tl { font-family:"Archivo Black",sans-serif; font-weight:400; font-size:194px; line-height:.92;
+              letter-spacing:-.04em; text-transform:uppercase; text-align:center; white-space:nowrap; }
+        .tl.back { position:absolute; left:0; top:0; width:100%; pointer-events:none; }
+        .tl.front { position:relative; z-index:2; }
+        #s8-b1 { color:rgba(121,131,155,.30); }
+        #s8-b2 { color:rgba(121,131,155,.15); }
+        .flame-t { color:#FF3B1F; }
+        .rulewrap { display:flex; align-items:center; gap:22px; margin:34px 0 28px; }
+        .rulewrap i { display:block; width:230px; height:3px; background:#FF3B1F; }
+        .sub { font-size:31px; letter-spacing:.3em; text-transform:uppercase; opacity:0; white-space:nowrap; }
+        .credits { margin-top:32px; font-size:24px; letter-spacing:.18em; color:#79839B; text-transform:uppercase;
+                   line-height:1.9; white-space:nowrap; opacity:0; }
+        .credits b { color:#F2F4F8; font-weight:400; }
+        .tag { position:absolute; left:150px; width:1620px; bottom:80px; text-align:center; font-size:24px;
+               letter-spacing:.26em; color:#FF3B1F; text-transform:uppercase; opacity:0; white-space:nowrap; }
+        .black { position:absolute; inset:0; background:#07080B; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="s8-title" data-start="0" data-duration="7"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s8-world">
+          <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="stage" id="s8-stage">
+            <div class="byline" id="s8-byline">Eric Jorgenson</div>
+            <div class="tstack" id="s8-title">
+              <div class="tl back" id="s8-b2" data-layout-ignore aria-hidden="true"><div>The Book</div><div>of Elon</div></div>
+              <div class="tl back" id="s8-b1" data-layout-ignore aria-hidden="true"><div>The Book</div><div>of Elon</div></div>
+              <div class="tl front" id="s8-front"><div>The Book</div><div class="flame-t">of Elon</div></div>
+            </div>
+            <div class="rulewrap">
+              <i id="s8-r1"></i>
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" id="s8-mark" aria-hidden="true">
+                <circle cx="22" cy="22" r="19" stroke="#FF3B1F" stroke-width="2.4"/>
+                <path d="M22 6 L28 22 L22 38 L16 22 Z" fill="#FF3B1F"/>
+              </svg>
+              <i id="s8-r2"></i>
+            </div>
+            <div class="sub" id="s8-sub">A guide to purpose and success</div>
+            <div class="credits" id="s8-credits">
+              <div>Foreword by <b>Naval Ravikant</b> &#160;·&#160; Visuals by <b>Jack Butcher</b></div>
+              <div>From the author of <b>The Almanack of Naval Ravikant</b></div>
+            </div>
+          </div>
+          <div class="tag" id="s8-tag">Includes the 69 Core Musk Methods</div>
+
+          <div class="black" id="s8-black" data-layout-ignore aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 7, IN = 0.8, FADE = 0.8, SNAP = 0.62, OFF = 3;   /* OFF: px per depth layer */
+          var tl = gsap.timeline({ paused: true });
+          var cl = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x; };
+          var eOut = function (x) { return 1 - Math.pow(1 - x, 3); };
+
+          /* ---- handoff IN: rises through s7's dip — opacity + a soft settle, no x ---- */
+          tl.fromTo("#s8-world", { opacity: 0, scale: 1.05, transformOrigin: "50% 50%" },
+                                 { opacity: 1, scale: 1, duration: IN, ease: "power2.out" }, 0.32);   /* s7 is fully dipped by 0.5 — the lockup never overlaps it */
+
+          /* ---- blueprint: logo-assemble-lockup ---- */
+          tl.fromTo("#s8-byline", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.5);
+          /* the blur-snap title */
+          tl.fromTo("#s8-title", { opacity: 0, scale: 0.84, filter: "blur(18px)", transformOrigin: "50% 50%" },
+                                { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.8, ease: "back.out(1.5)" }, SNAP);
+          tl.set("#s8-title", { filter: "none" }, SNAP + 0.8);
+          /* depth builds forward as the title snaps (offsets 0 → full), written from a setter clock */
+          var b1 = document.getElementById("s8-b1"), b2 = document.getElementById("s8-b2");
+          function apply(t) {
+            var p = eOut(cl((t - SNAP) / 0.8));
+            gsap.set(b1, { x: OFF * p, y: OFF * p });
+            gsap.set(b2, { x: OFF * 2 * p, y: OFF * 2 * p });
+          }
+          var driver = { _t: 0 };
+          Object.defineProperty(driver, "t", { get: function () { return this._t; },
+            set: function (v) { this._t = v; apply(v); } });
+          apply(0);
+          tl.to(driver, { t: DUR, duration: DUR, ease: "none" }, 0);
+          /* rules draw outward from the mark; the mark spins in */
+          tl.fromTo("#s8-r1", { scaleX: 0, transformOrigin: "right center" }, { scaleX: 1, duration: 0.55, ease: "power4.out" }, 0.95);
+          tl.fromTo("#s8-r2", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.55, ease: "power4.out" }, 0.95);
+          tl.fromTo("#s8-mark", { opacity: 0, scale: 0, rotation: -90, transformOrigin: "50% 50%" },
+                               { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2.6)" }, 1.02);
+          tl.fromTo("#s8-sub", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.52, ease: "power3.out" }, 1.35);
+          tl.fromTo("#s8-credits", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 1.65);
+          tl.fromTo("#s8-tag", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.15);
+          /* the hold: a slow 2.4% push, nothing else moves */
+          tl.fromTo("#s8-stage", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.024, duration: 3.9, ease: "sine.inOut" }, 2.3);
+
+          /* ---- the end: fade to black over the last 0.8s (the film's only exit) ---- */
+          tl.fromTo("#s8-black", { opacity: 0 }, { opacity: 1, duration: FADE, ease: "power2.in" }, DUR - FADE);
+
+          tl.to({}, { duration: DUR }, 0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s8-title"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

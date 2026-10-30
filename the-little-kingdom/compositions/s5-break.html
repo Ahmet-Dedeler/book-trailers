@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6; }
+        .world { position:absolute; inset:0; }
+        .veil  { position:absolute; inset:0; background:rgba(11,10,9,.42); }
+        .scrim { position:absolute; left:-300px; top:60px; width:1640px; height:960px;
+                 background:radial-gradient(ellipse closest-side, rgba(11,10,9,.95),
+                   rgba(11,10,9,.76) 54%, rgba(11,10,9,0) 100%); }
+        .redwash { position:absolute; inset:-20%;
+                   background:radial-gradient(ellipse 46% 52% at 60% 46%,
+                     rgba(224,58,62,.30), rgba(224,58,62,0) 66%); opacity:0; }
+        .ghost { position:absolute; left:120px; bottom:-150px; font-family:"League Gothic",sans-serif;
+                 font-size:640px; line-height:1; letter-spacing:-.02em; color:rgba(239,231,214,.045);
+                 white-space:nowrap; }
+
+        /* ---- type block on the left rail (absolute: the headline is a physics victim) ---- */
+        .stage { position:absolute; left:168px; top:0; width:1180px; height:1080px; }
+        .kicker { position:absolute; left:0; top:208px; font-size:27px; letter-spacing:.24em;
+                  color:#F0761E; text-transform:uppercase; white-space:nowrap; opacity:0; }
+        .kicker i { display:inline-block; width:12px; height:12px; background:#F0761E;
+                    margin-right:18px; vertical-align:2px; }
+        .head { position:absolute; left:0; top:300px; font-family:"League Gothic",sans-serif;
+                font-weight:400; text-transform:uppercase; font-size:230px; line-height:.92;
+                letter-spacing:-.02em; color:#EFE7D6; white-space:nowrap; opacity:0; }
+        .card { position:absolute; left:0; top:598px; border-left:4px solid #F0761E;
+                padding:18px 0 18px 44px; opacity:0; }
+        .card .l1 { font-size:36px; line-height:1.5; letter-spacing:.05em; color:#EFE7D6;
+                    text-transform:uppercase; white-space:nowrap; }
+        .card .l2 { margin-top:10px; font-size:36px; line-height:1.5; letter-spacing:.05em;
+                    color:#F0761E; text-transform:uppercase; white-space:nowrap; }
+
+        /* ---- object: the issue that ran — a newsmagazine with a halftone cover ---- */
+        .rig { position:absolute; left:1300px; top:210px; width:560px; height:680px;
+               perspective:1600px; perspective-origin:50% 45%; }
+        .mag { position:absolute; left:45px; top:30px; width:470px; height:620px;
+               background:#141110; box-shadow:0 44px 90px rgba(0,0,0,.62), 0 10px 24px rgba(0,0,0,.5);
+               opacity:0; }
+        .mag svg { display:block; width:470px; height:620px; }
+
+        /* ---- the door ---- */
+        .door { position:absolute; top:0; width:962px; height:1080px; background:#0B0A09; }
+        .door.l { left:0; border-right:3px solid rgba(240,118,30,.6); }
+        .door.r { left:958px; border-left:3px solid rgba(240,118,30,.6); }
+
+        /* ---- after the slam: the consequence, RGB split resolving ---- */
+        .close { position:absolute; left:168px; top:392px; width:1584px; display:grid; opacity:0; }
+        .g { grid-area:1/1; font-family:"League Gothic",sans-serif; font-weight:400;
+             text-transform:uppercase; font-size:240px; line-height:1; letter-spacing:-.02em;
+             white-space:nowrap; }
+        .g-r { z-index:1; color:#E03A3E; mix-blend-mode:screen; opacity:0; }
+        .g-c { z-index:1; color:#009DDC; mix-blend-mode:screen; opacity:0; }
+        .g-m { z-index:2; color:#EFE7D6; }
+        .subrule { position:absolute; left:168px; top:674px; width:560px; height:2px; background:#F0761E; }
+        .sub { position:absolute; left:168px; top:708px; font-size:32px; letter-spacing:.2em;
+               color:#9A8F7C; text-transform:uppercase; white-space:nowrap; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="s5-break" data-start="0" data-duration="9"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s5-world">
+          <div class="veil" data-layout-ignore aria-hidden="true"></div>
+          <div class="redwash" id="s5-redwash" data-layout-ignore aria-hidden="true"></div>
+          <div class="ghost" id="s5-ghost" data-layout-ignore aria-hidden="true">1983</div>
+
+          <div class="rig" id="s5-rig">
+            <div class="mag" id="s5-mag">
+              <svg viewBox="0 0 470 620" fill="none" aria-hidden="true">
+                <defs>
+                  <radialGradient id="s5-screenglow-g" cx="50%" cy="50%" r="55%">
+                    <stop offset="0" stop-color="#F0761E" stop-opacity=".55"/>
+                    <stop offset="1" stop-color="#F0761E" stop-opacity="0"/>
+                  </radialGradient>
+                  <radialGradient id="s5-lamp-g" cx="50%" cy="40%" r="60%">
+                    <stop offset="0" stop-color="#EFE7D6" stop-opacity=".10"/>
+                    <stop offset="1" stop-color="#EFE7D6" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+                <!-- cover stock -->
+                <rect x="0" y="0" width="470" height="620" fill="#141110"/>
+                <rect x="34" y="130" width="402" height="332" fill="url(#s5-lamp-g)"/>
+                <!-- the halftone: dots seeded at build time, radii encode the machine -->
+                <g id="s5-dots"></g>
+                <rect id="s5-screenglow" x="150" y="170" width="170" height="120" fill="url(#s5-screenglow-g)" opacity=".5"/>
+                <!-- nameplate -->
+                <rect x="36" y="36" width="398" height="58" fill="#E9DFC8"/>
+                <text x="235" y="77" text-anchor="middle" fill="#1A1611"
+                      font-family="IBM Plex Mono, monospace" font-weight="700" font-size="31" letter-spacing="7">NEWSWEEKLY</text>
+                <text x="235" y="120" text-anchor="middle" fill="#9A8F7C"
+                      font-family="IBM Plex Mono, monospace" font-size="19" letter-spacing="4">JANUARY 3, 1983</text>
+                <line x1="36" y1="128" x2="434" y2="128" stroke="rgba(239,231,214,.22)" stroke-width="1"/>
+                <!-- headline -->
+                <line x1="36" y1="470" x2="434" y2="470" stroke="rgba(239,231,214,.22)" stroke-width="1"/>
+                <text data-layout-allow-overlap x="235" y="530" text-anchor="middle" fill="#EFE7D6"
+                      font-family="League Gothic, sans-serif" font-size="64" letter-spacing="1">MACHINE OF</text>
+                <text data-layout-allow-overlap x="235" y="594" text-anchor="middle" fill="#E03A3E"
+                      font-family="League Gothic, sans-serif" font-size="64" letter-spacing="1">THE YEAR</text>
+                <!-- the red border, on top of everything -->
+                <rect x="9" y="9" width="452" height="602" stroke="#E03A3E" stroke-width="18"/>
+                <rect x="20" y="20" width="430" height="580" stroke="rgba(239,231,214,.18)" stroke-width="1"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="stage" id="s5-stage">
+            <div class="kicker" id="s5-kick"><i></i>January 3, 1983</div>
+            <div class="head" id="s5-head">Then the story ran.</div>
+            <div class="card" id="s5-card">
+              <div class="l1">Time put the computer on the cover.</div>
+              <div class="l2">Machine of the Year — not Jobs.</div>
+            </div>
+          </div>
+
+          <div class="close" id="s5-close">
+            <span class="g g-r" id="s5-gr" data-layout-ignore aria-hidden="true">And the door closed.</span>
+            <span class="g g-c" id="s5-gc" data-layout-ignore aria-hidden="true">And the door closed.</span>
+            <span class="g g-m" id="s5-gm">And the door closed.</span>
+          </div>
+          <div class="subrule" id="s5-subrule"></div>
+          <div class="sub" id="s5-sub">Jobs stopped speaking to him.</div>
+
+          <div class="door l" id="s5-doorL" data-layout-ignore aria-hidden="true"></div>
+          <div class="door r" id="s5-doorR" data-layout-ignore aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 9, IN = 0.5, BREAK = 4.55;
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- build the halftone cover: a dot grid whose radii encode a computer on a
+                  pedestal in a pool of lamplight. Pure function of the grid index. ---- */
+          (function buildHalftone() {
+            var X0 = 36, Y0 = 130, W = 398, H = 332, S = 10.4;
+            var cols = Math.floor(W / S), rows = Math.floor(H / S);
+            function inBox(u, v, a, b, c, d) { return u > a && u < b && v > c && v < d; }
+            function screen(u, v) { return inBox(u, v, 0.345, 0.655, 0.19, 0.44); }
+            function bright(u, v) {
+              var b = 0.06;
+              var dx = u - 0.5, dy = (v - 0.62) * 1.25, d = Math.sqrt(dx * dx + dy * dy);
+              b += Math.max(0, 0.30 * (1 - d / 0.60));                     /* lamplight on the cloth */
+              if (inBox(u, v, 0.30, 0.70, 0.14, 0.52)) b = 0.70;             /* monitor housing */
+              if (inBox(u, v, 0.31, 0.69, 0.14, 0.17)) b = 0.86;             /* its top highlight */
+              if (screen(u, v)) b = 0.92 + 0.08 * (1 - Math.abs(u - 0.5) * 4); /* the lit screen */
+              if (inBox(u, v, 0.20, 0.80, 0.58, 0.68)) b = 0.64;             /* keyboard slab */
+              if (inBox(u, v, 0.20, 0.80, 0.58, 0.605)) b = 0.84;            /* keyboard top edge */
+              if (inBox(u, v, 0.45, 0.55, 0.70, 0.88)) b = 0.50;             /* pedestal column */
+              if (inBox(u, v, 0.28, 0.72, 0.88, 0.96)) b = 0.56;             /* pedestal base */
+              return Math.min(1, b);
+            }
+            var parts = [];
+            for (var j = 0; j < rows; j++) {
+              for (var i = 0; i < cols; i++) {
+                var u = (i + 0.5) / cols, v = (j + 0.5) / rows, b = bright(u, v);
+                var r = 0.5 + b * 4.5, cx = X0 + (i + 0.5) * S + (j % 2) * (S / 2), cy = Y0 + (j + 0.5) * S;
+                if (cx > X0 + W - 2) continue;
+                parts.push('<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r.toFixed(2) +
+                           '" fill="' + (screen(u, v) ? "#F0761E" : "#EFE7D6") + '"/>');
+              }
+            }
+            document.getElementById("s5-dots").innerHTML = parts.join("");
+          })();
+
+          var mag = document.getElementById("s5-mag");
+          var head = document.getElementById("s5-head");
+          var kick = document.getElementById("s5-kick");
+          gsap.set(head, { transformOrigin: "left top" });
+          gsap.set(mag, { opacity: 0, x: 620, z: -420, rotationY: 52, rotationX: -12, rotation: 14 });
+
+          /* doors park off-frame until the slam */
+          tl.set("#s5-doorL", { x: -962 }, 0);
+          tl.set("#s5-doorR", { x: 962 }, 0);
+
+          /* ---- handoff IN (4→5 accent): a push-in — s4 has just jumped upward ---- */
+          tl.fromTo("#s5-world", { opacity: 0, scale: 1.12, filter: "blur(18px)" },
+                                 { opacity: 1, scale: 1, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s5-world", { filter: "none" }, IN);
+
+          tl.fromTo("#s5-kick", { opacity: 0, x: -26 },
+                                { opacity: 1, x: 0, duration: 0.34, ease: "power4.out" }, 0.42);
+          /* --- rule: kinetic-beat-slam — the headline hits on scale + blur --- */
+          tl.fromTo("#s5-head", { opacity: 0, scale: 1.32, filter: "blur(18px)" },
+                                { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.46, ease: "power4.out" }, 0.62);
+          tl.set("#s5-head", { filter: "none" }, 1.1);
+          tl.fromTo("#s5-ghost", { x: 0 }, { x: -70, duration: DUR, ease: "none" }, 0);
+
+          /* --- rule: reactive-displacement — ONE driver: the cover's spring is what shoves
+                 the headline up-left (victim completes at 45% of the intruder's travel) --- */
+          var drv = { p: 0 };
+          tl.to(drv, {
+            p: 1, duration: 0.74, ease: "back.out(1.4)",
+            onUpdate: function () {
+              var p = drv.p, q = 1 - p;
+              gsap.set(mag, {
+                opacity: Math.min(1, Math.max(0, p * 5)),
+                x: 620 * q, z: -420 * q + 110 * p,
+                rotationY: 52 * q - 11 * p, rotationX: -12 * q + 3 * p, rotation: 14 * q - 3 * p
+              });
+              var vp = Math.min(1, Math.max(0, p / 0.45)), e = vp * (2 - vp);
+              gsap.set(head, { x: -64 * e, y: -84 * e, scale: 1 - 0.16 * e, opacity: 1 - 0.56 * e });
+              gsap.set(kick, { y: -70 * e, opacity: 1 - 0.3 * e });
+            }
+          }, 2.25);
+          tl.fromTo("#s5-card", { opacity: 0, x: 380 },
+                                { opacity: 1, x: 0, duration: 0.56, ease: "power4.out" }, 2.62);
+
+          /* the cover idles in the dwell, its screen breathing — never a still */
+          var mc = 0.75, mr = Math.max(0, Math.floor((BREAK - 3.0) / mc) - 1);
+          tl.fromTo("#s5-mag", { y: 0 }, { y: -12, duration: mc, ease: "sine.inOut", yoyo: true, repeat: mr }, 3.0);
+          var gc = 0.5, grp = Math.max(0, Math.floor((BREAK - 2.3) / gc) - 1);
+          tl.fromTo("#s5-screenglow", { opacity: 0.35 }, { opacity: 0.8, duration: gc, ease: "sine.inOut", yoyo: true, repeat: grp }, 2.3);
+
+          /* the red wash swells into the break, then holds at half */
+          tl.fromTo("#s5-redwash", { opacity: 0.2, scale: 0.94 },
+                                   { opacity: 1, scale: 1.1, duration: BREAK, ease: "power2.in" }, 0);
+          tl.to("#s5-redwash", { opacity: 0.5, scale: 1.02, duration: 0.9, ease: "sine.inOut" }, BREAK);
+          var wc = 1.2, wr = Math.max(0, Math.floor((DUR - BREAK - 0.9) / wc) - 1);
+          tl.to("#s5-redwash", { scale: 1.06, opacity: 0.44, duration: wc, ease: "sine.inOut", yoyo: true, repeat: wr }, BREAK + 0.9);
+
+          /* ---- the door: two ink panels slam shut, hold, re-open on the consequence ---- */
+          tl.to("#s5-doorL", { x: 0, duration: 0.17, ease: "power4.in" }, BREAK - 0.19);
+          tl.to("#s5-doorR", { x: 0, duration: 0.17, ease: "power4.in" }, BREAK - 0.19);
+          tl.set(["#s5-head", "#s5-card", "#s5-kick", "#s5-mag", "#s5-ghost"], { opacity: 0 }, BREAK - 0.01);
+          tl.to("#s5-doorL", { x: -962, duration: 0.30, ease: "power3.out" }, BREAK + 0.05);
+          tl.to("#s5-doorR", { x: 962, duration: 0.30, ease: "power3.out" }, BREAK + 0.05);
+          tl.fromTo("#s5-close", { opacity: 0, scale: 1.14 },
+                                 { opacity: 1, scale: 1, duration: 0.28, ease: "power4.out" }, BREAK + 0.06);
+
+          /* --- rule: chromatic-glitch — RGB ghosts jitter on a hash of quantized tl.time(),
+                 the envelope dies fast, then the rest state is clamped bit-exact --- */
+          function gh(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+          var copies = [document.getElementById("s5-gr"), document.getElementById("s5-gc")];
+          function burst(at, dur, max) {
+            var amp = { a: 0 };
+            tl.set(amp, { a: 1 }, at);
+            tl.set(copies, { opacity: 0.8 }, at);
+            tl.to(amp, {
+              a: 0, duration: dur, ease: "power3.in",
+              onUpdate: function () {
+                var step = Math.floor(tl.time() * 24);
+                copies.forEach(function (el, L) {
+                  var jx = (gh(step * 13 + L * 7) * 2 - 1) * max * amp.a;
+                  var jy = (gh(step * 29 + L * 11) * 2 - 1) * max * 0.35 * amp.a;
+                  gsap.set(el, { x: jx, y: jy });
+                });
+              }
+            }, at);
+            tl.set(copies, { x: 0, y: 0, opacity: 0 }, at + dur);
+          }
+          burst(BREAK + 0.06, 0.62, 26);      /* the arrival split */
+          burst(BREAK + 2.05, 0.14, 12);      /* one aftershock on the held line */
+
+          tl.fromTo("#s5-subrule", { scaleX: 0, transformOrigin: "left center" },
+                                   { scaleX: 1, duration: 0.5, ease: "power4.out" }, BREAK + 0.9);
+          tl.fromTo("#s5-sub", { opacity: 0, y: 24 },
+                               { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, BREAK + 1.05);
+
+          /* ---- handoff OUT (5→6 accent): the doors ARE the cut — they close again and
+                  s6 rises from below behind them. No blur-out, no push. ---- */
+          tl.to("#s5-doorL", { x: 0, duration: 0.17, ease: "power4.in" }, DUR - 0.3);
+          tl.to("#s5-doorR", { x: 0, duration: 0.17, ease: "power4.in" }, DUR - 0.3);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s5-break"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

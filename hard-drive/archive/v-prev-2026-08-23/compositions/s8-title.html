@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .scrim { position:absolute; inset:0;
+                 background:radial-gradient(ellipse 50% 46% at 50% 48%,
+                   rgba(5,7,14,.90), rgba(5,7,14,0) 76%); opacity:0; }
+        .stage { position:absolute; inset:0; display:flex; flex-direction:column;
+                 align-items:center; justify-content:center; padding:0 168px; }
+        .imprint { font-size:24px; letter-spacing:.3em; color:#A3AEC2; text-transform:uppercase;
+                   opacity:0; margin-bottom:34px; }
+        .title { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                 font-size:228px; line-height:.94; letter-spacing:-.035em; color:#DCE5F2;
+                 text-align:center; opacity:0; }
+        .flagwrap { margin:34px 0 30px; }
+        .flagwrap svg { width:270px; height:178px; display:block; }
+        .sub { font-size:28px; letter-spacing:.24em; color:#DCE5F2; text-transform:uppercase; opacity:0; }
+        .byline { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                  font-size:52px; line-height:1; letter-spacing:-.02em; color:#3B7BFF;
+                  margin-top:30px; opacity:0; }
+        .foot { position:absolute; left:0; right:0; bottom:86px; text-align:center;
+                font-size:23px; letter-spacing:.22em; color:#7C8AA3; text-transform:uppercase; opacity:0; }
+      </style>
+
+      <div data-hf-id="hf-7efl" id="root" data-composition-id="s8-title" data-start="0" data-duration="7.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-qncm" class="scrim" id="s8-scrim" data-layout-ignore="" aria-hidden="true"></div>
+
+        <div data-hf-id="hf-hbtg" class="stage" id="s8-stage">
+          <div data-hf-id="hf-7w2a" class="imprint" id="s8-imprint">John Wiley &amp; Sons &#160;·&#160; New York &#160;·&#160; 1992</div>
+          <div data-hf-id="hf-8iz3" class="title" id="s8-hero">Hard Drive</div>
+
+          <!-- the Windows-era four-pane flag: used exactly once, as the payoff -->
+          <div data-hf-id="hf-662y" class="flagwrap">
+            <svg data-hf-id="hf-508b" viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+              <polygon data-hf-id="hf-uepo" id="s8-p1" points="4,22 152,12 152,101 4,101" fill="#E8443A" />
+              <polygon data-hf-id="hf-13wy" id="s8-p2" points="168,11 316,2 316,101 168,101" fill="#7DBB42" />
+              <polygon data-hf-id="hf-jwms" id="s8-p3" points="4,109 152,109 152,196 4,187" fill="#2C7FD4" />
+              <polygon data-hf-id="hf-qsf0" id="s8-p4" points="168,109 316,109 316,207 168,197" fill="#F3C13A" />
+            </svg>
+          </div>
+
+          <div data-hf-id="hf-ef42" class="sub" id="s8-sub">Bill Gates and the making of the Microsoft empire</div>
+          <div data-hf-id="hf-vnsl" class="byline" id="s8-byline">James Wallace &amp; Jim Erickson</div>
+        </div>
+        <div data-hf-id="hf-spuv" class="foot" id="s8-foot">The unauthorized story, reported from Seattle</div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 7.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* blueprint: logo-assemble-lockup — the jacket comes to exist on screen */
+          tl.fromTo("#s8-scrim", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, 0);
+          tl.fromTo("#s8-imprint", { opacity: 0, y: 16 },
+                                   { opacity: 1, y: 0, duration: 0.48, ease: "power3.out" }, 0.14);
+
+          /* rule: spring-pop-entrance on the hero title */
+          tl.fromTo("#s8-hero",
+            { opacity: 0, scale: 0.87, filter: "blur(18px)" },
+            { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.76, ease: "back.out(1.5)" }, 0.34);
+
+          /* the four panes snap in one at a time — the only colour in the film */
+          [1,2,3,4].forEach(function (i) {
+            tl.fromTo("#s8-p" + i,
+              { opacity: 0, scale: 0.3, transformOrigin: "center center" },
+              { opacity: 1, scale: 1, duration: 0.38, ease: "back.out(2.6)" }, 0.98 + (i - 1) * 0.11);
+          });
+
+          tl.fromTo("#s8-sub", { opacity: 0, y: 22 },
+                               { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.56);
+          tl.fromTo("#s8-byline", { opacity: 0, y: 28 },
+                                  { opacity: 1, y: 0, duration: 0.54, ease: "power3.out" }, 1.82);
+          tl.fromTo("#s8-foot", { opacity: 0, y: 16 },
+                                { opacity: 1, y: 0, duration: 0.48, ease: "power3.out" }, 2.3);
+
+          /* the hold: a slow settle push, never a frozen frame */
+          tl.fromTo("#s8-stage", { scale: 1 }, { scale: 1.022, duration: 4.2, ease: "sine.inOut" }, 2.45);
+
+          /* cut to black on the score's tail */
+          tl.to("#s8-stage", { opacity: 0, duration: 0.7, ease: "power2.in" }, DUR - 0.76);
+          tl.to("#s8-foot",  { opacity: 0, duration: 0.7, ease: "power2.in" }, DUR - 0.76);
+          tl.to("#s8-scrim", { opacity: 0, duration: 0.7, ease: "power2.in" }, DUR - 0.76);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s8-title"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

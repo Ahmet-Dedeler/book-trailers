@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                background:#0B0A09; }
+        #bg-gl { position:absolute; inset:0; width:1920px; height:1080px; display:block; }
+        .vig { position:absolute; inset:0;
+               background:radial-gradient(ellipse 80% 76% at 50% 46%,
+                 rgba(11,10,9,0) 40%, rgba(11,10,9,.66) 100%); }
+        .scan { position:absolute; left:0; right:0; top:-8px; height:1104px; opacity:.34;
+                background:repeating-linear-gradient(to bottom,
+                  rgba(239,231,214,.05) 0px, rgba(239,231,214,.05) 1px,
+                  rgba(11,10,9,0) 1px, rgba(11,10,9,0) 4px); }
+        .flash { position:absolute; inset:0; background:#EFE7D6; opacity:0; }
+      </style>
+
+      <!-- Linked, not inlined: keeping the library in a .js file keeps lint from scanning
+           three.js's own Math.random/rAF internals as if they were this composition's code.
+           Declared here and ONLY here, so exactly one instance loads. -->
+      <script src="assets/three.min.js"></script>
+
+      <div id="root" data-composition-id="bg-field" data-start="0" data-duration="60"
+           data-width="1920" data-height="1080" data-layout-ignore aria-hidden="true">
+        <canvas id="bg-gl"></canvas>
+        <div class="vig"></div>
+        <div class="scan" id="bg-scan"></div>
+        <div class="flash" id="bg-flash"></div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 60;
+          /* The film's beat table. Every cut is a camera surge, a bank and a flashbulb. */
+          var CUTS = [6.5, 12.5, 21, 30.5, 39, 47, 52.5];
+          var tl = gsap.timeline({ paused: true });
+
+          /* Seeded PRNG — the whole world is reproducible, never Math.random(). */
+          function mulberry(a) {
+            return function () {
+              a |= 0; a = a + 0x6D2B79F5 | 0;
+              var t = Math.imul(a ^ a >>> 15, 1 | a);
+              t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+              return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            };
+          }
+          function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+          function smooth(x) { x = clamp01(x); return x * x * (3 - 2 * x); }
+
+          var gl = null, built = false;
+          function buildScene() {
+            if (built || typeof THREE === "undefined") return gl;
+            built = true;
+            var canvas = document.getElementById("bg-gl");
+            var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+            /* Pinned, never read from devicePixelRatio: a 3840x2160 buffer so a 4K pass
+               has real WebGL detail to sample and a 1080p pass is supersampled. */
+            renderer.setPixelRatio(2);
+            renderer.setSize(1920, 1080, false);
+            renderer.setClearColor(0x0B0A09, 1);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 0.94;
+            if ("outputColorSpace" in renderer && THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
+            else if ("outputEncoding" in renderer && THREE.sRGBEncoding) renderer.outputEncoding = THREE.sRGBEncoding;
+
+            var scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x0B0A09, 14, 108);
+            var camera = new THREE.PerspectiveCamera(40, 1920 / 1080, 0.1, 400);
+
+            var rnd = mulberry(19810401);   /* Apple's incorporation year — the board's seed */
+            var LEN = 600, HALF = 36;
+
+            /* --- the substrate --- */
+            var board = new THREE.Mesh(
+              new THREE.PlaneGeometry(96, LEN + 140),
+              new THREE.MeshStandardMaterial({ color: 0x0A0806, roughness: 0.96, metalness: 0.04 }));
+            board.rotation.x = -Math.PI / 2;
+            board.position.z = -LEN / 2;
+            scene.add(board);
+
+            var dummy = new THREE.Object3D(), col = new THREE.Color();
+            function depthAt(z, from) { return Math.min(1, (-z + from) / LEN); }
+
+            /* --- copper traces: emissive, so they read as signal not surface --- */
+            var traceGeo = new THREE.BoxGeometry(1, 0.05, 1);
+            var traceMat = new THREE.MeshBasicMaterial({ color: 0xffffff, fog: true });
+            var TRACES = 1900;
+            var traces = new THREE.InstancedMesh(traceGeo, traceMat, TRACES);
+            var used = 0;
+            for (var i = 0; i < TRACES; i++) {
+              var z = 8 - rnd() * (LEN + 20);
+              var depth = depthAt(z, 8);
+              if (rnd() > 0.20 + depth * 0.80) continue;
+              var x = (rnd() * 2 - 1) * HALF;
+              var run = 3 + rnd() * 17;
+              var horiz = rnd() < 0.5;
+              dummy.position.set(x, 0.03, z);
+              dummy.rotation.set(0, horiz ? Math.PI / 2 : 0, 0);
+              if (rnd() < 0.22) dummy.rotation.y = Math.PI / 4;   /* 45° routing */
+              dummy.scale.set(0.16, 1, run);
+              dummy.updateMatrix();
+              traces.setMatrixAt(used, dummy.matrix);
+              var heat = 0.22 + depth * 0.66 + rnd() * 0.14;
+              col.setRGB(0.96 * heat, 0.47 * heat, 0.12 * heat);
+              traces.setColorAt(used, col);
+              used++;
+            }
+            traces.count = used;
+            traces.instanceMatrix.needsUpdate = true;
+            if (traces.instanceColor) traces.instanceColor.needsUpdate = true;
+            scene.add(traces);
+
+            /* --- solder pads --- */
+            var padGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.07, 10);
+            var padMat = traceMat.clone();
+            var pads = new THREE.InstancedMesh(padGeo, padMat, 800);
+            var pused = 0;
+            for (var p = 0; p < 800; p++) {
+              var pz = 8 - rnd() * (LEN + 20);
+              var pdepth = depthAt(pz, 8);
+              if (rnd() > 0.18 + pdepth * 0.82) continue;
+              dummy.position.set((rnd() * 2 - 1) * HALF, 0.05, pz);
+              dummy.rotation.set(0, 0, 0);
+              dummy.scale.set(1, 1, 1);
+              dummy.updateMatrix();
+              pads.setMatrixAt(pused, dummy.matrix);
+              var ph = 0.32 + pdepth * 0.6;
+              col.setRGB(0.97 * ph, 0.52 * ph, 0.15 * ph);
+              pads.setColorAt(pused, col);
+              pused++;
+            }
+            pads.count = pused;
+            pads.instanceMatrix.needsUpdate = true;
+            if (pads.instanceColor) pads.instanceColor.needsUpdate = true;
+            scene.add(pads);
+
+            /* --- DIP packages: real solids, so they occlude and catch the key light --- */
+            var chipGeo = new THREE.BoxGeometry(1, 1, 1);
+            var chipMat = new THREE.MeshStandardMaterial({ color: 0x19130E, roughness: 0.58, metalness: 0.32 });
+            var chips = new THREE.InstancedMesh(chipGeo, chipMat, 300);
+            var cused = 0;
+            for (var c = 0; c < 300; c++) {
+              var cz = 4 - rnd() * (LEN + 10);
+              var cdepth = depthAt(cz, 4);
+              if (rnd() > 0.08 + cdepth * 0.76) continue;
+              var cw = 1.6 + rnd() * 3.6, cd = 1.0 + rnd() * 2.4;
+              dummy.position.set((rnd() * 2 - 1) * HALF, 0.34, cz);
+              dummy.rotation.set(0, rnd() < 0.5 ? 0 : Math.PI / 2, 0);
+              dummy.scale.set(cw, 0.68, cd);
+              dummy.updateMatrix();
+              chips.setMatrixAt(cused, dummy.matrix);
+              cused++;
+            }
+            chips.count = cused;
+            chips.instanceMatrix.needsUpdate = true;
+            scene.add(chips);
+
+            /* --- v4: standing capacitors, so the board has a skyline --- */
+            var capGeo = new THREE.CylinderGeometry(1, 1, 1, 14);
+            var capMat = new THREE.MeshStandardMaterial({ color: 0x1C1510, roughness: 0.62, metalness: 0.38 });
+            var caps = new THREE.InstancedMesh(capGeo, capMat, 220);
+            var kused = 0;
+            for (var k = 0; k < 220; k++) {
+              var kz = 2 - rnd() * (LEN + 10);
+              var kdepth = depthAt(kz, 2);
+              if (rnd() > 0.05 + kdepth * 0.70) continue;
+              var kr = 0.24 + rnd() * 0.30, kh = 0.7 + rnd() * 1.5 * (0.4 + kdepth);
+              dummy.position.set((rnd() * 2 - 1) * HALF, kh / 2, kz);
+              dummy.rotation.set(0, 0, 0);
+              dummy.scale.set(kr, kh, kr);
+              dummy.updateMatrix();
+              caps.setMatrixAt(kused, dummy.matrix);
+              kused++;
+            }
+            caps.count = kused;
+            caps.instanceMatrix.needsUpdate = true;
+            scene.add(caps);
+
+            /* --- v4: dust motes in the lamp light --- */
+            var MOTES = 2800, mp = new Float32Array(MOTES * 3);
+            for (var m = 0; m < MOTES; m++) {
+              mp[m * 3] = (rnd() * 2 - 1) * 42;
+              mp[m * 3 + 1] = 0.3 + rnd() * 13;
+              mp[m * 3 + 2] = 12 - rnd() * (LEN + 30);
+            }
+            var moteGeo = new THREE.BufferGeometry();
+            moteGeo.setAttribute("position", new THREE.BufferAttribute(mp, 3));
+            var motes = new THREE.Points(moteGeo, new THREE.PointsMaterial({
+              color: 0xF3B57A, size: 0.11, sizeAttenuation: true, transparent: true, opacity: 0.62,
+              blending: THREE.AdditiveBlending, depthWrite: false }));
+            scene.add(motes);
+
+            /* --- lighting: the warm source travels WITH the camera; the cream fill flashes on cuts --- */
+            scene.add(new THREE.AmbientLight(0x3a2415, 0.30));
+            var key = new THREE.DirectionalLight(0xF0761E, 0.42);
+            key.position.set(6, 14, 4);
+            scene.add(key);
+            var lamp = new THREE.PointLight(0xF0761E, 42, 64, 2.0);
+            scene.add(lamp);
+            var fill = new THREE.PointLight(0xEFE7D6, 11, 44, 2.0);
+            scene.add(fill);
+
+            /* --- the camera is the actor: one continuous 60s descent, surging on every cut --- */
+            var state = { t: 0 };
+            function render() {
+              var t = state.t, p = t / DUR;
+              var surge = 0, bank = 0, flash = 0, glow = 0;
+              for (var i = 0; i < CUTS.length; i++) {
+                var c = CUTS[i];
+                surge += 14 * smooth((t - (c - 0.28)) / 0.62);            /* 14 units of extra travel across the cut */
+                var kb = (t - (c - 0.3)) / 0.8;
+                if (kb > 0 && kb < 1) bank += Math.sin(kb * Math.PI) * (i % 2 ? -1 : 1);
+                var kf = (t - c) / 0.4;
+                if (kf > -0.02 && kf < 1) flash += Math.pow(1 - clamp01(kf), 2.2);
+                var kg = (t - (c - 0.15)) / 1.1;
+                if (kg > 0 && kg < 1) glow += Math.sin(kg * Math.PI);
+              }
+              var camZ = 14 - p * 438 - surge;
+              var drift = Math.sin(p * Math.PI * 2.2) * 3.6 + bank * 2.2;
+              var rise = 6.0 + Math.sin(p * Math.PI * 1.4) * 1.5 + p * 1.7;
+              camera.position.set(drift, rise, camZ);
+              camera.lookAt(drift * 0.35 - bank * 3.0, 2.3, camZ - 44);
+              camera.rotation.z = Math.sin(p * Math.PI * 1.8) * 0.045 - bank * 0.055;
+              lamp.position.set(drift + Math.sin(p * Math.PI * 3.1) * 8, 7.5, camZ - 15);
+              lamp.intensity = 42 + glow * 16;
+              fill.position.set(drift - 6, 4.6, camZ - 6);
+              fill.intensity = 11 + flash * 42;
+              /* the whole board lights up on the cut: signal pulses through the copper */
+              var pulse = 0.90 + glow * 0.16;
+              traceMat.color.setRGB(pulse, pulse, pulse);
+              padMat.color.setRGB(pulse, pulse, pulse);
+              motes.position.y = Math.sin(t * 0.37) * 0.35;
+              motes.position.x = Math.sin(t * 0.23) * 0.5;
+              renderer.render(scene, camera);
+              return flash;
+            }
+            gl = { render: render, state: state };
+            return gl;
+          }
+
+          /* One driver on the paused timeline — the registry's own Three.js pattern.
+             Never requestAnimationFrame, never wall-clock. */
+          var driver = { t: 0 };
+          var flashEl = document.getElementById("bg-flash");
+          function renderAt() {
+            var g = buildScene();
+            if (!g) return;
+            g.state.t = driver.t;
+            var f = g.render();
+            /* the flashbulb also blooms the HTML plate for two frames */
+            flashEl.style.opacity = (Math.min(1, f) * 0.14).toFixed(3);
+          }
+          buildScene();
+          renderAt();
+          tl.to(driver, { t: DUR, duration: DUR, ease: "none", onUpdate: renderAt }, 0);
+
+          /* CRT field creeps over the plate — the film's texture */
+          tl.fromTo("#bg-scan", { y: 0 }, { y: 16, duration: DUR, ease: "none" }, 0);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["bg-field"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

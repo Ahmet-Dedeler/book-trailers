@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .world { position:absolute; inset:0; }
+        /* the object is full-width and the platter is at its closest here: a wide band scrim */
+        .scrim { position:absolute; left:-260px; top:250px; width:2440px; height:700px;
+                 background:radial-gradient(ellipse closest-side, rgba(5,7,14,.95),
+                   rgba(5,7,14,.78) 50%, rgba(5,7,14,0) 100%); }
+        .scrim2 { position:absolute; left:-360px; top:640px; width:1700px; height:440px;
+                  background:radial-gradient(ellipse closest-side, rgba(5,7,14,.92),
+                    rgba(5,7,14,0) 100%); }
+        .scrim3 { position:absolute; left:-200px; top:40px; width:2320px; height:340px;
+                  background:radial-gradient(ellipse closest-side, rgba(5,7,14,.85),
+                    rgba(5,7,14,0) 100%); }
+
+        .head { position:absolute; left:168px; width:1584px; top:140px; display:flex;
+                align-items:baseline; justify-content:space-between; font-size:26px;
+                letter-spacing:.22em; color:#7C8AA3; text-transform:uppercase; white-space:nowrap; opacity:0; }
+        .head b { color:#3B7BFF; font-weight:400; }
+        .headrule { position:absolute; left:168px; width:1584px; top:192px; height:2px; background:#3B7BFF;
+                    transform-origin:left center; }
+
+        .obj { position:absolute; left:0; top:0; width:1920px; height:1080px; display:block; }
+        .obj text { font-family:"Space Mono",monospace; }
+        .obj .lab { font-family:"Archivo Black",sans-serif; text-transform:uppercase; letter-spacing:-.4px; }
+
+        .foot { position:absolute; left:168px; top:846px; padding-left:34px; border-left:4px solid #3B7BFF;
+                font-size:31px; line-height:1.5; color:#DCE5F2; white-space:nowrap; opacity:0; }
+        .foot i { font-style:normal; color:#7C8AA3; }
+      </style>
+
+      <div data-hf-id="hf-peox" id="root" data-composition-id="s6-timeline" data-start="0" data-duration="8.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-a1r6" class="world" id="s6-world">
+          <div data-hf-id="hf-49et" class="scrim3" data-layout-ignore="" aria-hidden="true"></div>
+          <div data-hf-id="hf-edqo" class="scrim" data-layout-ignore="" aria-hidden="true"></div>
+          <div data-hf-id="hf-b3xs" class="scrim2" data-layout-ignore="" aria-hidden="true"></div>
+
+          <div data-hf-id="hf-7d1e" class="head" id="s6-head"><span data-hf-id="hf-b9db">What the book covers</span><b data-hf-id="hf-vrj1">1975 — early 1992</b></div>
+          <div data-hf-id="hf-jjw6" class="headrule" id="s6-headrule"></div>
+
+          <!-- ---- object: the drawn timeline — the record, track by track ---- -->
+          <svg data-hf-id="hf-px1b" class="obj" id="s6-obj" viewBox="0 0 1920 1080" fill="none">
+            <!-- the axis, its read-glow, and the hot segment just behind the head -->
+            <line data-hf-id="hf-q914" id="s6-glow" x1="260" y1="600" x2="260" y2="600" stroke="#3B7BFF" stroke-opacity=".22" stroke-width="22" stroke-linecap="round" />
+            <line data-hf-id="hf-le0i" id="s6-axis" x1="260" y1="600" x2="1660" y2="600" stroke="#3B7BFF" stroke-opacity=".75" stroke-width="3" />
+            <line data-hf-id="hf-p2vn" id="s6-hot" x1="260" y1="600" x2="260" y2="600" stroke="#3B7BFF" stroke-width="6" stroke-linecap="round" />
+            <g data-hf-id="hf-jf7p" id="s6-years" />
+            <!-- stations, laid out by script -->
+            <g data-hf-id="hf-bdky" id="s6-stations" />
+            <!-- the read head: a cobalt bracket with a light, and its readout -->
+            <g data-hf-id="hf-e58x" id="s6-hd" opacity="0">
+              <circle data-hf-id="hf-oym0" cx="0" cy="600" r="34" fill="#3B7BFF" opacity=".22" />
+              <path data-hf-id="hf-csgr" d="M -30 566 h -16 v 68 h 16" stroke="#3B7BFF" stroke-width="3" stroke-linecap="square" />
+              <path data-hf-id="hf-tpry" d="M 30 566 h 16 v 68 h -16" stroke="#3B7BFF" stroke-width="3" stroke-linecap="square" />
+              <rect data-hf-id="hf-iwdg" x="-9" y="578" width="18" height="44" fill="#0B1120" stroke="#3B7BFF" stroke-width="2" />
+              <rect data-hf-id="hf-mf4g" id="s6-light" x="-4" y="586" width="8" height="28" fill="#DCE5F2" />
+              <line data-hf-id="hf-n8dx" x1="0" y1="430" x2="0" y2="560" stroke="#3B7BFF" stroke-opacity=".5" stroke-width="2" stroke-dasharray="6 6" />
+              <rect data-hf-id="hf-6bro" x="-84" y="392" width="168" height="38" fill="#0B1120" stroke="#3B7BFF" stroke-width="2" />
+              <text data-hf-id="hf-lwop" id="s6-readout" x="0" y="419" fill="#3B7BFF" font-size="22" letter-spacing="4" text-anchor="middle">READ 1975</text>
+            </g>
+          </svg>
+
+          <div data-hf-id="hf-ftd0" class="foot" id="s6-foot">The reporting stops in 1992. <i data-hf-id="hf-ykpd">The empire did not.</i></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8.5, IN = 0.5, OUT = 0.5;
+          var tl = gsap.timeline({ paused: true });
+          function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+          /* ---- the record: 1975 → 1992, proportional along a 1400px axis (≈ 82px a year) ---- */
+          var X0 = 260, SPAN = 1400, Y = 600;
+          var ST = [
+            { yr: "1975", lab: "Microsoft founded", up: true },
+            { yr: "1980", lab: "The IBM deal",      up: false },
+            { yr: "1981", lab: "The IBM PC ships",  up: true },
+            { yr: "1986", lab: "The IPO",           up: false },
+            { yr: "1990", lab: "Windows 3.0",       up: true },
+            { yr: "1992", lab: "",                  up: false, end: true }
+          ];
+          ST.forEach(function (s) { s.x = Math.round(X0 + (parseInt(s.yr, 10) - 1975) / 17 * SPAN); });
+
+          (function () {
+            var yg = document.getElementById("s6-years"), ys = "";
+            for (var y = 1976; y < 1992; y++) {
+              var yx = X0 + (y - 1975) / 17 * SPAN;
+              ys += '<line class="yt" x1="' + yx.toFixed(1) + '" y1="' + (Y - 7) + '" x2="' + yx.toFixed(1) + '" y2="' + (Y + 7) + '" stroke="#3B7BFF" stroke-opacity=".45" stroke-width="2" opacity="0"/>';
+            }
+            yg.innerHTML = ys;
+            var g = document.getElementById("s6-stations"), out = "";
+            ST.forEach(function (s, i) {
+              var x = s.x;
+              out += '<circle id="s6-ring' + i + '" cx="' + x + '" cy="' + Y + '" r="11" stroke="#3B7BFF" stroke-width="2" opacity="0"/>';
+              if (s.end) {
+                out += '<circle id="s6-nd' + i + '" cx="' + x + '" cy="' + Y + '" r="11" fill="#05070E" stroke="#3B7BFF" stroke-width="3"/>';
+                out += '<circle id="s6-lit' + i + '" cx="' + x + '" cy="' + Y + '" r="11" fill="#3B7BFF" opacity="0"/>';
+                out += '<g id="s6-lb' + i + '" opacity="0"><text x="' + (x + 58) + '" y="' + (Y + 15) + '" fill="#3B7BFF" font-size="44" letter-spacing="2">1992 →</text></g>';
+                return;
+              }
+              var t1 = s.up ? Y - 10 : Y + 10, t2 = s.up ? Y - 52 : Y + 52;
+              out += '<line id="s6-tk' + i + '" x1="' + x + '" y1="' + t1 + '" x2="' + x + '" y2="' + t2 + '" stroke="#3B7BFF" stroke-opacity=".8" stroke-width="2"/>';
+              out += '<circle id="s6-nd' + i + '" cx="' + x + '" cy="' + Y + '" r="11" fill="#05070E" stroke="#3B7BFF" stroke-width="3"/>';
+              out += '<circle id="s6-lit' + i + '" cx="' + x + '" cy="' + Y + '" r="11" fill="#3B7BFF" opacity="0"/>';
+              var anchor = (i === 0 || i === 2) ? "start" : "middle", ax = (i === 0 || i === 2) ? x - 8 : x;
+              var yY = s.up ? Y - 76 : Y + 108, yL = s.up ? Y - 138 : Y + 164;
+              out += '<g id="s6-lb' + i + '" opacity="0">' +
+                       '<text x="' + ax + '" y="' + yY + '" fill="#3B7BFF" font-size="44" letter-spacing="2" text-anchor="' + anchor + '">' + s.yr + '</text>' +
+                       '<text class="lab" x="' + ax + '" y="' + yL + '" fill="#DCE5F2" font-size="34" text-anchor="' + anchor + '">' + s.lab + '</text>' +
+                     '</g>';
+            });
+            g.innerHTML = out;
+          })();
+
+          /* ---- handoff IN — a head seek: s5 lifts out on the same window ---- */
+          tl.fromTo("#s6-world", { opacity: 0, y: 140, filter: "blur(14px)" },
+                                 { opacity: 1, y: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s6-world", { filter: "none" }, IN);
+
+          tl.fromTo("#s6-head", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.44, ease: "power3.out" }, 0.3);
+          tl.fromTo("#s6-headrule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power4.out" }, 0.4);
+
+          /* --- blueprint: spatial-pan-stations — the camera eases along the record as it is written --- */
+          tl.fromTo("#s6-obj", { x: 110, scale: 1.03, transformOrigin: "50% 56%" },
+                               { x: 0, scale: 1, duration: 2.4, ease: "power2.out" }, 0.5);
+
+          /* --- rule: svg-path-draw — the axis draws left → right in 1.0s, measured, not guessed --- */
+          var axis = document.getElementById("s6-axis"), len = axis.getTotalLength();
+          axis.style.strokeDasharray = len; axis.style.strokeDashoffset = len;
+          var DRAW_AT = 0.7, DRAW = 1.0;
+          tl.to(axis, { strokeDashoffset: 0, duration: DRAW, ease: "none" }, DRAW_AT);
+
+          /* the minor year ticks appear as the pen passes them */
+          gsap.utils.toArray("#s6-years .yt").forEach(function (el, k) {
+            var yx = X0 + (k + 1) / 17 * SPAN;
+            tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, DRAW_AT + (yx - X0) / SPAN * DRAW);
+          });
+
+          /* each station lands as the pen passes it: tick, node pop, then the label whips in */
+          ST.forEach(function (s, i) {
+            var t = DRAW_AT + (s.x - X0) / SPAN * DRAW + 0.04;
+            if (!s.end) {
+              tl.fromTo("#s6-tk" + i, { scaleY: 0, svgOrigin: s.x + " " + Y },
+                                      { scaleY: 1, duration: 0.26, ease: "power3.out" }, t);
+            }
+            tl.fromTo("#s6-nd" + i, { scale: 0, svgOrigin: s.x + " " + Y },
+                                    { scale: 1, duration: 0.42, ease: "back.out(3)" }, t - 0.04);
+            tl.set("#s6-lb" + i, { opacity: 1, y: s.end ? 0 : (s.up ? 26 : -26), x: s.end ? -22 : 0 }, t + 0.1);
+            tl.to("#s6-lb" + i, { y: 0, x: 0, duration: 0.3, ease: "power4.out" }, t + 0.1);
+          });
+
+          /* --- rule: chart-scrub-readout — the read head sweeps the written record; the axis glows behind it,
+                 each node lights as it is read, the readout steps through the years. One driver, pure in t. --- */
+          var SCRUB_AT = 2.9, SCRUB = 2.0, scrubEase = gsap.parseEase("power1.inOut");
+          tl.fromTo("#s6-hd", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, SCRUB_AT - 0.2);
+          var head = document.getElementById("s6-hd"), glow = document.getElementById("s6-glow"),
+              hot = document.getElementById("s6-hot"), light = document.getElementById("s6-light"),
+              readout = document.getElementById("s6-readout"), lastYr = -1;
+          var lit = [], ring = [];
+          ST.forEach(function (s, i) { lit.push(document.getElementById("s6-lit" + i)); ring.push(document.getElementById("s6-ring" + i)); });
+
+          function frame() {
+            var t = tl.time();
+            var p = scrubEase(clamp01((t - SCRUB_AT) / SCRUB));
+            var hx = X0 + SPAN * p, moving = t >= SCRUB_AT && t < SCRUB_AT + SCRUB;
+            gsap.set(head, { x: hx });
+            glow.setAttribute("x2", hx.toFixed(1));
+            glow.setAttribute("opacity", t >= SCRUB_AT ? "1" : "0");
+            hot.setAttribute("x1", Math.max(X0, hx - 140).toFixed(1));
+            hot.setAttribute("x2", hx.toFixed(1));
+            hot.setAttribute("opacity", moving ? "0.9" : "0");
+            /* the light: hard on while reading, a slow square-wave idle once parked at 1992 */
+            light.setAttribute("opacity", moving ? "1" : (((t * 1.25) % 1) < 0.5 ? "0.9" : "0.45"));
+            var yr = Math.floor(1975 + 17 * p);
+            if (yr !== lastYr) { readout.textContent = "READ " + yr; lastYr = yr; }
+            for (var i = 0; i < ST.length; i++) {
+              var passed = t >= SCRUB_AT && hx >= ST[i].x - 0.5;
+              lit[i].setAttribute("opacity", passed ? "1" : "0");
+              /* a ring flashes outward as the head crosses each node */
+              var k = passed ? clamp01((hx - ST[i].x) / 160) : 0;
+              ring[i].setAttribute("r", (11 + 30 * k).toFixed(1));
+              ring[i].setAttribute("opacity", passed ? (0.9 * (1 - k)).toFixed(3) : "0");
+            }
+          }
+          var clock = { t: 0 };
+          tl.to(clock, { t: DUR, duration: DUR, ease: "none", onUpdate: frame }, 0);
+          frame();
+
+          tl.fromTo("#s6-foot", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 5.2);
+
+          /* ---- handoff OUT: accent 6→7 — a dip, opacity only ---- */
+          tl.to("#s6-world", { opacity: 0, duration: OUT, ease: "power2.in" }, DUR - OUT);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s6-timeline"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

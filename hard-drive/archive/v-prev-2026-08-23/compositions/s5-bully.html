@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .kicker { position:absolute; left:168px; top:196px; font-size:27px; letter-spacing:.24em;
+                  color:#3B7BFF; text-transform:uppercase; opacity:0; }
+        .glitch { position:absolute; left:168px; top:262px; width:1584px; height:190px; opacity:0; }
+        .g { position:absolute; left:0; top:0; width:1584px;
+             font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+             font-size:146px; line-height:1.0; letter-spacing:-.03em; }
+        .g-r { color:#E8443A; mix-blend-mode:screen; }
+        .g-c { color:#2C7FD4; mix-blend-mode:screen; }
+        .g-m { color:#DCE5F2; }
+        .attr { position:absolute; left:168px; top:470px; font-size:28px; letter-spacing:.06em;
+                color:#7C8AA3; opacity:0; }
+        .attrule { position:absolute; left:168px; top:440px; width:620px; height:2px; background:#3B7BFF; }
+        .card { position:absolute; left:168px; top:582px; width:1430px;
+                border-left:4px solid #3B7BFF; padding:30px 0 30px 46px; opacity:0; }
+        .card .l { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                   font-size:50px; line-height:1.34; letter-spacing:-.02em; color:#DCE5F2;
+                   display:block; opacity:0; }
+        .card .l.hot { color:#3B7BFF; }
+        .tail { position:absolute; left:168px; top:930px; font-size:27px; letter-spacing:.05em;
+                color:#7C8AA3; opacity:0; }
+      </style>
+
+      <div data-hf-id="hf-h0a9" id="root" data-composition-id="s5-bully" data-start="0" data-duration="8.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-8slo" class="kicker" id="s5-kick">By 1990</div>
+
+        <div data-hf-id="hf-f8b1" class="glitch" id="s5-slam">
+          <span data-hf-id="hf-ofc8" class="g g-r" id="s5-gr" data-layout-ignore="" aria-hidden="true">The Silicon Bully</span>
+          <span data-hf-id="hf-02le" class="g g-c" id="s5-gc" data-layout-ignore="" aria-hidden="true">The Silicon Bully</span>
+          <span data-hf-id="hf-rea1" class="g g-m">The Silicon Bully</span>
+        </div>
+
+        <div data-hf-id="hf-qba9" class="attrule" id="s5-attrule"></div>
+        <div data-hf-id="hf-cj4o" class="attr" id="s5-attr">Business Month magazine's label for Gates.</div>
+
+        <div data-hf-id="hf-p44n" class="card" id="s5-card">
+          <span data-hf-id="hf-yasw" class="l" id="s5-c1">OS/2 failed.</span>
+          <span data-hf-id="hf-hf9y" class="l" id="s5-c2">Windows shipped late, and late again.</span>
+          <span data-hf-id="hf-no6g" class="l" id="s5-c3">IBM walked — and allied with Apple.</span>
+          <span data-hf-id="hf-pw6k" class="l hot" id="s5-c4">The FTC opened an investigation.</span>
+        </div>
+
+        <div data-hf-id="hf-hhvg" class="tail" id="s5-tail">The book charts the misses, not just the wins.</div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8.5, SLAM = 0.42;
+          var tl = gsap.timeline({ paused: true });
+          var gr = document.getElementById("s5-gr");
+          var gc = document.getElementById("s5-gc");
+
+          tl.fromTo("#s5-kick", { opacity: 0, x: -26 },
+                                { opacity: 1, x: 0, duration: 0.34, ease: "power4.out" }, 0.1);
+
+          /* rule: kinetic-beat-slam — the label lands hard */
+          tl.fromTo("#s5-slam", { opacity: 0, scale: 1.22 },
+                                { opacity: 1, scale: 1, duration: 0.36, ease: "power4.out" }, SLAM);
+
+          /* rule: chromatic-glitch — RGB split from a deterministic hash of quantized time */
+          function h(n) { var x = Math.sin(n * 12.9898) * 43758.5453; return (x - Math.floor(x)) * 2 - 1; }
+          var gclock = { t: 0 };
+          tl.to(gclock, { t: 1, duration: DUR - SLAM, ease: "none", onUpdate: function () {
+            var tt = tl.time() - SLAM;
+            if (tt < 0) return;
+            /* one hard burst on arrival, then a faint recurring twitch — never fully settled */
+            var burst = Math.max(0, 1 - tt / 0.85) * 34;
+            var idle  = (tt > 1.2 && (tt % 2.6) < 0.13) ? 11 : 0;
+            var amp = burst + idle;
+            var k = Math.floor(tt * 24);
+            gr.style.transform = "translate(" + (h(k) * amp).toFixed(2) + "px," + (h(k + 11) * amp * 0.2).toFixed(2) + "px)";
+            gc.style.transform = "translate(" + (h(k + 97) * amp).toFixed(2) + "px," + (h(k + 53) * amp * 0.2).toFixed(2) + "px)";
+          }}, SLAM);
+
+          tl.fromTo("#s5-attrule", { scaleX: 0, transformOrigin: "left center" },
+                                   { scaleX: 1, duration: 0.5, ease: "power4.out" }, 1.05);
+          tl.fromTo("#s5-attr", { opacity: 0, y: 20 },
+                                { opacity: 1, y: 0, duration: 0.44, ease: "power3.out" }, 1.2);
+
+          /* rule: reactive-displacement — the card's arrival is what shoves the label up */
+          tl.fromTo("#s5-card", { opacity: 0, x: 560 },
+                                { opacity: 1, x: 0, duration: 0.56, ease: "power4.out" }, 2.55);
+          tl.to("#s5-slam", { y: -104, scale: 0.72, opacity: 0.30, transformOrigin: "left top",
+                              duration: 0.30, ease: "power2.out" }, 2.55);
+          /* the dateline has done its job — it clears rather than colliding with the shoved label */
+          tl.to("#s5-kick", { y: -52, opacity: 0, duration: 0.24, ease: "power2.in" }, 2.5);
+          tl.to("#s5-attr", { y: -78, opacity: 0, duration: 0.24, ease: "power2.in" }, 2.55);
+          tl.to("#s5-attrule", { y: -78, opacity: 0, duration: 0.24, ease: "power2.in" }, 2.55);
+
+          /* the charges are read one at a time */
+          [1,2,3,4].forEach(function (i) {
+            var t = 2.95 + (i - 1) * 0.62;
+            tl.set("#s5-c" + i, { opacity: 1, y: 40 }, t);
+            tl.to("#s5-c" + i, { y: 0, duration: 0.16, ease: "power4.out" }, t);
+          });
+          tl.fromTo("#s5-c4", { scale: 1.06, transformOrigin: "left center" },
+                              { scale: 1, duration: 0.34, ease: "back.out(2)" }, 4.81);
+          tl.fromTo("#s5-tail", { opacity: 0, y: 20 },
+                                { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, 5.7);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s5-bully"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

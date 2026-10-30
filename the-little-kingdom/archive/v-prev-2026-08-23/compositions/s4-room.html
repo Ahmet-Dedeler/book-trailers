@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6; }
+        .veil { position:absolute; inset:0; background:rgba(11,10,9,.56); }
+        .scrim { position:absolute; left:60px; top:70px; width:1800px; height:940px;
+                 background:radial-gradient(ellipse closest-side,
+                   rgba(11,10,9,.94), rgba(11,10,9,.78) 60%, rgba(11,10,9,0) 100%); }
+        .stage { position:absolute; left:168px; right:168px; top:104px; bottom:92px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .head { display:flex; align-items:baseline; justify-content:space-between;
+                font-size:26px; letter-spacing:.24em; color:#9A8F7C; text-transform:uppercase;
+                opacity:0; }
+        .head b { color:#F0761E; font-weight:400; }
+        .headrule { height:2px; background:#F0761E; margin:22px 0 6px; }
+        .row { display:flex; align-items:center; gap:30px; padding:12px 0; }
+        .ic { width:80px; height:80px; flex:0 0 80px; display:block; }
+        .num { font-size:23px; letter-spacing:.14em; color:#FF9A4E; width:46px; flex:0 0 46px;
+               font-variant-numeric:tabular-nums; }
+        .lab { font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+               font-size:66px; line-height:1; letter-spacing:-.015em; color:#EFE7D6; }
+        .hair { height:1px; background:rgba(239,231,214,.18); transform-origin:left center; }
+        .rowin { display:block; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="s4-room" data-start="0" data-duration="9.5"
+           data-width="1920" data-height="1080">
+        <div class="veil" data-layout-ignore aria-hidden="true"></div>
+        <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="stage" id="s4-stage">
+          <div class="head" id="s4-head"><span>What he was let in to see</span><b>Cupertino, 1981–1983</b></div>
+          <div class="headrule" id="s4-headrule"></div>
+
+          <div class="row">
+            <svg class="ic" id="s4-ic1" viewBox="0 0 64 64" fill="none" stroke="#F0761E"
+                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 30 L32 10 L60 30"/><path d="M10 30 L10 58 L54 58 L54 30"/>
+              <path d="M18 58 L18 40 L46 40 L46 58"/>
+            </svg>
+            <div class="num" id="s4-n1">01</div>
+            <div class="lab"><span class="rowin" id="s4-r1">A garage in Los Altos</span></div>
+          </div>
+          <div class="hair" id="s4-h1"></div>
+
+          <div class="row">
+            <svg class="ic" id="s4-ic2" viewBox="0 0 64 64" fill="none" stroke="#F0761E"
+                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 14 L58 14 L58 50 L6 50 Z"/><path d="M16 22 L28 22 L28 32 L16 32 Z"/>
+              <path d="M36 22 L50 22 L50 32 L36 32 Z"/><path d="M14 41 L50 41"/><path d="M22 32 L22 41"/>
+            </svg>
+            <div class="num" id="s4-n2">02</div>
+            <div class="lab"><span class="rowin" id="s4-r2">The Apple I, soldered by hand</span></div>
+          </div>
+          <div class="hair" id="s4-h2"></div>
+
+          <div class="row">
+            <svg class="ic" id="s4-ic3" viewBox="0 0 64 64" fill="none" stroke="#F0761E"
+                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 10 L8 56 L58 56"/>
+              <path d="M14 48 L24 48 L24 38 L34 38 L34 26 L44 26 L44 16 L56 16"/>
+            </svg>
+            <div class="num" id="s4-n3">03</div>
+            <div class="lab"><span class="rowin" id="s4-r3">The 1980 public offering</span></div>
+          </div>
+          <div class="hair" id="s4-h3"></div>
+
+          <div class="row">
+            <svg class="ic" id="s4-ic4" viewBox="0 0 64 64" fill="none" stroke="#F0761E"
+                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 10 L54 10 L54 40 L10 40 Z"/><path d="M17 17 L47 17 L47 33 L17 33 Z"/>
+              <path d="M14 48 L50 48 L50 57 L14 57 Z"/>
+            </svg>
+            <div class="num" id="s4-n4">04</div>
+            <div class="lab"><span class="rowin" id="s4-r4">The Lisa, and what it cost</span></div>
+          </div>
+          <div class="hair" id="s4-h4"></div>
+
+          <div class="row">
+            <svg class="ic" id="s4-ic5" viewBox="0 0 64 64" fill="none" stroke="#F0761E"
+                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 6 L49 6 L49 47 L15 47 Z"/><path d="M21 12 L43 12 L43 31 L21 31 Z"/>
+              <path d="M25 39 L39 39"/><path d="M19 47 L45 47 L45 58 L19 58 Z"/>
+            </svg>
+            <div class="num" id="s4-n5">05</div>
+            <div class="lab"><span class="rowin" id="s4-r5">The Macintosh, before anyone saw it</span></div>
+          </div>
+          <div class="hair" id="s4-h5"></div>
+
+          <div class="row">
+            <svg class="ic" id="s4-ic6" viewBox="0 0 64 64" fill="none" stroke="#F0761E"
+                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 12 L34 12 L34 30 L16 30 L10 38 L10 30 L6 30 Z"/>
+              <path d="M30 28 L58 28 L58 46 L40 46 L34 54 L34 46 L30 46 Z"/>
+            </svg>
+            <div class="num" id="s4-n6">06</div>
+            <div class="lab"><span class="rowin" id="s4-r6">Every argument in between</span></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 9.5;
+          var tl = gsap.timeline({ paused: true });
+
+          tl.fromTo("#s4-head", { opacity: 0, y: 16 },
+                                { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.1);
+          tl.fromTo("#s4-headrule", { scaleX: 0, transformOrigin: "left center" },
+                                    { scaleX: 1, duration: 0.6, ease: "power4.out" }, 0.28);
+
+          /* --- blueprint: grid-card-assemble — one row per beat, each with its own object --- */
+          var ROWS = 6, T0 = 0.85, STEP = 0.62;
+          for (var i = 1; i <= ROWS; i++) {
+            var t = T0 + (i - 1) * STEP;
+            if (i > 1) {
+              tl.fromTo("#s4-h" + (i - 1), { scaleX: 0, transformOrigin: "left center" },
+                                           { scaleX: 1, duration: 0.44, ease: "power3.out" }, t - 0.16);
+            }
+            /* rule: waterfall-entry — binary opacity, whip from below */
+            tl.set("#s4-r" + i, { opacity: 1, y: 46 }, t);
+            tl.to("#s4-r" + i, { y: 0, duration: 0.17, ease: "power4.out" }, t);
+            /* rule: spring-pop-entrance */
+            tl.fromTo("#s4-n" + i, { opacity: 0, scale: 0.2 },
+                                   { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(2.6)" }, t - 0.06);
+
+            /* --- rule: svg-path-draw — each object draws itself stroke by stroke --- */
+            var strokes = document.querySelectorAll("#s4-ic" + i + " path");
+            for (var s = 0; s < strokes.length; s++) {
+              var L = strokes[s].getTotalLength();
+              tl.fromTo(strokes[s], { strokeDasharray: L, strokeDashoffset: L },
+                                    { strokeDashoffset: 0, duration: 0.46,
+                                      ease: "power2.inOut" }, t - 0.10 + s * 0.09);
+            }
+          }
+
+          tl.fromTo("#s4-stage", { y: 22 }, { y: -8, duration: DUR, ease: "sine.inOut" }, 0);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s4-room"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

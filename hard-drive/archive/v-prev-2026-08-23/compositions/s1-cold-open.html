@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        /* NO background fill — the continuous platter layer shows through. */
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#DCE5F2; }
+        .stage { position:absolute; left:168px; right:168px; top:0; bottom:0;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .prompt { font-size:27px; letter-spacing:.16em; text-transform:uppercase;
+                  color:#7C8AA3; height:36px; display:flex; align-items:center; }
+        .prompt .cwd { color:#3B7BFF; margin-right:14px; }
+        .caret { display:inline-block; width:14px; height:26px; background:#3B7BFF;
+                 margin-left:8px; }
+        .rule { height:2px; background:#3B7BFF; width:560px; margin:30px 0 44px; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                font-size:132px; line-height:1.0; letter-spacing:-.025em; color:#DCE5F2; }
+        .w { display:inline-block; opacity:0; }
+        .co { color:#3B7BFF; }
+      </style>
+
+      <div data-hf-id="hf-a8u0" id="root" data-composition-id="s1-cold-open" data-start="0" data-duration="6.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-jkxd" class="stage" id="s1-stage">
+          <div data-hf-id="hf-3k5u" class="prompt"><span data-hf-id="hf-ezfa" class="cwd">C:\&gt;</span><span data-hf-id="hf-qpff" id="s1-type"></span><span data-hf-id="hf-2aeq" class="caret" id="s1-caret"></span></div>
+          <div data-hf-id="hf-dgpv" class="rule" id="s1-rule"></div>
+          <div data-hf-id="hf-nwlw" class="disp">
+            <span data-hf-id="hf-zm2c" class="w" id="s1-a1">Everyone</span> <span data-hf-id="hf-a8gy" class="w" id="s1-a2">knows</span>
+          </div>
+          <div data-hf-id="hf-9gq4" class="disp">
+            <span data-hf-id="hf-semu" class="w" id="s1-b1">how</span> <span data-hf-id="hf-verv" class="w co" id="s1-b2">Microsoft</span>
+            <span data-hf-id="hf-6j2c" class="w" id="s1-b3">won.</span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 6.5;
+          var tl = gsap.timeline({ paused: true });
+
+          /* rule: discrete-text-sequence — the machine types its own dateline */
+          var T = "SEATTLE, WASHINGTON  1992";
+          var el = document.getElementById("s1-type");
+          var caret = document.getElementById("s1-caret");
+          var typer = { i: 0 };
+          tl.fromTo(typer, { i: 0 }, {
+            i: T.length, duration: 1.4, ease: "none",
+            onUpdate: function () { el.textContent = T.slice(0, Math.round(typer.i)); }
+          }, 0.35);
+
+          /* rule: context-sensitive-cursor — square-wave blink off tl.time() */
+          var clock = { t: 0 };
+          tl.to(clock, { t: DUR, duration: DUR, ease: "none", onUpdate: function () {
+            var tt = tl.time();
+            caret.style.opacity = (tt < 0.3) ? 0 : (((tt % 0.8) < 0.44) ? 1 : 0.1);
+          }}, 0);
+
+          tl.fromTo("#s1-stage", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.05);
+          tl.fromTo("#s1-rule", { scaleX: 0, transformOrigin: "left center" },
+                                { scaleX: 1, duration: 0.55, ease: "power4.out" }, 1.9);
+
+          /* rule: waterfall-entry — binary opacity, overlapping whip from below */
+          var wave = [["#s1-a1", 2.30, 60, 0.18], ["#s1-a2", 2.46, 46, 0.15],
+                      ["#s1-b1", 3.05, 40, 0.13], ["#s1-b2", 3.17, 74, 0.19],
+                      ["#s1-b3", 3.34, 52, 0.15]];
+          wave.forEach(function (w) {
+            tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+            tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+          });
+          tl.fromTo("#s1-b2", { scale: 1.1 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)" }, 3.17);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s1-cold-open"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

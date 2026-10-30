@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#F2F4F8; }
+        .world { position:absolute; inset:0; }
+        .scrim { position:absolute; inset:0; }
+        .scrim.left { background:radial-gradient(ellipse 68% 100% at 6% 50%,
+                        rgba(7,8,11,.97) 12%, rgba(7,8,11,.82) 46%, rgba(7,8,11,0) 82%); }
+        .stage { position:absolute; left:150px; top:0; bottom:0; width:1020px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .part  { display:flex; align-items:center; gap:20px; font-size:26px; letter-spacing:.26em;
+                 color:#FF3B1F; text-transform:uppercase; margin-bottom:22px; opacity:0; white-space:nowrap; }
+        .part i { display:block; width:56px; height:2px; background:#FF3B1F; }
+        .rule  { height:2px; background:#FF3B1F; width:100%; margin:0 0 30px; transform-origin:left center; }
+        .disp  { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                 line-height:.96; letter-spacing:-.03em; white-space:nowrap; }
+        .disp.big { font-size:200px; }
+        .disp.std { font-size:116px; }
+        .disp span { display:inline-block; opacity:0; }
+        .flame-t { color:#FF3B1F; }
+        /* the three arrows — mono 28px, one per 0.3s beat */
+        .list  { margin-top:40px; }
+        .row   { display:flex; align-items:center; gap:22px; font-size:28px; letter-spacing:.16em; line-height:1;
+                 padding:12px 0; color:#F2F4F8; text-transform:uppercase; opacity:0; white-space:nowrap; }
+        .row .arr { position:relative; display:block; width:30px; height:2px; background:#FF3B1F; flex:none; }
+        .row .arr::after { content:""; position:absolute; right:0; top:-5px; width:10px; height:10px;
+                           border-top:2px solid #FF3B1F; border-right:2px solid #FF3B1F; transform:rotate(45deg); }
+        .row .n { color:#79839B; font-size:22px; letter-spacing:.2em; min-width:44px; }
+        /* the wire cube sits over the 3D shards in the right half */
+        .diagram { position:absolute; left:1150px; top:180px; width:720px; height:720px; }
+        .diagram svg { display:block; width:720px; height:720px; overflow:visible; }
+      </style>
+
+      <div id="root" data-composition-id="s4-first-principles" data-start="0" data-duration="8"
+           data-width="1920" data-height="1080">
+        <div class="world" id="s4-world">
+          <div class="scrim left" data-layout-ignore aria-hidden="true"></div>
+
+          <div class="diagram" id="s4-dia" data-layout-ignore aria-hidden="true">
+            <svg viewBox="0 0 720 720" fill="none">
+              <defs>
+                <radialGradient id="s4-flashg" cx="50%" cy="50%" r="50%">
+                  <stop offset="0" stop-color="#FF3B1F" stop-opacity=".55"/>
+                  <stop offset=".55" stop-color="#FF3B1F" stop-opacity=".12"/>
+                  <stop offset="1" stop-color="#FF3B1F" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <circle id="s4-flash" cx="360" cy="330" r="260" fill="url(#s4-flashg)" opacity="0"/>
+              <g id="s4-cube" stroke="#F2F4F8" stroke-width="3" stroke-linecap="round"></g>
+              <g id="s4-tetu" stroke="#F2F4F8" stroke-width="8" stroke-linecap="round" opacity=".85"></g>
+              <g id="s4-tet" stroke="#FF3B1F" stroke-width="4" stroke-linecap="round"></g>
+              <g id="s4-tetv" fill="#FF3B1F" stroke="#F2F4F8" stroke-width="3"></g>
+              <text id="s4-cubelab" x="360" y="620" text-anchor="middle" fill="#79839B"
+                    font-family="Space Mono, monospace" font-size="20" letter-spacing="5" opacity="0">12 EDGES · 8 VERTICES</text>
+              <text id="s4-lab" x="360" y="620" text-anchor="middle" fill="#79839B"
+                    font-family="Space Mono, monospace" font-size="24" letter-spacing="5" opacity="0">SAME PHYSICS. <tspan fill="#FF3B1F">FEWER PARTS.</tspan></text>
+            </svg>
+          </div>
+
+          <div class="stage">
+            <div class="part" id="s4-part" data-layout-allow-overlap><i></i>Think like a physicist</div>
+            <div class="rule" id="s4-rule"></div>
+            <div class="disp big"><span id="s4-l1">First</span></div>
+            <div class="disp std"><span id="s4-l2" class="flame-t">principles.</span></div>
+            <div class="list">
+              <div class="row" id="s4-r1"><i class="arr"></i><span class="n">01</span>Obsess over truth</div>
+              <div class="row" id="s4-r2"><i class="arr"></i><span class="n">02</span>Think in limits</div>
+              <div class="row" id="s4-r3"><i class="arr"></i><span class="n">03</span>Aspire to be less wrong</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 8, IN = 0.5, BRK = 2.6, REB = 4.4;   /* shatter at global 22.6, rebuild at 24.4 (world) */
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---- handoff IN — rides the camera whip from s3 ---- */
+          tl.fromTo("#s4-world", { opacity: 0, x: 220, skewX: 6, filter: "blur(14px)" },
+                                 { opacity: 1, x: 0, skewX: 0, filter: "blur(0px)", duration: IN, ease: "power3.out" }, 0);
+          tl.set("#s4-world", { filter: "none" }, IN);
+
+          /* ---- blueprint: kinetic-type-beats — FIRST lands, PRINCIPLES. slams as the payoff ---- */
+          tl.fromTo("#s4-part", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" }, 0.15);
+          tl.fromTo("#s4-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power4.out" }, 0.27);
+          tl.set("#s4-l1", { opacity: 1, y: 90 }, 0.45);
+          tl.to("#s4-l1", { y: 0, duration: 0.28, ease: "power4.out" }, 0.45);
+          tl.set("#s4-l2", { opacity: 1 }, 0.8);
+          tl.fromTo("#s4-l2", { scale: 1.35, filter: "blur(12px)", transformOrigin: "left center" },
+                              { scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power4.out" }, 0.8);
+          tl.set("#s4-l2", { filter: "none" }, 1.27);
+          /* rule: waterfall-entry — three arrows on a 0.3s beat */
+          [["#s4-r1", 1.6], ["#s4-r2", 1.9], ["#s4-r3", 2.2]].forEach(function (w) {
+            tl.fromTo(w[0], { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, w[1]);
+          });
+
+          /* ---- the diagram: a wire cube → 12 loose edges → a smaller flame tetrahedron ---- */
+          var CX = 360, CY = 330, E = 190;
+          /* isometric cube: 8 vertices from {0,1}^3 */
+          var ax = [0.866 * E, 0.5 * E], ay = [-0.866 * E, 0.5 * E], az = [0, -E];
+          var V = [];
+          for (var a = 0; a < 2; a++) for (var b = 0; b < 2; b++) for (var c = 0; c < 2; c++) {
+            V.push([CX + (a - 0.5) * ax[0] + (b - 0.5) * ay[0] + (c - 0.5) * az[0],
+                    CY + (a - 0.5) * ax[1] + (b - 0.5) * ay[1] + (c - 0.5) * az[1]]);
+          }
+          var EDGES = [];   /* index pairs differing in exactly one bit */
+          for (var i = 0; i < 8; i++) for (var j = i + 1; j < 8; j++) { var d = i ^ j; if (d === 1 || d === 2 || d === 4) EDGES.push([i, j]); }
+          /* a smaller regular tetrahedron, turned so it reads as a solid: rotate Y then X, drop Z */
+          var TV = [[1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1]].map(function (p) {
+            var s = 118 / Math.sqrt(3), x = p[0] * s, y = p[1] * s, z = p[2] * s, ry = 0.62, rx = 0.38;
+            var x1 = x * Math.cos(ry) + z * Math.sin(ry), z1 = -x * Math.sin(ry) + z * Math.cos(ry);
+            var y2 = y * Math.cos(rx) - z1 * Math.sin(rx);
+            return [CX + x1, CY + 24 - y2];
+          });
+          var TEDGES = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]];
+          function seg(p, q) { return { mx: (p[0] + q[0]) / 2, my: (p[1] + q[1]) / 2, ang: Math.atan2(q[1] - p[1], q[0] - p[0]) * 180 / Math.PI,
+                                        len: Math.hypot(q[0] - p[0], q[1] - p[1]) }; }
+          var cube = document.getElementById("s4-cube"), tet = document.getElementById("s4-tet"), tetv = document.getElementById("s4-tetv"), h = "";
+          EDGES.forEach(function (e, i) {
+            var p = V[e[0]], q = V[e[1]];
+            h += '<line id="s4-e' + i + '" x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>';
+          });
+          cube.innerHTML = h; h = "";
+          TEDGES.forEach(function (e, i) {
+            var p = TV[e[0]], q = TV[e[1]];
+            h += '<line id="s4-t' + i + '" x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>';
+          });
+          tet.innerHTML = h;
+          document.getElementById("s4-tetu").innerHTML = h.replace(/s4-t(\d)/g, "s4-u$1"); h = "";
+          TV.forEach(function (p, i) { h += '<circle id="s4-v' + i + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="7"/>'; });
+          tetv.innerHTML = h;
+
+          tl.fromTo("#s4-dia", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 0.35);
+          /* rule: svg-path-draw — the cube draws on edge by edge */
+          var SH = [];
+          EDGES.forEach(function (e, i) {
+            var el = document.getElementById("s4-e" + i), L = el.getTotalLength() * 1.02;
+            el.style.strokeDasharray = L; el.style.strokeDashoffset = L;
+            tl.fromTo(el, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: 0.4, ease: "power2.out" }, 0.45 + i * 0.07);
+            SH.push(seg(V[e[0]], V[e[1]]));
+          });
+          tl.fromTo("#s4-cubelab", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 1.4);
+          tl.to("#s4-cubelab", { opacity: 0, duration: 0.15, ease: "none" }, BRK);
+          /* tension: the cube swells for a beat before it breaks */
+          tl.fromTo("#s4-cube", { scale: 1, svgOrigin: CX + " " + CY }, { scale: 1.05, duration: 0.27, ease: "power2.in" }, BRK - 0.28);
+          tl.set("#s4-cube", { scale: 1 }, BRK);
+
+          /* rule: depth-scatter-assemble (in-plane) — 12 index-hashed vectors; everything from the index */
+          function hash(i, k) { var s = (Math.imul(i + 1, 374761393) + Math.imul(k + 1, 668265263)) >>> 0; s = Math.imul(s ^ (s >>> 13), 1274126177) >>> 0; return ((s ^ (s >>> 16)) >>> 0) / 4294967296; }
+          var GOLDEN = Math.PI * (3 - Math.sqrt(5));
+          SH.forEach(function (s, i) {
+            var el = "#s4-e" + i;
+            var base = Math.atan2(s.my - CY, s.mx - CX), ang = base + (hash(i, 0) - 0.5) * 0.9 + i * GOLDEN * 0.02;
+            var dist = 190 + hash(i, 1) * 110, spin = (hash(i, 2) - 0.5) * 520;
+            var sx = Math.cos(ang) * dist, sy = Math.sin(ang) * dist;
+            /* the shatter (world spread: 1.0s) */
+            tl.fromTo(el, { x: 0, y: 0, rotation: 0, svgOrigin: s.mx + " " + s.my },
+                          { x: sx, y: sy, rotation: spin, duration: 1.0, ease: "power3.out" }, BRK + i * 0.012);
+            /* loose parts keep drifting until the pull */
+            tl.to(el, { x: sx * 1.09, y: sy * 1.09 + 14, rotation: spin + (spin > 0 ? 28 : -28), duration: REB - BRK - 1.0, ease: "sine.inOut" }, BRK + 1.0);
+            /* the pull: 12 parts converge onto 6 edges — each pair lands on the same edge */
+            var t = seg(TV[TEDGES[i % 6][0]], TV[TEDGES[i % 6][1]]);
+            tl.to(el, { x: t.mx - s.mx, y: t.my - s.my, rotation: (t.ang - s.ang) + "_short", scale: t.len / s.len,
+                        duration: 0.9, ease: "power3.inOut" }, REB + (i % 6) * 0.02);
+            tl.to(el, { opacity: 0, duration: 0.3, ease: "power2.in" }, REB + 0.75);
+          });
+          tl.to("#s4-cube", { opacity: 0.8, duration: 0.6, ease: "none" }, BRK + 0.3);
+          /* a flash on the shatter */
+          tl.set("#s4-flash", { opacity: 0 }, 0);
+          tl.fromTo("#s4-flash", { opacity: 0, scale: 0.6, svgOrigin: CX + " " + CY }, { opacity: 1, scale: 1, duration: 0.08, ease: "power2.out", immediateRender: false }, BRK);
+          tl.to("#s4-flash", { opacity: 0, scale: 1.3, duration: 0.6, ease: "power2.out" }, BRK + 0.08);
+
+          /* the flame tetrahedron draws as the parts arrive (world rebuilt: REB+0.35, 0.7s) */
+          TEDGES.forEach(function (e, i) {
+            ["s4-t", "s4-u"].forEach(function (pre) {
+              var el = document.getElementById(pre + i), L = el.getTotalLength() * 1.02;
+              el.style.strokeDasharray = L; el.style.strokeDashoffset = L;
+              tl.fromTo(el, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: 0.42, ease: "power2.out" }, REB + 0.55 + i * 0.05);
+            });
+          });
+          TV.forEach(function (p, i) {
+            tl.fromTo("#s4-v" + i, { scale: 0, svgOrigin: p[0].toFixed(1) + " " + p[1].toFixed(1) }, { scale: 1, duration: 0.35, ease: "back.out(3)" }, REB + 0.95 + i * 0.05);
+          });
+          tl.fromTo("#s4-tet, #s4-tetu, #s4-tetv", { scale: 0.9, svgOrigin: CX + " " + (CY + 24) }, { scale: 1, duration: 0.6, ease: "back.out(1.8)" }, REB + 0.85);
+          tl.fromTo("#s4-flash", { opacity: 0, scale: 0.5 }, { opacity: 0.55, scale: 0.9, duration: 0.5, ease: "power2.out", immediateRender: false }, REB + 0.9);
+          tl.to("#s4-flash", { opacity: 0.35, duration: 1.2, ease: "sine.inOut" }, REB + 1.4);
+          /* the resolved solid keeps a slow, even turn — never a static decorative */
+          tl.fromTo("#s4-tet, #s4-tetu, #s4-tetv", { rotation: 0 }, { rotation: 10, duration: DUR - (REB + 1.45), ease: "sine.inOut" }, REB + 1.45);
+          tl.fromTo("#s4-lab", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, REB + 1.25);
+
+          /* ---- handoff OUT — the overexposure: s5 punches in on the drop at 27.5 ---- */
+          tl.set("#s4-world", { filter: "brightness(1)" }, DUR - 0.3);
+          tl.to("#s4-world", { filter: "brightness(3.2)", opacity: 0, duration: 0.3, ease: "power2.in" }, DUR - 0.3);
+
+          tl.to({}, { duration: DUR }, 0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s4-first-principles"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"IBM Plex Mono",monospace; color:#EFE7D6;
+                perspective:2000px; perspective-origin:50% 46%; }
+        .veil { position:absolute; inset:0; background:rgba(11,10,9,.46); }
+        .scrim { position:absolute; left:230px; top:0; width:1460px; height:1080px;
+                 background:radial-gradient(ellipse closest-side,
+                   rgba(11,10,9,.96), rgba(11,10,9,.80) 58%, rgba(11,10,9,0) 100%); }
+        .halo { position:absolute; left:400px; top:40px; width:1120px; height:980px;
+                background:radial-gradient(ellipse closest-side,
+                  rgba(240,118,30,.46), rgba(240,118,30,.12) 48%, rgba(240,118,30,0) 74%); }
+
+        /* --- a real solid: six faces in one preserve-3d box, not a skewed plane --- */
+        .rig { position:absolute; left:646px; top:96px; width:628px; height:824px;
+               transform-style:preserve-3d; }
+        .face { position:absolute; }
+        .cover { left:0; top:0; width:628px; height:824px; background:#13110D;
+                 border:3px solid rgba(239,231,214,.40);
+                 box-shadow:0 0 0 1px rgba(240,118,30,.20) inset; }
+        .back  { left:0; top:0; width:628px; height:824px; background:#0C0A07;
+                 border:3px solid rgba(239,231,214,.16); }
+        /* the block of pages — the fore-edge and the head/tail */
+        .fore  { left:0; top:0; width:56px; height:824px; left:628px;
+                 background:repeating-linear-gradient(to right,
+                   #CFC6B2 0 2px, #9E9683 2px 4px); }
+        .spine { left:0; top:0; width:56px; height:824px;
+                 background:linear-gradient(100deg,#241D15,#15110C);
+                 border-top:3px solid rgba(239,231,214,.24);
+                 border-bottom:3px solid rgba(239,231,214,.24); }
+        .head  { left:0; top:0; width:628px; height:56px;
+                 background:repeating-linear-gradient(to right,
+                   #C8BFAB 0 3px, #A79E8B 3px 6px); }
+        .tail  { left:0; top:0; width:628px; height:56px;
+                 background:repeating-linear-gradient(to right,
+                   #B3AA97 0 3px, #918977 3px 6px); }
+        .spinetext { position:absolute; left:0; top:0; width:824px; height:56px;
+                     transform-origin:0 0; display:flex; align-items:center;
+                     justify-content:center; gap:26px;
+                     font-size:19px; letter-spacing:.22em; color:#EFE7D6;
+                     text-transform:uppercase; white-space:nowrap; }
+
+        .imprint { position:absolute; left:52px; right:52px; top:74px; text-align:center;
+                   font-size:20px; letter-spacing:.30em; color:#9A8F7C; text-transform:uppercase;
+                   opacity:0; }
+        .title { position:absolute; left:40px; right:40px; top:170px; text-align:center;
+                 font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+                 font-size:112px; line-height:1.0; letter-spacing:-.02em; color:#EFE7D6; opacity:0; }
+        .spectrum { position:absolute; left:0; right:0; top:426px; display:flex;
+                    justify-content:center; gap:0; }
+        .spectrum i { display:block; width:66px; height:10px; transform-origin:left center; }
+        .sub { position:absolute; left:44px; right:44px; top:486px; text-align:center;
+               font-size:17px; letter-spacing:.17em; color:#EFE7D6; text-transform:uppercase;
+               white-space:nowrap; opacity:0; }
+        .brule { position:absolute; left:210px; right:210px; top:668px; height:2px;
+                 background:rgba(240,118,30,.8); transform-origin:center center; }
+        .byline { position:absolute; left:40px; right:40px; top:700px; text-align:center;
+                  font-family:"League Gothic",sans-serif; font-weight:400; text-transform:uppercase;
+                  font-size:60px; line-height:1; letter-spacing:.02em; color:#F0761E; opacity:0; }
+        .foot { position:absolute; left:0; right:0; bottom:52px; text-align:center;
+                font-size:22px; letter-spacing:.24em; color:#CFC4AE; text-transform:uppercase;
+                background:rgba(11,10,9,.72); padding:12px 0; opacity:0; }
+      </style>
+
+      <div id="root" data-composition-id="s8-title" data-start="0" data-duration="7.5"
+           data-width="1920" data-height="1080">
+        <div class="veil" data-layout-ignore aria-hidden="true"></div>
+        <div class="scrim" data-layout-ignore aria-hidden="true"></div>
+        <div class="halo" id="s8-halo" data-layout-ignore aria-hidden="true"></div>
+
+        <div class="rig" id="s8-book">
+          <div class="face back"  id="s8-back"  data-layout-ignore aria-hidden="true"></div>
+          <div class="face fore"  id="s8-fore"  data-layout-ignore aria-hidden="true"></div>
+          <div class="face head"  id="s8-head"  data-layout-ignore aria-hidden="true"></div>
+          <div class="face tail"  id="s8-tail"  data-layout-ignore aria-hidden="true"></div>
+          <div class="face spine" id="s8-spine" data-layout-ignore aria-hidden="true">
+            <div class="spinetext" id="s8-spinetext"><span>The Little Kingdom</span><span>Moritz</span></div>
+          </div>
+          <div class="face cover" id="s8-cover">
+            <div class="imprint" id="s8-imprint">William Morrow &nbsp;·&nbsp; New York</div>
+            <div class="title" id="s8-hero"><span style="display:block">The Little</span><span style="display:block">Kingdom</span></div>
+            <div class="spectrum" id="s8-spectrum">
+              <i id="s8-c1" style="background:#61BB46"></i>
+              <i id="s8-c2" style="background:#FCB61A"></i>
+              <i id="s8-c3" style="background:#F5821F"></i>
+              <i id="s8-c4" style="background:#E03A3E"></i>
+              <i id="s8-c5" style="background:#963D97"></i>
+              <i id="s8-c6" style="background:#009DDC"></i>
+            </div>
+            <div class="sub" id="s8-sub">The private story of Apple Computer</div>
+            <div class="brule" id="s8-brule"></div>
+            <div class="byline" id="s8-byline">Michael Moritz</div>
+          </div>
+        </div>
+
+        <div class="foot" id="s8-foot">First published 1984 &nbsp;·&nbsp; Reissued 2009 as "Return to the Little Kingdom"</div>
+      </div>
+
+      <script>
+        (function () {
+          var DUR = 7.5, D = 28;   /* half the block thickness, in px */
+          var tl = gsap.timeline({ paused: true });
+
+          /* Seat the six faces into a real box. These are static poses, so they are
+             gsap.set at build time on non-clip elements — the rig alone is animated. */
+          gsap.set("#s8-cover", { z: D });
+          gsap.set("#s8-back",  { z: -D, rotationY: 180 });
+          gsap.set("#s8-fore",  { z: 0, x: -D, rotationY: 90, transformOrigin: "left center" });
+          gsap.set("#s8-spine", { z: 0, x: 0, rotationY: -90, transformOrigin: "left center" });
+          gsap.set("#s8-head",  { y: 0, rotationX: 90, transformOrigin: "center top" });
+          gsap.set("#s8-tail",  { y: 824, rotationX: -90, transformOrigin: "center top" });
+          gsap.set("#s8-spinetext", { rotation: 90, x: 56, y: 0 });
+
+          /* --- blueprint: logo-assemble-lockup — the jacket turns into frame in real space --- */
+          tl.fromTo("#s8-book",
+            { opacity: 0, rotationY: -46, rotationX: 12, z: -420, y: 40 },
+            { opacity: 1, rotationY: -13, rotationX: 3, z: 0, y: 0,
+              duration: 1.25, ease: "power4.out" }, 0.10);
+          tl.fromTo("#s8-halo", { opacity: 0, scale: 0.8 },
+                                { opacity: 1, scale: 1, duration: 1.0, ease: "power2.out" }, 0.20);
+
+          tl.fromTo("#s8-imprint", { opacity: 0, y: 14 },
+                                   { opacity: 1, y: 0, duration: 0.44, ease: "power3.out" }, 0.80);
+          tl.fromTo("#s8-hero", { opacity: 0, y: 26 },
+                                { opacity: 1, y: 0, duration: 0.62, ease: "power3.out" }, 0.94);
+          for (var i = 1; i <= 6; i++) {
+            tl.fromTo("#s8-c" + i, { scaleX: 0, transformOrigin: "left center" },
+                                   { scaleX: 1, duration: 0.34, ease: "power3.out" }, 1.40 + (i - 1) * 0.075);
+          }
+          tl.fromTo("#s8-sub", { opacity: 0, y: 18 },
+                               { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.90);
+          tl.fromTo("#s8-brule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power4.out" }, 2.02);
+          tl.fromTo("#s8-byline", { opacity: 0, y: 26 },
+                                  { opacity: 1, y: 0, duration: 0.54, ease: "power3.out" }, 2.14);
+          tl.fromTo("#s8-foot", { opacity: 0, y: 16 },
+                                { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.54);
+
+          /* --- the hold is a slow orbit, so the solid keeps proving it has depth --- */
+          tl.to("#s8-book", { rotationY: 6, rotationX: -1.5, duration: 4.0, ease: "sine.inOut" }, 2.7);
+          var hc = 2.7, hrp = Math.max(0, Math.floor((DUR - 1.3) / hc) - 1);
+          tl.to("#s8-halo", { scale: 1.1, opacity: 0.74, duration: hc,
+                              ease: "sine.inOut", yoyo: true, repeat: hrp }, 1.3);
+
+          /* --- cut to black on the music tail --- */
+          tl.to("#s8-book", { opacity: 0, duration: 0.72, ease: "power2.in" }, DUR - 0.78);
+          tl.to("#s8-foot", { opacity: 0, duration: 0.72, ease: "power2.in" }, DUR - 0.78);
+          tl.to("#s8-halo", { opacity: 0, duration: 0.72, ease: "power2.in" }, DUR - 0.78);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s8-title"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

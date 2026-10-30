@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden;
+                font-family:"Space Mono",monospace; color:#F2F4F8; }
+        /* radial scrim keeps type legible over the live 3D world without banding */
+        .scrim { position:absolute; inset:0; }
+        .scrim.left { background:radial-gradient(ellipse 68% 100% at 6% 50%,
+                        rgba(7,8,11,.97) 12%, rgba(7,8,11,.82) 46%, rgba(7,8,11,0) 82%); }
+        .scrim.mid { background:radial-gradient(ellipse 78% 68% at 50% 56%,
+                        rgba(7,8,11,.94) 18%, rgba(7,8,11,0) 80%); }
+        .stage { position:absolute; left:150px; top:0; bottom:0; width:880px;
+                 display:flex; flex-direction:column; justify-content:center; }
+        .part { display:flex; align-items:center; gap:20px; font-size:24px; letter-spacing:.26em;
+                color:#FF3B1F; text-transform:uppercase; margin-bottom:38px; opacity:0; }
+        .part i { display:block; width:56px; height:2px; background:#FF3B1F; }
+        .disp { font-family:"Archivo Black",sans-serif; font-weight:400; text-transform:uppercase;
+                line-height:1.0; letter-spacing:-.03em; }
+        .disp span { display:inline-block; opacity:0; }
+        .flame-t { color:#FF3B1F; }
+        .rule { height:2px; background:#FF3B1F; width:100%; margin:36px 0 28px; }
+        .meta { font-size:26px; letter-spacing:.16em; color:#79839B; line-height:1.7;
+                text-transform:uppercase; opacity:0; }
+        .attr { margin-top:40px; font-size:26px; letter-spacing:.22em; color:#79839B;
+                text-transform:uppercase; opacity:0; }
+        .chap { display:flex; align-items:center; gap:18px; font-size:27px; letter-spacing:.16em;
+                color:#79839B; text-transform:uppercase; padding:10px 0; opacity:0; }
+        .chap b { color:#F2F4F8; font-weight:400; width:14px; }
+        .disp { font-size:130px; }
+        .chaps { margin-top:44px; }
+      </style>
+      <div data-hf-id="hf-cjyt" id="root" data-composition-id="s4-first-principles" data-start="0" data-duration="7.5" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-pdb9" class="scrim left"></div>
+        <div data-hf-id="hf-tan6" class="stage">
+          <div data-hf-id="hf-nemu" class="part" id="s4-part"><i data-hf-id="hf-wt6k"></i>Think like a physicist</div>
+          <div data-hf-id="hf-nwlw" class="disp"><span data-hf-id="hf-3jtl" id="s4-l1">First</span></div>
+          <div data-hf-id="hf-9gq4" class="disp"><span data-hf-id="hf-c4bi" class="flame-t" id="s4-l2">principles.</span></div>
+          <div data-hf-id="hf-cq2p" class="chaps">
+            <div data-hf-id="hf-ohdw" class="chap" id="s4-c1"><b data-hf-id="hf-qmvp">→</b>Obsess over truth</div>
+            <div data-hf-id="hf-avzq" class="chap" id="s4-c2"><b data-hf-id="hf-jeyx">→</b>Think in limits</div>
+            <div data-hf-id="hf-336o" class="chap" id="s4-c3"><b data-hf-id="hf-klw0">→</b>Aspire to be less wrong</div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var DUR = 7.5;
+          var tl = gsap.timeline({ paused: true });
+          function wave(list) {
+            list.forEach(function (w) {
+              tl.set(w[0], { opacity: 1, y: w[2] }, w[1]);
+              tl.to(w[0], { y: 0, duration: w[3], ease: "power4.out" }, w[1]);
+            });
+          }
+          tl.fromTo("#s4-part", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" }, 0.1);
+          wave([["#s4-l1", 0.40, 62, 0.18], ["#s4-l2", 0.62, 78, 0.20]]);
+          [["#s4-c1", 2.70], ["#s4-c2", 2.92], ["#s4-c3", 3.14]].forEach(function (w) {
+            tl.fromTo(w[0], { opacity: 0, x: -26 }, { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" }, w[1]);
+          });
+
+          /* pad the timeline to the slot length — HF derives visibility from
+             timeline.duration(), and a short timeline flashes black at the tail */
+          tl.to({}, { duration: DUR }, 0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines["s4-first-principles"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
